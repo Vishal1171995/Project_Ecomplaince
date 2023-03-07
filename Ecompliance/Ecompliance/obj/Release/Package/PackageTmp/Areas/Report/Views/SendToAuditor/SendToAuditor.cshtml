@@ -1,0 +1,255 @@
+﻿@{
+    ViewBag.Title = "Send To Auditor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .k-grid-toolbar a {
+        float: right;
+    }
+</style>
+<style>
+    .k-filedelete {
+        background-image: url(../../images/close.png) !important;
+        background-repeat: no-repeat;
+        background-position: left center;
+        width: 25px;
+        height: 28px;
+    }
+
+    .k-filedownload {
+        background-image: url(../../images/download.png) !important;
+        background-repeat: no-repeat;
+        background-position: left center;
+        width: 25px !important;
+        height: 28px;
+    }
+
+    .k-grid-Download {
+        min-width: 25px;
+    }
+
+    .k-grid tbody .k-button, .k-ie8 .k-grid tbody button.k-button {
+        min-width: 25px;
+    }
+
+    span.k-datepicker {
+        width: 300px !important;
+    }
+
+    .k-grid tr td, .k-pivot-layout .k-grid tr td {
+        border-bottom-width: 1px !important;
+        border-style: solid !important;
+        vertical-align: middle !important;
+    }
+
+    .k-grouping-row td {
+        color: #2e2e2e;
+        font-weight: 100;
+    }
+</style>
+
+
+
+<div class="container maincontainer">
+    <div class="">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">
+                    @{
+                        string Text = "";
+                        if (((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).Role == 26)
+                        {
+                            Text = "Send To Auditor";
+                        }
+                        else
+                        {
+                            Text = "Approve Or Reject Auditor";
+                        }
+                    }
+
+                    @Text
+                </h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="margin:0px 0px 10px;"></div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label>Company</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    @Html.DropDownList("ddlCompany", new SelectList(@ViewBag.Company, "Value", "Text"), new { disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label>Select Site</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    @Html.DropDownList("ddlSite", new List<SelectListItem> { new SelectListItem { Text = "-- First select a company --", Value = "0" } }, new { id = "ddlSite" })
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label>Select Month</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    @Html.DropDownList("ddlMonth", new SelectList(new List<SelectListItem> {
+                                                                   new SelectListItem { Text = "Select", Value = "" },
+                                                                   new SelectListItem { Text = "January", Value = "1" },
+                                                                   new SelectListItem { Text = "February", Value = "2" },
+                                                                   new SelectListItem { Text = "March", Value = "3" },
+                                                                   new SelectListItem { Text = "April", Value = "4" },
+                                                                   new SelectListItem { Text = "May", Value = "5" },
+                                                                   new SelectListItem { Text = "June", Value = "6" },
+                                                                   new SelectListItem { Text = "July", Value = "7" },
+                                                                   new SelectListItem { Text = "August", Value = "8" },
+                                                                       new SelectListItem { Text = "September", Value = "9" },
+                                                                           new SelectListItem { Text = "October", Value = "10" },
+                                                                               new SelectListItem { Text = "November", Value = "11" },
+                                                                   new SelectListItem { Text = "December", Value = "12" }
+                                           }, "Value", "Text", @DateTime.Now.Month))
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label>Select Year</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    @Html.DropDownList("ddlYear", new SelectList(@ViewBag.Year, "Value", "Text", @DateTime.Now.Year))
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12" style="margin-bottom:10px;">
+                <div class="search_btn pull-right">
+                    <input type="button" value="Search" class="button" id="btnSearch" disabled="disabled" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 pd" id="dvReport" style="display:none;">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="margin-bottom:10px;">
+                <div class="pull-right">
+                    @if (((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).Role == 26)
+                    {
+                        <input type="hidden" id="hdnRole" value="Auditee" />
+                        <button id="btnSendToAuditor" class="btn btn-primary" type="button">Send To Auditor</button>
+                    }
+                    @if (((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).Role == 25)
+                    {
+                        <input type="hidden" id="hdnRole" value="Auditor" />
+                        <button id="btnApprove" class="btn btn-primary" type="button">Approve</button>
+                        <button id="btnReject" class="btn btn-primary" type="button">Reject</button>
+                    }
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div id="details">
+                <div id="grid"></div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 pd" id="dvNoRecord" style="display:none;">
+
+            <div style="width:100%;text-align:center;color:red;">log
+                No Record Found!;
+            </div>
+        </div>
+    </div>
+</div>
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="row top_content">
+        @if (((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).Role == 26)
+        {
+            <div id="divAuditor">
+                <div class="col-xs-12 col-sm-12 col-md-12 pd">
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Upload</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-10 col-md-10 allcreditionals">
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+                    </div>
+                </div>
+                <div id="dvRemakrs">
+                    <div class="col-xs-12 col-sm-12 col-md-12 pd">
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Remarks</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-10 col-md-10 allcreditionals">
+                            <textarea cols="4" rows="2" id="txtUploadRemarks"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 pd">
+                        <div class="pull-right">
+                            <button id="btnUploadSubmit" class="btn btn-primary" type="button">Re Send To Auditor</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- BEGIN fixed table2-->
+            <div class="maintable table table-bordered">
+                <div class="titlehead">
+                    Attachments
+                </div>
+                <div><strong>Maker Remakrs:</strong> <span id="spnMakerRemarks"></span></div>
+                <div style="clear: both; height: 13px;"></div>
+                <div id="dvAttachGrd">
+                </div>
+            </div>
+            <!-- END fixed table2-->
+        </div>
+        <div style="text-align:right;"><input type="button" id="btnAttachOK" class="ok button" value="OK" /></div>
+    </div>
+    @* <div class="Cell col-xs-12 col-sm-4 col-md-3"><input type="button" value="Download" onclick="DownloadFile(@dt.Rows[i]["FileID"].ToString(),@dt.Rows[i]["DOCID"].ToString())" class="button download mg" /></div>*@
+</div>
+<div id="dvMsg"></div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var GetMappedSiteUrl = '@Url.RouteUrl("GetSendAuditorMappedSite")';
+        var GetScoreCardDataUrl = '@Url.RouteUrl("GetSendToScoreCardData")';
+        var GetTaskFilesUrl = '@Url.RouteUrl("GetTaskFiles")';
+        var DownloadTaskFileUrl = '@Url.RouteUrl("DownloadTaskFile")';
+        var UploadTaskFileUrl = '@Url.RouteUrl("UploadTaskFile")';
+        var GetCRMMSGUrl = '@Url.RouteUrl("GetCRMMSGData")';
+        var GetMsgUrl = '@Url.RouteUrl("GetConversation")';
+        var RemoveTaskFileAuditorUrl = '@Url.RouteUrl("RemoveTaskFile")';
+
+    </script>
+    @Scripts.Render("~/bundles/bndlSendToAuditor");
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ddlCompany").removeAttr('disabled');
+            $("#btnSearch").removeAttr('disabled');
+        });
+    </script>
+}
+
+<script id="template" type="text/x-kendo-template">
+    <a class="k-button" href="\#" onclick="return expandAll()"><span class="k-icon k-i-arrow-s"></span>Expand All</a>
+</script>
+<script id="template1" type="text/x-kendo-template">
+    <a class="k-button" href="\#" onclick="return collapseAll()"><span class="k-icon"></span>Collapse All</a>
+</script>
+<script id="collapseallcont" type="text/x-kendo-template">
+    <a class="k-button" href="\#" onclick="return collapseAllcont()"><span class="k-icon"></span>Collapse All</a>
+</script>
+<style type="text/css">
+    #details-container {
+        padding: 10px;
+    }
+
+        #details-container h2 {
+            margin: 0;
+            color: black;
+        }
+</style>
+

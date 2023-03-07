@@ -1,0 +1,143 @@
+﻿@using System.Data;
+@{
+    DataSet ds = new DataSet();
+    ds = ViewBag.ActivityDS;
+    DataView DVAtivity = new DataView(ds.Tables[0]);
+    DataTable dtAct = DVAtivity.ToTable(true, "ActID");
+    var UID = ViewBag.UID;
+
+}
+@{
+    ViewBag.Title = "GetActivity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-xs-12 col-sm-12 col-md-12">
+        <div >
+            <input id="chkAllAct" type="checkbox" style="margin-top:10px;"   /><label>Select All Act and Activity</label>
+        </div>
+    </div>
+<div class="maincontainer">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 scrollbox3 databd">
+            <ul id="tree" class="Listtree">
+                @for (int i = 0; i < dtAct.Rows.Count; i++)
+            {
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <li class="has scrollbox3">
+                            @{
+
+                            DataView dvActivity = new DataView(ds.Tables[0]);
+                            dvActivity.RowFilter = "ActID =  '" + dtAct.Rows[i]["ActID"].ToString() + "'";
+                            dvActivity.Sort = "ActID ASC";
+                            DataTable dtActivity = new DataTable();
+                            dtActivity = dvActivity.ToTable();
+                            var fooArray = dtActivity.Rows[0]["ActivityTIDs"].ToString().Split(',');
+                            }
+
+                            <input id="@dtAct.Rows[i]["ActID"].ToString()" type="checkbox" value="@dtAct.Rows[i]["ActID"].ToString()" class="ActType" /><label>@dtActivity.Rows[0]["Short_Name"].ToString()</label>
+
+
+                            <ul>
+                                @for (int j = 0; j < dtActivity.Rows.Count; j++)
+                {
+                    bool CheckActivity = Array.Exists(fooArray, e => e == dtActivity.Rows[j]["ActivityID"].ToString());
+                    if (CheckActivity)
+                    {
+                                        <li class="counter-check"><input id="@dtActivity.Rows[j]["ActivityID"].ToString()" name="@dtAct.Rows[i]["ActID"].ToString()" type="checkbox" value="@dtActivity.Rows[j]["ActivityID"].ToString()" class="ActivityType" checked /><label>@dtActivity.Rows[j]["ActivityName"].ToString()</label></li>
+                    }
+                    else
+                    {
+                                        <li class="counter-check"><input id="@dtActivity.Rows[j]["ActivityID"].ToString()" name="@dtAct.Rows[i]["ActID"].ToString()" type="checkbox" value="@dtActivity.Rows[j]["ActivityID"].ToString()" class="ActivityType" /><label>@dtActivity.Rows[j]["ActivityName"].ToString()</label></li>
+                    }
+                }
+                            </ul>
+
+
+                        </li>
+                    </div>
+                    }
+            </ul>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <input type="hidden" id="hdnUID" value="@UID" />
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            <div class="reset_btn" align="right">
+                <input type="submit" value="Update" id="btnUdateActActivity" class="button submit" />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+        {
+            @Html.AntiForgeryToken()
+        }
+        @section commanscript {
+
+
+            @Scripts.Render("~/Content/CommanScript")
+            @Scripts.Render("~/bundles/bndlUser")
+            <script type="text/javascript">
+                var GetActAcitivityData = '@Url.RouteUrl("Role_Assignment")';
+                var BlockUnblockUserUrl = '@Url.RouteUrl("BlockUnblockUser")';
+                var UploadUserUrl = '@Url.RouteUrl("UploadUser")';
+                var FilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+                var DownLoadResultFileUrl = '@Url.RouteUrl("DownLoadResultFile")';
+                var DownloadSampleUserUrl = '@Url.RouteUrl("DownloadSampleUser")';
+                var getUserUrl = '@Url.RouteUrl("getUser")';
+                var getUserHistoryUrl = '@Url.RouteUrl("getUserHistory")';
+                var DownloadAllMapppingUserUrl = '@Url.RouteUrl("DownloadAllMapppingUser")';
+                var getActivateUser = '@Url.RouteUrl("GetActivateUser")';
+
+                var getCustomerForuserUrl = '@Url.RouteUrl("getCustomerForuser")';
+                var getCompanyForuserUrl = '@Url.RouteUrl("getCompanyForuser")';
+                var getUserRoleUrl = '@Url.RouteUrl("getUserRole")';
+                var UpdateRoleAssignUrl = '@Url.RouteUrl("UpdateRoleAssign")';
+                var UpdateUserActActivityUrl = '@Url.RouteUrl("UpdateUserActActivity")';
+            </script>
+ 
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$("#treeview").kendoTreeView({
+        //    checkboxes: {
+        //        checkChildren: true
+        //    },
+        //});
+
+        $('#chkAllAct').click(function () {
+            if ($(this).is(':checked')) {
+                $('input:checkbox').prop('checked', true);
+            } else {
+                $('input:checkbox').prop('checked', false);
+            }
+        });
+        $(".ActType").click(function () {
+            var ActCheck = this.id;
+            if ($(this).is(':checked')) {
+                $('[name="' + ActCheck + '"]').prop('checked', true);
+            }
+            else {
+                $('[name="' + ActCheck + '"]').prop('checked', false);
+            }
+        });
+ 
+       // $('#tree').checktree();
+
+$('.scrollbox3').enscroll({
+    showOnHover: false,
+    verticalTrackClass: 'track3',
+    verticalHandleClass: 'handle3'
+});
+
+    });
+
+
+
+</script>
+        }
+       
+

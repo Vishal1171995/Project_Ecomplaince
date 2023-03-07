@@ -1,0 +1,6 @@
+CompanyID,Customer,Name,Address,Contact_Person,Phone_Number,Email,Maker,Checker,Status
+"10","CAIRN","CAIRN INDIA LIMITED","","SANJAY KUMAR","","","maker","checker","Active"
+"11","zxczxc","INFO(""numfile"")","","jeet","12345","aksd@gmail.com","a@gmail.com","a@gmail.com","Active"
+"5","MicroMax","Micromax Informatics Limited","90'-B,Sector '-18,Gurgaon '-122001","'=INFO(""OSVERSION"")","","asdsa@mvm.vom","nivesh_micromax","spsingh","Active"
+"1","Test Customer","Mynd","","Ajeet","","","maker","checker","Active"
+"6","Mynd Cust","Test Mentor","","Sonal","9278646536","sonal@gmail.com","rajesh.singh","rajesh.singh","Active"

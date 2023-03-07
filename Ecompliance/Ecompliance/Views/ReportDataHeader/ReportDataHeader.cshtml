@@ -1,0 +1,528 @@
+﻿@using System.Data;
+@{
+    ViewBag.Title = "Compliance Nature Wise Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /*span.k-datepicker {
+        width: 330px !important;
+    }*/
+    .k-filedelete {
+        background-image: url(../../images/close.png) !important;
+        background-repeat: no-repeat;
+        background-position: left center;
+        width: 25px;
+        height: 28px;
+    }
+
+    .k-filedownload {
+        background-image: url(../../images/download.png) !important;
+        background-repeat: no-repeat;
+        background-position: left center;
+        width: 25px;
+        height: 28px;
+    }
+
+    .k-grid-Download {
+        min-width: 25px;
+    }
+
+    .k-grid tbody .k-button, .k-ie8 .k-grid tbody button.k-button {
+        min-width: 25px;
+    }
+</style>
+
+<style>
+    .databox {
+        border-radius: 5px;
+        border: 1px solid #dfdfdf;
+    }
+
+        .databox h2 {
+            font-size: 16px;
+            color: #717171;
+            font-family: Arial;
+            font-weight: bold;
+            line-height: 35px;
+            margin: 0px;
+            padding: 0 10px !important;
+            border-bottom: 1px solid #dfdfdf;
+        }
+
+    .notificationmainbox {
+        border-bottom: 1px solid #dfdfdf;
+        padding: 10px 8px;
+    }
+
+        .notificationmainbox > p {
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333;
+            overflow-wrap: break-word;
+            font-weight: bold;
+            display: block;
+        }
+</style>
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="heading-title">
+            <div class="col-xs-12 col-sm-11 col-md-11">
+                <h3 class="page-title">Compliance Nature wise Report </h3>
+            </div>
+            <div class="col-xs-12 col-sm-1 col-md-1">
+                <div class="pull-right page-title" id="dvadd">
+                    <span class="glyphicon glyphicon-filter"></span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+
+   
+        <div class="row fullock">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 fixed-width">
+                            <div class="Ongoing_Trips_BoxTop Trips_BoxTop1">
+                                <h4> <span class="glyphicon glyphicon-blackboard"></span> Display</h4>
+                                <hr class="var-list">
+                                <div class="Ongoing_Trips_BoxTopRight">
+                                    <div>
+                                        <p class="pull-left">All :</p> <a href="javascript:void(0);"><span class="pull-right" id="spnDisplayTot" onclick="BindGrid('Display', '', '')">0</span></a> 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp">
+                                        <p class="pull-left">Compliant :</p>  <a href="javascript:void(0);"> <span id="spnDisplayComp" onclick="BindGrid('Display', 'Compliant', '')" class="pull-right"> </span> </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp1">
+                                        <p class="pull-left">Non-Compliant :</p>  <a href="javascript:void(0);"><span id="spnDisplayNComp" class="pull-right" onclick="BindGrid('Display', 'Non-Compliant', '')"> 0 </span></a> 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp2">
+                                        <p class="pull-left">In-Progress :</p> <a href="javascript:void(0);"><span id="spnDisplayInP" onclick="BindGrid('Display', 'In Progress', '')" class="pull-right">0</span> </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 fixed-width">
+                            <div class="Ongoing_Trips_BoxTop Trips_BoxTop2">
+                                <h4> <span class="glyphicon glyphicon-edit"></span> Registration</h4>
+                                <hr class="var-list">
+
+                                <div class="Ongoing_Trips_BoxTopRight">
+                                    <div>
+                                        <p class="pull-left">All :</p><a href="javascript:void(0);"><span id="spnRegistrationTot" onclick="BindGrid('Registration', '', '')" class="pull-right"> </span> </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp">
+                                        <p class="pull-left">Compliant :</p><a href="javascript:void(0);"><span id="spnRegistrationComp" onclick="BindGrid('Registration', 'Compliant', '')" class="pull-right">0</span></a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp1">
+                                        <p class="pull-left">Non-Compliant :</p><a href="javascript:void(0);"> <span id="spnRegistrationNComp" onclick="BindGrid('Registration', 'Non-Compliant', '')" class="pull-right">0</span></a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp2">
+                                        <p class="pull-left">In-Progress :</p><a href="javascript:void(0);"><span id="spnRegistrationInP" onclick="BindGrid('Registration', 'In Progress', '')" class="pull-right">0</span> </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 fixed-width">
+                            <div class="Ongoing_Trips_BoxTop Trips_BoxTop3">
+                                <h4> <span class="glyphicon glyphicon-piggy-bank"></span> Remittance</h4>
+                                <hr class="var-list">
+
+                                <div class="Ongoing_Trips_BoxTopRight">
+                                    <div>
+                                        <p class="pull-left">All :</p> <a href="javascript:void(0);"><span id="spnRemittanceTot" onclick="BindGrid('Remittance ', '', '')" class="pull-right">0</span></a> 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp">
+                                        <p class="pull-left">Compliant :</p>  <a href="javascript:void(0);"> <span id="spnRemittanceComp" onclick="BindGrid('Remittance ', 'Compliant', '')" class="pull-right">0</span> </a> 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp1">
+                                        <p class="pull-left">Non-Compliant :</p><a href="javascript:void(0);"> <span id="spnRemittanceNComp" onclick="BindGrid('Remittance ', 'Non-Compliant', '')" class="pull-right">0</span></a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp2">
+                                        <p class="pull-left">In-Progress :</p> <a href="javascript:void(0);"><span id="spnRemittanceInP" onclick="BindGrid('Remittance ', 'In Progress', '')" class="pull-right">0</span></a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 fixed-width">
+                            <div class="Ongoing_Trips_BoxTop Trips_BoxTop4">
+                                <h4> <span class="glyphicon glyphicon-share"></span> Returns</h4>
+                                <hr class="var-list">
+                                <div class="Ongoing_Trips_BoxTopRight">
+                                    <div>
+                                        <p class="pull-left">All :</p> <a href="javascript:void(0);"><span id="spnReturnsTot" onclick="BindGrid('Returns ', '', '')" class="pull-right">0</span></a> 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp">
+                                        <p class="pull-left">Compliant :</p><a href="javascript:void(0);"><span id="spnReturnsComp" onclick="BindGrid('Returns ', 'Compliant', '')" class="pull-right"> 0</span></a> 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp1">
+                                        <p class="pull-left">Non-Compliant :</p> <a href="javascript:void(0);"><span id="spnReturnsNComp" onclick="BindGrid('Returns ', 'Non-Compliant', '')" class="pull-right"> </span> </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp2">
+                                        <p class="pull-left">In-Progress :</p> <a href="javascript:void(0);"><span id="spnReturnsInP" onclick="BindGrid('Returns ', 'In Progress', '')" class="pull-right">  30  </span></a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 fixed-width">
+                            <div class="Ongoing_Trips_BoxTop Trips_BoxTop5">
+                                <h4> <span class="glyphicon glyphicon-open-file"></span> Statutory Record</h4>
+                                <hr class="var-list">
+
+                                <div class="Ongoing_Trips_BoxTopRight">
+                                    <div>
+                                        <p class="pull-left">All :</p><a href="javascript:void(0);"><span id="spnStatuatoryTot" onclick="BindGrid('Statuatory Records ', '', '')" class="pull-right"> </span> </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp">
+                                        <p class="pull-left">Compliant :</p> <a href="javascript:void(0);"><span id="spnStatuatoryComp" onclick="BindGrid('Statuatory Records ', 'Compliant', '')" class="pull-right">0</span></a> 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp1">
+                                        <p class="pull-left">Non-Compliant :</p><a href="javascript:void(0);"><span id="spnStatuatoryNComp" onclick="BindGrid('Statuatory Records ', 'Non-Compliant', '')" class="pull-right">0</span> </a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="comp2">
+                                        <p class="pull-left">In-Progress :</p><a href="javascript:void(0);"><span id="spnStatuatoryInP" onclick="BindGrid('Statuatory Records ', 'In Progress', '')" class="pull-right">0</span></a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+            </div>
+
+            @*<div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                    <div class="Ongoing_Trips_BoxTop">
+                        <h4> <span class="glyphicon glyphicon-bishop"></span> Display</h4>
+                        <hr />
+
+                        <div class="Ongoing_Trips_BoxTopRight">
+                            <p>Total Count <span id="spnDisplayTot" onclick="BindGrid('Display', '')"> 0 </span> </p>
+                            <p>Total Complaint <span id="spnDisplayComp" onclick="BindGrid('Display', 'Complaint')"> 0 </span> </p>
+                            <p>Total Non-Complaint <span id="spnDisplayNComp"  onclick="BindGrid('Display', 'Non-Compliant')"> 0 </span> </p>
+                            <p>Total In Progress <span id="spnDisplayInP"  onclick="BindGrid('Display', 'In Progress')"> 0 </span> </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                    <div class="Ongoing_Trips_BoxTop">
+                        <h4> <span class="glyphicon glyphicon-bishop"></span> Registration</h4>
+                        <hr />
+
+                        <div class="Ongoing_Trips_BoxTopRight">
+                            <p>Total Count <span id="spnRegistrationTot" onclick="BindGrid('Registration', '')"> 0  </span> </p>
+                            <p>Total Complaint <span id="spnRegistrationComp" onclick="BindGrid('Registration', 'Complaint')"> 0  </span> </p>
+                            <p>Total Non-Complaint <span id="spnRegistrationNComp"  onclick="BindGrid('Registration', 'Non-Compliant')"> 0 </span> </p>
+                            <p>Total In Progress <span id="spnRegistrationInP" onclick="BindGrid('Registration', 'In Progress')"> 0 </span> </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                    <div class="Ongoing_Trips_BoxTop">
+                        <h4> <span class="glyphicon glyphicon-bishop"></span> Remittance</h4>
+                        <hr />
+
+                        <div class="Ongoing_Trips_BoxTopRight">
+                            <p>Total Count <span id="spnRemittanceTot" onclick="BindGrid('Remittance ', '')"> 0  </span> </p>
+                            <p>Total Complaint <span id="spnRemittanceComp" onclick="BindGrid('Remittance ', 'Complaint')"> 0  </span> </p>
+                            <p>Total Non-Complaint <span id="spnRemittanceNComp" onclick="BindGrid('Remittance ', 'Non-Compliant')"> 0  </span> </p>
+                            <p>Total Inprogrss <span id="spnRemittanceInP"  onclick="BindGrid('Remittance ', 'In Progress')"> 0  </span> </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                    <div class="Ongoing_Trips_BoxTop">
+                        <h4> <span class="glyphicon glyphicon-bishop"></span> Returns</h4>
+                        <hr />
+
+                        <div class="Ongoing_Trips_BoxTopRight">
+                            <p>Total Count <span id="spnReturnsTot" onclick="BindGrid('Returns ', '')"> 0  </span> </p>
+                            <p>Total Complaint <span id="spnReturnsComp" onclick="BindGrid('Returns ', 'Complaint')"> 0 </span> </p>
+                            <p>Total Non-Complaint <span id="spnReturnsNComp" onclick="BindGrid('Returns ', 'Non-Compliant')"> 0  </span> </p>
+                            <p>Total Inprogrss <span id="spnReturnsInP" onclick="BindGrid('Returns ', 'In Progress')"> 0  </span> </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+                    <div class="Ongoing_Trips_BoxTop">
+                        <h4> <span class="glyphicon glyphicon-bishop"></span> Statuatory Records</h4>
+                        <hr />
+
+                        <div class="Ongoing_Trips_BoxTopRight">
+                            <p>Total Count <span id="spnStatuatoryTot" onclick="BindGrid('Statuatory Records ', '')"> 0  </span> </p>
+                            <p>Total Complaint <span id="spnStatuatoryComp" onclick="BindGrid('Statuatory Records ', 'Complaint')"> 0  </span> </p>
+                            <p>Total Non-Complaint <span id="spnStatuatoryNComp" onclick="BindGrid('Statuatory Records ', 'Non-Compliant')"> 0  </span> </p>
+                            <p>Total Inprogrss <span id="spnStatuatoryInP" onclick="BindGrid('Statuatory Records ', 'In Progress')"> 0 </span> </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>*@
+        </div>
+
+    
+</div>
+<div id="dialog" class="col-xs-12 col-sm-12 col-md-12">
+    <div class="extra">
+
+        <div class="clearfix"></div>
+      
+
+          
+            <div class="row fullock">
+               
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Type</label> </div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                        <select id="ddlActivitytype">
+                            <option value="">Select activity type...</option>
+                            <option value="Contractor">Contractor</option>
+                            <option value="PE">PE</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        @*<input type="button" value="All" class="all_btn" />*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Company</label> </div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                        @Html.DropDownList("ddlcompany", new SelectList(ViewBag.CompList, "Value", "Text"))
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        @*<input type="button" value="All" class="all_btn" />*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"><label>Site</label></div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn" id="dvSite">
+                        <select id="ddlSite">
+                            <option value="0">First select a company...</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        <input type="button" value="All" class="all_btn" id="btnAllSite" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock modal" id="dvCont">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Contractor</label> </div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn" id="dvContractor">
+                        <select id="ddlContractor">
+                            <option value="0">First select a company...</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        <input type="button" value="All" class="all_btn" id="btnAllContractor" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Act</label> </div>
+                    @*@Html.DropDownList("ddlAct", new SelectList(ViewBag.ActList, "Value", "Text"), new { @multiple = "multiple", @data_placeholder = "Select act..." })*@
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn" id="dvAct">
+                        <select id="ddlAct">
+                            <option value="0">First select a site...</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        <input type="button" value="All" class="all_btn" id="btnAllActs" />
+                    </div>
+                </div>
+                @*<div class="col-xs-12 col-sm-2 col-md-2">
+                <input type="button" value="All" class="all_btn" id="btnAllActs" />
+            </div>*@
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Activity</label> </div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn" id="dvActivity">
+                        <select id="ddlActivity">
+                            <option value="0">First select a act...</option>
+                        </select>
+                        @*@Html.DropDownList("ddlActivity", new SelectList(ViewBag.ActivityList, "Value", "Text"), new { @multiple = "multiple", @data_placeholder = "Select activity..." })*@
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        <input type="button" value="All" class="all_btn" id="btnAllActivitys" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Month</label> </div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                        <select id="ddlMonth">
+                            <option value="">Select month...</option>
+                            <option value="1">JAN</option>
+                            <option value="2">FEB</option>
+                            <option value="3">MAR</option>
+                            <option value="4">APR</option>
+                            <option value="5">MAY</option>
+                            <option value="6">JUN</option>
+                            <option value="7">JULY</option>
+                            <option value="8">AUG</option>
+                            <option value="9">SEP</option>
+                            <option value="10">OCT</option>
+                            <option value="11">NOV</option>
+                            <option value="12">DEC</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        @*<input type="button" value="All" class="all_btn" />*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Year</label> </div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                        <select id="ddlYear">
+                            <option value="">Select year...</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2">
+                        @*<input type="button" value="All" class="all_btn" />*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>ExpDate</label></div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                        <div class='input-group date'>
+                            <input id="txtExpiryDate" type='text' class="form-control" placeholder="dd/mm/yyyy" />
+                            <span id="spnExpDate" class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @*@Html.TextBox("txtExpiryDate")*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>From Date</label></div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                        <div class='input-group date'>
+                            <input id="txtFromDate" type='text' class="form-control" placeholder="dd/mm/yyyy" />
+                            <span id="spnfrmDate" class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @*@Html.TextBox("txtExpiryDate")*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>To Date</label></div>
+                    <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                        <div class='input-group date'>
+                            <input id="txtToDate" type='text' class="form-control" placeholder="dd/mm/yyyy" />
+                            <span id="spnToDate" class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @*@Html.TextBox("txtExpiryDate")*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 singleblock">
+                    <div class="col-xs-12 col-sm-3 col-md-1 mappingbtn"> <label>DocID</label> </div>
+                    <div class="col-xs-12 col-sm-2 col-md-4 mappingbtn">
+                        <input type="text" id="txtDocID" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-4 col-md-4 mapload">
+                        <input type="button" id="btnShow" value="Search" class="button show_btn" />
+                    </div>
+                </div>
+            </div>
+
+
+       
+    </div>
+</div>
+<div id="dvShowGrid" class="col-xs-12 col-sm-12 col-md-12 ">
+    <div class="row top_content">
+        <div id="dvAttachGrd">
+        </div>
+    </div>
+</div>
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+       
+       
+        var GetDocTaskSearchGridUrl = '@Url.RouteUrl("GetDocReportSearchGrid")';
+        var GetReportDataHeaderWiseUrl = '@Url.RouteUrl("GetReportDataHeaderWise")';
+    var GetMappedSiteUrl = '@Url.RouteUrl("GetRMappedSite")';
+    var GetContractorOfTaskFilterUrl = '@Url.RouteUrl("GetContractorOfReTaskFilter")';
+    var GetActivityForAllAertsUrl = '@Url.RouteUrl("GetRepActivityForAllAerts")';
+    var GetTaskFilesUrl = '@Url.RouteUrl("GetTaskFiles")';
+    var RemoveTaskFileUrl = '@Url.RouteUrl("RemoveTaskFile")';
+    var DownloadTaskFileUrl = '@Url.RouteUrl("DownloadTaskFile")';
+    var GetMappedActsForMultipleSiteUrl = '@Url.RouteUrl("GetRepMappedActsForMultipleSite")';
+    </script>
+<script>
+document.getElementById('test').addEventListener('change', function () {
+    var style = this.value == 1 ? 'block' : 'none';
+    document.getElementById('hidden_div').style.display = style;
+});
+</script>
+
+<script>
+$('#demolist li').on('click', function(){
+    $('#datebox').val($(this).text());
+});
+</script>
+
+<script>
+$( "#dialog" ).dialog({
+	autoOpen: false,
+	width: 950,
+	title:"Filter"
+});
+
+// Link to open the dialog
+$( "#dvadd" ).click(function( event ) {
+    var dialog = $("#dialog").dialog({
+        //autoOpen: false,
+        modal: true,
+        title: "Filters",
+        width: 909,
+        closeText: ""
+    });
+    $("#dialog").dialog("open");
+	event.preventDefault();
+});
+</script>
+    @Scripts.Render("~/bundles/bndAllReportDataHeader")
+}

@@ -1,0 +1,98 @@
+﻿@model  Ecompliance.ViewModel.UserVM
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/CommanCss")
+    <title>Generate Password</title>
+</head>
+<body>
+    <header>
+        <div class="top-header container-fluid">
+            <div class="container">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="actlogo">
+                        <a href="#"><img src="~/Content/images/a8.png" class="img-responsive" alt="logo"> </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+    @using (Ajax.BeginForm("CreatePass", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess", }))
+    {
+        @Html.AntiForgeryToken()
+        <section>
+            <div class="container outercontainer" >
+                <!--------------Details-------------->
+                <div class="">
+                    <div class="top_strap">
+                        <div class="pull-left">
+                            <h3 class="page-title">Generate Password </h3>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div style="margin:0px 0px 10px;"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 col-md-3">
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6" id="dvmain">
+                        <!--BEGIN Form-->
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals  allheight">
+                                <label>Password</label>
+                            </div>
+                            <div class="col-xs-6 col-sm-8 col-md-8 allcreditionals allheight">
+                                @Html.PasswordFor(x => x.Password, new { @autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.Password)
+                            </div>
+                            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals  allheight">
+                                <label>Retype Password</label>
+                            </div>
+                            <div class="col-xs-6 col-sm-8 col-md-8 allcreditionals  allheight">
+                                @Html.PasswordFor(x => x.ConfirmPassword, new { @autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                                @Html.HiddenFor(x => x.Passkey)
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                                <div class="reset_btn" align="right">
+                                    <input type="submit" value="Submit" class="button submit" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dvSuccessfull" style="display:none; height:200px; vertical-align:central;">
+                        <label> Congratulations ! Your password generated Successfully . Please <a href="@Url.RouteUrl("loginview")"> Click Here</a> to Login</label>
+                    </div>
+
+                    <!-----------------end of popup model------------>
+                </div>
+                <!-- POPUP FORM SAMITA ENDS -->
+            </div>
+        </section>
+
+        <footer>
+            <section id="footer">
+                <div class="container">
+                    <p>@DateTime.Today.Year  &copy; by <a href="#" target="_blank">Mynd Solution</a> - All rights reserved.</p>
+                </div>
+            </section>
+        </footer>
+    }
+</body>
+</html>
+@Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    function OnSuccess(e) {
+        if (e.IsSuccess == true) {
+            //dvmain dvSuccessfull
+            $("#dvmain").hide();
+            $("#dvSuccessfull").show();
+        }
+        else {
+            HandleResponse(e, "", "btnReset", "");
+        }
+    }
+
+</script>

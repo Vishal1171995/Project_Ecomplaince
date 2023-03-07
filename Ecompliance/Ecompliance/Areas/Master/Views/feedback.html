@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Detail</title>
+
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link href='https://fonts.googleapis.com/css?family=Raleway:400,600,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+	<link href="css/jquery-ui.css" rel="stylesheet">
+
+</head>
+<body>
+
+<header>
+  <div class="top-header container-fluid">
+    <div class="container">
+      <div class="col-xs-12 col-sm-7 col-md-7">
+		  <div class="actlogo">
+		   	<a href="index.html"><img src="images/myndlogo.png" class="img-responsive" alt="logo"> </a> <span>| Active Compliance Tracking </span>
+		   </div>
+	   </div>
+     
+      <div class="col-xs-12 col-sm-5 col-md-5">
+	  	<div class="var-list">
+        	<ul class="nav pull-right">
+
+		  <li class="supt" >
+		  	<span><img src="images/support.png"></span>
+              <p class="font">24x7<br> <strong>Support</strong></p>   
+		  </li>
+
+		  <li>
+ 			<div class="dropdown">
+    			<button class="btn btn-default dropdown-toggle login-link" type="button" data-toggle="dropdown"> <img src="images/profile.png"> <span> Welcome <br> 
+				<strong>Samita Bhat</strong> </span>
+    			<span class="caret arow"></span></button>
+				<ul class="dropdown-menu menu-icons">
+				  <li><a href="#"> <span class="glyphicon glyphicon-user pull-left"></span> <span class="fieldtxt">Profile</span> </a></li>
+				  <li><a href="#"> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Setting </span></a></li>
+				  <li><a href="#"> <span class="glyphicon glyphicon-lock pull-left"></span> <span class="fieldtxt">Change Password</span> </a></li>
+				  <li><a href="#"> <span class="glyphicon glyphicon-log-out pull-left"></span> <span class="fieldtxt">Signout</span> </a></li>
+				</ul>
+  			</div>
+		</li>
+		  
+		  <li>
+ 			<div class="dropdown">
+    			<button class="btn btn-default dropdown-toggle login-link" type="button" data-toggle="dropdown"> <img src="images/profile.png"> <span> Your Role 
+				<br> <strong> Admin </strong> </span>
+    			<span class="caret arrow"></span></button>
+				<ul class="dropdown-menu menu-icons">
+				  <li><a href="#"> <span class="glyphicon glyphicon-user pull-left"></span> <span class="fieldtxt">Admin</span> </a></li>
+				  <li><a href="#"> <span class="glyphicon glyphicon-user pull-left"></span> <span class="fieldtxt">User</span> </a></li>
+				</ul>
+  			</div>
+		</li>
+        </ul>
+		</div>
+		
+      </div>
+	  
+	
+    </div>
+  </div>	
+  
+	<div class="menu">
+    	<nav class="navbar container"> 
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        <!--     <a class="navbar-brand" href="#">Brand</a>--> 
+      </div>
+      
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1 main-menu">
+        <ul class="nav navbar-nav listing">
+			  <li class="dropdown active-menu"><a href="backup-popup.html" class="dropbtn"> <span class="glyphicon glyphicon-home pull-left"></span> <span class="fieldtxt">Home</span></a></li>
+			  <li class="dropdown"><a href="backup-popup.html" class="dropbtn"> <span class="glyphicon glyphicon-cog pull-left"></span> <span class="fieldtxt">Configuration</span></a>
+			  
+			  	<ul class="dropdown-content">
+					<li><a href=""> <span class="glyphicon glyphicon-lock pull-left"></span> <span class="fieldtxt">Password Policy</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Menu Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">workforce Status</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-calendar pull-left"></span> <span class="fieldtxt">Canlendar Master</span></a></li>
+				</ul>
+			  </li>
+			  <li class="dropdown"><a href="backup-popup.html" class="dropbtn"> <span class="glyphicon glyphicon-tower pull-left"></span> <span class="fieldtxt">Master</span></a>
+			  
+			  	<ul class="dropdown-content">
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Customer Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Company Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Site Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Contractor Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Site Contractor Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Acts Applicable To Site</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Act Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Activity Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Role Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Users</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">State Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Frequency Master</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Act Category</span></a></li>
+				</ul>
+			  </li>
+			  <li class="dropdown"><a href="login.html" class="dropbtn"> <span class="glyphicon glyphicon-file pull-left"></span> <span class="fieldtxt">Reports</span></a>
+			  
+			  	<ul class="dropdown-content">
+					<li><a href=""> <span class="glyphicon glyphicon-dashboard pull-left"></span> <span class="fieldtxt">Dashboard</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-dashboard pull-left"></span> <span class="fieldtxt">New Dashboard</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Compliance Scorecard</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-dashboard pull-left"></span> <span class="fieldtxt">Act Dashboard</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Act Scheduled Report</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Acts Applicable To Site</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Monthly Scheduled Dates</span></a></li>
+				</ul>
+			  </li>
+			  
+			  <li class="dropdown"><a href="conindex.html" class="dropbtn"> <span class="glyphicon glyphicon-folder-open pull-left"></span> <span class="fieldtxt">Documents</span></a>
+			  
+			  	<ul class="dropdown-content">
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">File Upload Document</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Act Document</span></a></li>
+				</ul>
+			  </li>
+			  
+			  <li class="dropdown"><a href="#" class="dropbtn"> <span class="glyphicon glyphicon-wrench pull-left"></span> <span class="fieldtxt">Tools</span></a>
+			  	<ul class="dropdown-content">
+					<li><a href=""> <span class="glyphicon glyphicon-file pull-left"></span> <span class="fieldtxt">File Explorer</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Bulk Approval</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Bulk Reallocation</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Search Report</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-file pull-left"></span> <span class="fieldtxt">File Explorer</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-search pull-left"></span> <span class="fieldtxt">Search</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Bulk Approval</span></a></li>
+					<li><a href=""> <span class="glyphicon glyphicon-upload pull-left"></span> <span class="fieldtxt">Document Upload</span></a></li>
+				</ul>
+			 </li>	 
+        </ul>
+      </div>
+      <!-- /.navbar-collapse --> 
+    </nav>
+	</div>
+	
+</header>
+	
+<!--FORM SAMITA STARTS --> 
+
+<div class="container">
+<!--------------Details-------------->
+<div class="maincontainer">
+	<div class="top_strap">
+		<div class="pull-left">
+			<h3 class="page-title">Company Master <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">I am a tooltip!</div></span></h3>
+		</div>
+		
+		<div class="clearfix"></div>
+		<div style="margin:0px 0px 10px;"></div>
+	</div>	
+
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="row fullock">
+				<div class="col-xs-12 col-sm-12 col-md-12 top_strap"> 
+					<h3 class="page-title">Location</h3>
+				</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 singleblock">
+				
+				<div class="col-xs-12 col-sm-4 col-md-4 mappingbtn"> <label>Site</label> </div>
+				<div class="col-xs-12 col-sm-8 col-md-8 mappingbtn">
+					<select>
+						<option selected> </option>
+						<option>Male</option>
+						<option>Female</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 singleblock">
+				
+				<div class="col-xs-12 col-sm-4 col-md-4 mappingbtn"> <label>Act</label> </div>
+				<div class="col-xs-12 col-sm-8 col-md-8 mappingbtn">
+					<select>
+						<option selected> </option>
+						<option>Male</option>
+						<option>Female</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 singleblock"> 
+				
+				<div class="col-xs-12 col-sm-4 col-md-4 mappingbtn"> <label>Contractor</label> </div>
+				<div class="col-xs-12 col-sm-8 col-md-8 mappingbtn">
+					<select>
+						<option selected> </option>
+						<option>Male</option>
+						<option>Female</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row fullock trackmap">
+			<div class="col-xs-12 col-sm-12 col-md-12 top_strap"> 
+					<h3 class="page-title">Request</h3>
+			</div>
+				
+			<div class="col-xs-12 col-sm-3 col-md-3 mapbtn"> 
+			<div class="trackloc">Total Record <br> 2500 <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">I am a tooltip!</div></span>
+			 </div>
+			 </div>
+			<div class="col-xs-12 col-sm-3 col-md-3 mapbtn">
+			 <div class="trackloc">Scheduled <br> 500 <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">I am a tooltip!</div></span>
+			</div>
+			</div>
+			<div class="col-xs-12 col-sm-3 col-md-3 mapbtn"> 
+			<div class="trackloc">Unscheduled <br> 2000 <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">I am a tooltip!</div></span>
+			</div>
+			</div>
+			<div class="col-xs-12 col-sm-3 col-md-3 mapbtn"> 
+			<div class="trackloc">Unscheduled <br> 2000 <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">I am a tooltip!</div></span>
+			</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<div id="dialog-link" class="col-xs-12 col-sm-4 col-md-4 mapload"><span class="glyphicon glyphicon-upload pull-left"></span> UPLOAD </div>
+			</div>
+		</div>
+	
+		</div>
+	<!--BEGIN TABS-->
+	<div id="dialog" class="col-xs-12 col-sm-12 col-md-12">
+	<div class="tabbable tabbable-custom">
+		<ul class="nav nav-tabs topheader-tab" >
+			<li class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+			<li><a href="#tab_1_2" data-toggle="tab">History</a></li>
+		</ul>
+	</div>	
+  <div class="row top_content tab-content">
+	<div class="tab-pane active" id="tab_1_1">
+		<div class="tabinner-content">
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>First Name </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Samita Samita Samita Samita Samita</p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Last Name </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Bhat </p>
+		</div>
+	
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Email id </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>bhatsamita@yahoo.com bhatsamita@yahoo.com bhatsamita@yahoo.com bhatsamita@yahoo.com bhatsamita@yahoo.com bhatsamita@yahoo.com bhatsamita@yahoo.com bhatsamita@yahoo.com bhatsamita@yahoo.com M</p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Password </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4 ">
+			<p>1234567 1234567 1234567 1234567 1234567</p>
+		</div>
+
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Age</label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>56 years </p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Nationality </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Indian </p>
+		</div>
+	
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Age </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>56 years </p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Nationality </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Indian </p>
+		</div>
+	
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label><strong>Age </strong></label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>56 years </p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Nationality </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Indian </p>
+		</div>
+	
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Age </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4 ">
+			<p>56 years </p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label><strong>Nationality </strong></label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4 ">
+			<p>Indian </p>
+		</div>
+	
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Age </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>56 years </p>		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2 ">
+			<label>Nationality </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Indian </p>
+		</div>
+	
+  </div>
+  	</div>
+	<div class="tab-pane" id="tab_1_2">
+		<div class="tabinner-content">
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>First Name </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Samita Samita Samita Samita Samita</p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Last Name </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Bhat </p>
+		</div>
+
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Age </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>56 years </p>
+		</div>
+		<div class="col-xs-6 col-sm-2 col-md-2">
+			<label>Nationality </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p>Indian </p>
+		</div>
+
+	</div>
+	</div>
+</div>
+</div>
+	<!--END TABS-->
+   <!-----------------end of popup model------------>   
+</div>
+<!-- POPUP FORM SAMITA ENDS --> 
+</div>
+</section>
+
+<footer>
+<section id="footer">
+<div class="container">
+<p>2016 &copy; by <a href="#" target="_blank">Mynd Solution</a> - All rights reserved.</p>
+</div>
+</section>
+</footer>
+<!-- FORM SAMITA STARTS --> 
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script>
+$( "#dialog" ).dialog({
+	autoOpen: false,
+	width: 909,
+	title:"Information Details"
+});
+
+// Link to open the dialog
+$( "#dialog-link" ).click(function( event ) {
+	$( "#dialog" ).dialog( "open" );
+	event.preventDefault();
+});
+</script>
+
+
+
+
+

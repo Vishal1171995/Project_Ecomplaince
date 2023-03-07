@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "ViewDownloadTaskFiles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .ui-datepicker-calendar {
+        display: none;
+    }
+    .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+    
+    color:#000;
+    }
+    .search_btn > input[type="button"] {
+        width:125px;
+    }
+  
+</style>
+<div class="container maincontainer">
+    <div class="">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">Download Task Files</h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="margin:0px 0px 10px;"></div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label>Select Month-Year</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    <div class='input-group date'>
+                        <input id="txtDate" type='text' class="form-control" placeholder="MMM-yyyy" />
+                        <span id="spnToDate" class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label>Select Customer</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    @Html.DropDownList("ddlCustomer", new SelectList(@ViewBag.Customer, "Value", "Text"))
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label> Company</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    @Html.DropDownList("ddlCompany", new SelectList(@ViewBag.Company, "Value", "Text"))
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                    <label>Select Site</label>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                    @Html.DropDownList("ddlSite", new List<SelectListItem> { new SelectListItem { Text = "-- First select a company --", Value = "0" } }, new { id = "ddlSite" })
+                </div>
+            </div>
+
+           
+            <div class="col-xs-12 col-sm-12 col-md-12" style="margin-bottom:10px;">
+                <div class="search_btn pull-right">
+                    <input type="button" value="Downlaod" class="button"  onclick="DownLoadResultFile()" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 pd"  style="display:none;">
+           
+                
+                <div style="overflow-x: scroll;">
+                    <div id="grid">
+                    </div>
+                </div>
+               
+
+           
+            <div id="details">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 pd" id="dvNoRecord" style="display:none;">
+
+            <div style="width:100%;text-align:center;color:red;">
+                No Record Found!;
+            </div>
+        </div>
+    </div>
+</div>
+
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$("#txtDate").datepicker({
+        //    dateFormat: 'MM-yy',
+        //    changeMonth: true,
+        //    changeYear: true
+
+        //}).datepicker("setDate", new Date());
+        $('#txtDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'MM yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+            }
+        });
+
+        $("#spnToDate").click(function () {
+            $('#txtDate').datepicker('show');
+        });
+
+
+    });
+
+
+    $("#ddlCustomer").change(function () {
+        var CustID = $(this).val();
+        var ddlComp = $("#ddlCompany");
+        ddlComp.empty().append($('<option></option>').val("0").html("Please wait..."));
+        if (CustID != "0") {
+            $.get('@Url.RouteUrl("GetCompanyFile")', { CompanyID: 0, CustID: CustID }, function (response) {
+                if (response.IsSuccess) {
+                    ddlComp.empty().append($('<option></option>').val("0").html("ALL"));
+                    var ds = $.parseJSON(response.Data);
+                    if (ds.length > 0) {
+                        $.each(ds, function () {
+                            ddlComp.append($('<option></option>').val(this.CompID).html(this.Name));
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            ddlComp.html('').append($('<option></option>').val("0").html("-- first select a company --"));
+        }
+    });
+
+
+
+    $("#ddlCompany").change(function () {
+        
+        var CompanyID = $(this).val();
+        var ddlSite = $("#ddlSite");
+        ddlSite.empty().append($('<option></option>').val("0").html("Please wait..."));
+        if (CompanyID != "0") {
+            $.get('@Url.RouteUrl("GetMappedSite")', { CompanyID: CompanyID }, function (response) {
+                if (response.IsSuccess) {
+                    ddlSite.empty().append($('<option></option>').val("0").html("ALL"));
+                    var ds = $.parseJSON(response.Data);
+                    if (ds.length > 0) {
+                        $.each(ds, function () {
+                            ddlSite.append($('<option></option>').val(this.SiteID).html(this.Name));
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            ddlSite.html('').append($('<option></option>').val("0").html("-- first select a company --"));
+        }
+    });
+
+    function DownLoadResultFile() {
+       // var month = date.substring(4, 2);
+        var CustID = $("#ddlCustomer").val();
+        var SelectDate = $("#txtDate").val();
+        var monthdate = new Date(SelectDate);
+        var CompID = $("#ddlCompany").val();
+        var SiteID = $("#ddlSite").val();
+        if (SelectDate != "") {
+            var Year = monthdate.getFullYear();
+            var Month = monthdate.getMonth();
+        }
+        if (Month == undefined) {
+            alert("Please select a Date!.");
+            return false;
+        } else {
+            Month=  Month + 1;
+        }
+        //if (Year == 0 || Year == undefined) {
+        //    alert("Please select a Year!.");
+        //    return false;
+        //}
+        if (CustID == 0 || CustID == undefined)
+        {
+            alert("Please select a customer!.");
+            return false;
+        }
+        else {
+            var URL = '@Url.RouteUrl("GetTaskFilesForDownload")' + '?Month=' + Month + '&Year=' + Year + '&CustID=' + CustID + '&CompID=' + CompID + '&SiteID=' + SiteID;
+        }
+        window.location = URL;
+        return false;
+    }
+
+</script>
+}

@@ -1,0 +1,7 @@
+CompID,Name,Code,Customer,Address,Contact_Person,Phone_Number,Email,Maker,Checker,IsAct,IsActNm,CustomerNm,MakerNm,CheckerNm
+"6","Fujifilm India Private Limited","C0028","1","","","0","test@gmail.com","3","3","1","True","Fujifilm","Pallavi Test","Pallavi Test"
+"7","Cars24 Services Private Limited","C0027","2","","","0","test@gmail.com","3","3","1","True","Cars24","Pallavi Test","Pallavi Test"
+"8","Macmillan Publishers India Pvt Ltd","C0026","3","","","0","test@gmail.com","3","3","1","True","Macmillan Publishers","Pallavi Test","Pallavi Test"
+"9","Alcatel Lucent India Limited","C0025","7","","Bhavesh Jha","8989898989","test@gmail.com","3","3","1","True","Alcatel Lucent","Pallavi Test","Pallavi Test"
+"12","Micromax Informatics Ltd","C0011","12","280 gurgaon","ABC","9999999999","test@gmail.com","3","3","1","True","Micromax Informatics Ltd","Pallavi Test","Pallavi Test"
+"13","TestCompany","011","2","Gurgaon","Pallavi","9810383968","pal@gmail.com","3","3","1","True","Cars24","Pallavi Test","Pallavi Test"

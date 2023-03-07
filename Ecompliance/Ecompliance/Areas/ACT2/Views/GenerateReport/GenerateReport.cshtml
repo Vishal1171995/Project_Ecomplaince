@@ -1,0 +1,199 @@
+﻿@using Ecompliance.ViewModel
+@model  Ecompliance.Areas.ACT2.ViewModel.GenerateReportVM
+@{
+    ViewBag.Title = "Generate Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    span.k-datepicker {
+        width: 350px !important;
+    }
+</style>
+<div>
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+                Generate Report
+            </h3>
+        </div>
+        <div class="clearfix"></div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="">
+            <div class="row top_content">
+                @using (Ajax.BeginForm("GenerateReport", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage", InsertionMode = InsertionMode.Replace }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col-xs-4 col-sm-2 col-md-2 allcreditionals">
+                        <label>State<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.State, new SelectList(Model.StateList, "Value", "Text"), new { id = "ddlState" })
+                        @Html.ValidationMessageFor(m => m.State)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Location</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.Location, new List<SelectListItem> { new SelectListItem { Text = "-- First select a State --", Value = "0" } }, new { id = "ddlLocation" })
+                        @Html.ValidationMessageFor(m => m.Location)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Company </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                        @Html.DropDownListFor(x => x.Company, new List<SelectListItem> { new SelectListItem { Text = "-- First select a location --", Value = "0" } }, new { id = "ddlCompany" })
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals" id="dvContracotrlbl">
+                        <label>Site</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals" id="dvContracotr">
+                        @Html.DropDownListFor(x => x.Site, new List<SelectListItem> { new SelectListItem { Text = "-- First select a Company --", Value = "0" } }, new { id = "ddlSite" })
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>PayDate</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.PayDate, new SelectList(Model.PayDateList, "Value", "Text"), new { id = "ddlPaydate" })
+                        @Html.ValidationMessageFor(m => m.PayDate)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Group</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.Groupdata, new SelectList(Model.GroupList, "Value", "Text"), new { id = "ddlGrp" })
+                        @Html.ValidationMessageFor(m => m.Groupdata)
+                    </div>
+                    <div class="row extra">
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div align="right">
+                                <input style="margin-top: 5px;" type="reset" id="btnReset" value="Reset" class="button reset" />
+                                <input type="submit" value="Generate" class="button generate" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xs-6 col-sm-6 col-md-6">
+    </div>
+</div>
+
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+
+    <script type="text/javascript">
+
+        var DownloadAllMapppingCompanyUrl = '@Url.RouteUrl("DownloadAllMapppingCompany")';
+    var GetLocationForSiteUrl = '@Url.RouteUrl("GetLocationForSite")';
+        var GetCompanyByLocationUrl = '@Url.RouteUrl("GetCompanyByLocation")';
+        var GetSiteByCompanyUrl = '@Url.RouteUrl("GetSiteByCompany")';
+        $(document).ready(function () {
+            $("#ddlState").change(function () {
+                var StateID = $(this).val();
+                var ddlSite = $("#ddlSite");
+                var ddlCompany = $("#ddlCompany");
+                var ddlLocation = $("#ddlLocation");
+                ddlLocation.empty().append($('<option></option>').val("0").html("Please wait..."));
+                ddlCompany.html('').append($('<option></option>').val("0").html("-- first select a location --"));
+                ddlSite.html('').append($('<option></option>').val("0").html("-- first select a Company --"));
+                if (StateID != "0") {
+                    $.get(GetLocationForSiteUrl, { StateID: StateID }, function (response) {
+                        if (response.IsSuccess) {
+                            ddlLocation.empty().append($('<option></option>').val("0").html("-- Select --"));
+                            var ds = $.parseJSON(response.Data);
+                            if (ds.length > 0) {
+                                $.each(ds, function () {
+                                    ddlLocation.append($('<option></option>').val(this.LocationID).html(this.Name));
+                                });
+                            }
+                            else {
+                                ddlLocation.empty().append($('<option></option>').val(0).html("--Select--"));
+                            }
+                        }
+                        else {
+                            FailResponse(response);
+                        }
+                    });
+                }
+                else {
+                    ddlLocation.html('').append($('<option></option>').val("0").html("-- first select a state --"));
+                }
+            });
+
+            $("#ddlLocation").change(function () {
+                var LocationID = $(this).val();
+                var ddlSite = $("#ddlSite");
+                var ddlCompany = $("#ddlCompany");
+                ddlCompany.empty().append($('<option></option>').val("0").html("Please wait..."));
+                ddlSite.html('').append($('<option></option>').val("0").html("-- first select a Company --"));
+                if (LocationID != "0") {
+                    $.get(GetCompanyByLocationUrl, { LocationID: LocationID }, function (response) {
+                        if (response.IsSuccess) {
+                            ddlCompany.empty().append($('<option></option>').val("0").html("-- Select --"));
+                            var ds = $.parseJSON(response.Data);
+                            if (ds.length > 0) {
+                                $.each(ds, function () {
+                                    ddlCompany.append($('<option></option>').val(this.CompID).html(this.Name));
+                                });
+                            }
+                            else {
+                                ddlCompany.empty().append($('<option></option>').val(0).html("--Select--"));
+                            }
+                        }
+                        else {
+                            FailResponse(response);
+                        }
+                    });
+                }
+                else {
+                    ddlCompany.html('').append($('<option></option>').val("0").html("-- first select a location --"));
+                }
+            });
+
+            $("#ddlCompany").change(function () {
+                var CompanyID = $(this).val();
+                var StateID = $("#ddlState").val();
+                var LocationID = $("#ddlLocation").val();
+                var ddlSite = $("#ddlSite");
+                ddlSite.empty().append($('<option></option>').val("0").html("Please wait..."));
+                if (CompanyID != "0") {
+                    $.get(GetSiteByCompanyUrl, { StateID: StateID, LocationID: LocationID, CompanyID: CompanyID }, function (response) {
+                        if (response.IsSuccess) {
+                            ddlSite.empty().append($('<option></option>').val("0").html("-- Select --"));
+                            var siteDS = $.parseJSON(response.Data);
+                            if (siteDS.length > 0) {
+                                $.each(siteDS, function () {
+                                    ddlSite.append($('<option></option>').val(this.SiteId).html(this.Name));
+                                });
+                            } else {
+                                ddlSite.empty().append($('<option></option>').val(0).html("--Select--"));
+                            }
+                        } else {
+                            FailResponse(response);
+                        }
+                    });
+                }
+                else {
+                    ddlSite.html('').append($('<option></option>').val("0").html("-- first select a Company --"));
+                }
+            });
+        })
+
+        function SuccessMessage()
+        {
+            alert("Posted");
+        }
+
+        function FailMessage()
+        {
+            alert("Post Failed");
+        }
+    </script>
+    @*@Scripts.Render("~/bundles/bndlUploadReport")*@
+}

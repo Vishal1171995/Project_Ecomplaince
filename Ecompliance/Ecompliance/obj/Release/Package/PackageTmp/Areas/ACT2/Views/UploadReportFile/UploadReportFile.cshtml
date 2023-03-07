@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewBag.Title = "UploadReportFile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ <style>
+    span.k-datepicker {
+        width: 350px !important;
+    }
+</style>
+<div>
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+                Upload File
+            </h3>
+        </div>
+        <div class="clearfix"></div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+    
+    @Html.AntiForgeryToken()
+    <div class="col-xs-6 col-sm-6 col-md-6">
+        <div class="col-xs-12 col-sm-12 col-md-12 row fullock" style="border-bottom:4px solid #ccc;">
+            <div class="pull-left">
+                @*<h3 class="page-title">
+                    Upload Salary Register
+                </h3>*@
+                <h3 class="sub-page-title"> Upload Salary Register</h3>
+            </div>
+            </div>
+         
+            <div id="dvReportSalary" class="col-xs-12 col-sm-12 col-md-12">
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row top_content">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <label>select a CSV file</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+
+                                <input type="file" name="files" id="files" target-control="hdnSalaryFileName">
+                                <input type="hidden" id="hdnSalaryFileName" />
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                                <div class="reset_btn" align="right">
+                                    <input type="button" value="Sample" id="btnDownloadSample" class="button download" onclick="DownLoadSampleSalary()" />
+                                    <input type="button" value="Upload" id="btnUploadSalary" class="button upload_btn" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+        </div>
+    <div class="col-xs-6 col-sm-6 col-md-6">
+        @*<div class="top_strap">
+            <div class="pull-left">
+                <h3 class="sub-page-title">  Upload Muster Roll</h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="margin:0px 0px 10px;"></div>
+        </div>*@
+
+        <div class="col-xs-12 col-sm-12 col-md-12 row fullock" style="border-bottom:4px solid #ccc;">
+            <div class="pull-left">
+                <h3 class="sub-page-title"> Upload Muster Roll</h3>
+            </div>
+        </div>
+
+        <div id="dvReportRusterroll" class="col-xs-12 col-sm-12 col-md-12">
+            <div class="">
+                <div class="clearfix"></div>
+                <div class="row top_content">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <label>select a CSV file</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+
+                            <input type="file" name="files" id="Musterfiles" target-control="hdnMusterFileName">
+                            <input type="hidden" id="hdnMusterFileName" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div class="reset_btn" align="right">
+                                <input type="button" value="Sample" id="btnDownloadMusterSample" class="button download" onclick="DownLoadSampleMuster()" />
+                                <input type="button" value="Upload" id="btnUploadMuster" class="button upload_btn" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6">
+    </div>
+</div>
+<div id="dvUploadLogSalary" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvUploadLogMuster" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblMTotSuccess" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblMTotFailed" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnMusterresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadMusterResultFile();" class="button download" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+
+    <script type="text/javascript">
+        var UploadSalaryUrl = '@Url.RouteUrl("UploadSalaryRegister")';
+        var UploadMusterUrl = '@Url.RouteUrl("UploadMusterRollData")';
+        var FilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+        var MusterFilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+        var DownLoadSalaryResultFileUrl = '@Url.RouteUrl("DownLoadRepResultFile")';
+        var DownLoadMusterResultFileUrl = '@Url.RouteUrl("DownLoadRepResultFile")';
+        var DownLoadSampleSalaryUrl = '@Url.RouteUrl("DownloadSampleSalary")';
+        var DownLoadSampleMusterRollUrl = '@Url.RouteUrl("DownloadMusterRollData")';
+
+        @*var DownloadAllMapppingCompanyUrl = '@Url.RouteUrl("DownloadAllMapppingCompany")';
+    var GetLocationForSiteUrl = '@Url.RouteUrl("GetLocationForSite")';
+        var GetCompanyByLocationUrl = '@Url.RouteUrl("GetCompanyByLocation")';
+        var GetSiteByCompanyUrl = '@Url.RouteUrl("GetSiteByCompany")';*@
+    
+
+        function SuccessMessage()
+        {
+            alert("Posted");
+        }
+
+        function FailMessage()
+        {
+            alert("Post Failed");
+        }
+    </script>
+    @Scripts.Render("~/bundles/bndlUploadReport")
+}
+

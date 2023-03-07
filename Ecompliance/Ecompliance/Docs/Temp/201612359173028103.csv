@@ -1,0 +1,2 @@
+ActivityID,Act,Name,Frequency,Date_Of_Month,Month,Year,RemindDays,IsActive,Response,Message
+"0","","","A","1","1","1","1","1","Failed","The Act field is required. The Name field is required."

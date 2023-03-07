@@ -1,0 +1,332 @@
+﻿@using Ecompliance.Areas.Admin.Models
+@model Role
+@{
+    ViewBag.Title = "Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">Role Master</h3>
+        </div>
+        <div class="pull-right" style="margin:0px;">
+            <div id="dialog-link" class="col-xs-12 col-sm-4 col-md-4 ad"><span class="glyphicon glyphicon-plus-sign"></span> ADD </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div>
+    <div>
+        <div id="Kgrid"></div>
+    </div>
+    <div id="dialog" class="modal" >
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <p>Note: Field with <span>(*)</span> are mandatory </p>
+                <div id="result"></div>
+                @using (Ajax.BeginForm("createRole", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage" }))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(m => m.RoleID, new { id = "hdnRoleID" })
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Name<sup>*</sup> </label>
+                        <span class="help-tip" id="spnName" title="Role name it must be unique.">?</span>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                        @Html.TextBoxFor(m => m.Name, new { id = "txtName" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Desc<sup>*</sup> </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextBoxFor(m => m.Desc, new { id = "txtDesc" })
+                        @Html.ValidationMessageFor(m => m.Desc, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        @Html.LabelFor(m => m.Type, new { @class = "col-md-2 control-label" })
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                        @Html.TextBoxFor(m => m.Type, new { id = "txtType" })
+                        @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        @Html.LabelFor(m => m.IsAct)
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals" style="padding-right: 263px;padding-top: 10px;">
+                        @Html.CheckBoxFor(m => m.IsAct, new { id = "IsAct" })
+                        @Html.ValidationMessageFor(m => m.IsAct, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="reset_btn" align="right">
+                        <input type="submit" value="Submit" id="btnSubmit" class="button submit" />
+                        <input type="reset" id="btnReset" value="Reset" class="button reset" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="modalpartial" class="modal">
+        <div class="tabbable tabbable-custom">
+            <ul class="nav nav-tabs topheader-tab">
+                <li class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+                <li><a href="#tab_1_2" data-toggle="tab">History</a></li>
+            </ul>
+        </div>
+        <div class="row top_content tab-content">
+            <div class="tab-pane active" id="tab_1_1">
+                <div class="tabinner-content">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <label class="headtag">Name </label>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <label id="lblName" class="feedback_content"></label>
+                        </div>
+
+
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <label class="headtag">Description </label>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+
+                            <label id="lblDesc" class="feedback_content"></label>
+
+                        </div>
+                    </div>
+
+                    
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <label class="headtag">Type</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+
+                            <label id="lblType" class="feedback_content"></label>
+
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <label class="headtag">Is Active</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+
+                            <label id="lblIsAct" class="feedback_content"></label>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-pane" id="tab_1_2">
+                <div class="tabinner-content">
+                    <div id="GridHis" style="margin-top:20px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#menu_17").addClass("active-menu");
+            var tooltip = $("#spnName").kendoTooltip({
+                width: 120,
+                position: "right"
+            }).data("kendoTooltip");
+            var RoleID = 0;
+            BindGrid();
+            $("#dialog-link").click(function () {
+                $("#hdnRoleID").val(0);
+                $("#btnSubmit").val("Submit");
+                $("#btnReset").click();
+                $("#IsAct").prop("checked", false);
+                var dialog = $("#dialog").dialog({
+                    //autoOpen: false,
+                    modal: true,
+                    title: "Role",
+                    width: 909, closeText: ""
+                });
+                //dialog.dialog("open");
+                event.preventDefault();
+            });
+
+        });
+        function SuccessMessage(e) {
+            HandleResponse(e, "dialog", "btnReset", "hdnRoleID");
+            //alert(e.Message);
+            BindGrid();
+        }
+        function FailMessage() {
+            alert("Fail Post");
+        }
+        function HistoryGridData(RoleID) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.RouteUrl("getRoleHistory")",
+                contentType: "application/json; charset=utf-8",
+                data: '{"RoleID":"' + RoleID + '"}',
+            dataType: "json",
+            success: function (response) {
+
+                HistorybindGrid(response.Data);
+                var dialog = $("#modalpartial").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    title: "Role",
+                    width: 909, closeText: ""
+                });
+                dialog.dialog("open");
+            },
+            error: function (data) {
+                alert(data.tostring());
+
+            }
+        });
+        }
+        function HistorybindGrid(Data1) {
+
+            kgrid = $("#GridHis").kendoGrid({
+                dataSource: {
+                    pageSize: 10,
+                    data: JSON.parse(Data1)
+                },
+
+                dataBound: function (e) {
+                    var grid = e.sender;
+                    if (grid.dataSource.total() == 0) {
+                        var colCount = grid.columns.length;
+                        $(e.sender.wrapper)
+                            .find('tbody')
+                            .append('<tr class="kendo-data-row"><td colspan="' + colCount + '" class="no-data"><span style="margin-left:46%;">No data found.</span></td></tr>');
+                    }
+                    else {
+                        var rows = grid.dataSource.total();
+                        var colCount = grid.columns.length;
+                        for (var i = rows-1; i>0 ; i--)
+                        {
+                            for (var k = 0; k < colCount; k++)
+                            {
+                            
+                                if (grid.tbody[0].children[i].cells[k].innerText != grid.tbody[0].children[i-1].cells[k].innerText)
+                                {
+                                    grid.tbody[0].children[i - 1].cells[k].bgColor = "red";
+                                }
+                            }
+
+                        }
+                    }
+                },
+           
+                pageable: true,
+                filterable: true,
+                sortable: true,
+                resizable: true
+            });
+
+        }
+        var Kgrid;
+        function BindGrid() {
+            var RoleID = 0;
+            $.post('@Url.RouteUrl("getRole")', { RoleID: RoleID }, function (response) {
+                if ($(Kgrid).length > 0) {
+                    $("#Kgrid").data("kendoGrid").destroy();
+                    $('#Kgrid').empty();
+                }
+                if (response.IsSuccess) {
+                    var Data = $.parseJSON(response.Data);
+                    var columns = [{ field: "Name", title: "Name" },
+                              { field: "Desc", title: "Desc" },
+                              { field: "Type", title: "Type" },
+
+                    ];
+                    var CommanObj = {
+
+                        command: [{ name: "Edit", text: "", imageClass: "k-icon k-edit", click: EditHandler, title: "" },
+                     { name: "View", text: "", imageClass: "k-icon k-view", click: ViewHandler, title: "View" }
+
+                        ], title: "Action", width: 150
+                    };
+                    columns.push(CommanObj);
+                    var Data =
+                    Kgrid = $("#Kgrid").kendoGrid({
+                        dataSource: {
+                            pageSize: 10,
+                            data: Data
+                        },
+                        pageable: true,
+                        dataBound: function (e) {
+                            var grid = e.sender;
+                            if (grid.dataSource.total() == 0) {
+                                var colCount = grid.columns.length;
+                                $(e.sender.wrapper)
+                                    .find('tbody')
+                                    .append('<tr class="kendo-data-row"><td colspan="' + colCount + '" class="no-data"><span style="margin-left:46%;">No data found.</span></td></tr>');
+                            }
+                        },
+                        filterable: true,
+                        sortable: true,
+                        //groupable: true,
+                        resizable: true,
+                        columns: columns,
+                        height: 400
+                    });
+                }
+            });
+        }
+        var EditHandler = function EditHandler(e) {
+            e.preventDefault();
+            dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var RoleID = dataItem.RoleID;
+            $.post('@Url.RouteUrl("getRole")', { RoleID: RoleID }, function (response) {
+                if (response.IsSuccess) {
+                    var Data = $.parseJSON(response.Data);
+                    $("#hdnRoleID").val(RoleID);
+                    $("#txtName").val(Data[0].Name);
+                    $("#txtDesc").val(Data[0].Desc);
+                    $("#txtType").val(Data[0].Type);
+                    var IsAct = Data[0].IsAct;
+                    if (IsAct == 1)
+                        $("#IsAct").attr("checked", true);
+                    else
+                        $("#IsAct").attr("checked", false);
+                    $("#btnSubmit").val("Update");
+                    var dialog = $("#dialog").dialog({
+                        //autoOpen: false,
+                        modal: true,
+                        title: "Customer Master",
+                        width: 909, closeText: ""
+                    });
+                }
+            });
+        }
+    var ViewHandler = function ViewHandler(e) {
+        e.preventDefault();
+        dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var RoleID = dataItem.RoleID;
+        $.post('@Url.RouteUrl("getRole")', { RoleID: RoleID }, function (response) {
+            if (response.IsSuccess) {
+                var Data = $.parseJSON(response.Data);
+             
+                $("#lblName").html(Data[0].Name);
+                $("#lblDesc").html(Data[0].Desc);
+                $("#lblType").html(Data[0].Type);
+                var IsAct = Data[0].IsAct;
+              
+                (IsAct == 1) ? $('#lblIsAct').html('Active') : $('#lblIsAct').html('In Active');
+                HistoryGridData(RoleID);
+            }
+        });
+    }
+    </script>
+    }

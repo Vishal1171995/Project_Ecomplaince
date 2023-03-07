@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = ViewBag.Type;
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="container maincontainer">
+    <!--------------Details-------------->
+    <div class="">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">
+                    @{
+                        string Type = ViewBag.Type;
+                        if (Type == "Due In 5 Days")
+                        {
+                            Type = "Due in 2-5 days";
+                        }
+                    }
+                    @*@Type*@
+                    Maker Bulk Approval
+                </h3>
+            </div>
+            <div class="clearfix"></div>
+            @*<div style="margin:0px 0px 10px;"></div>*@
+        </div>
+        <div id="dvpgrid" style="text-align:center;">
+            <div id="ldrdvGrid" class="loader"></div>
+            <div id="dvgrid"></div>
+            <div class="pull-right"><ul class="detailtab-btn"><li id="liApprove"><input type="button" value="Send To Verify" class="docattach verify" /></li></ul></div>
+        </div>
+    </div>
+</div>
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content">500</label>
+                </div>
+
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content">500</label>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+<style>
+    .k-grid-toolbar {
+        text-align: right;
+    }
+
+    .k-grid .k-button {
+        line-height: 20px !important;
+    }
+
+    .error {
+        border: 1px solid red !important;
+    }
+
+    .k-upload-files {
+        height: 90px !important;
+        overflow-x: scroll !important;
+    }
+</style>
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var typepar = '@ViewBag.Type';
+        var GetMyTaskUrl = '@Url.RouteUrl("GetMyTask")';
+        var GetMonthlyScheudledDataUrl = '@Url.RouteUrl("GetMonthlyScheudledData")';
+        var UploadTaskFileUrl = '@Url.RouteUrl("UploadTaskFile")';
+        var DownLoadResultFileUrl = '@Url.RouteUrl("DownLoadMakerApproveResultFile")';
+        var MakerBulkApproveUrl = '@Url.RouteUrl("MakerBulkApprove")';
+        var RemoveTaskFileUrl = '@Url.RouteUrl("RemoveMultiTaskFile")';
+    </script>
+    @Scripts.Render("~/bundles/bndlMakerBulkApproval")
+}
+

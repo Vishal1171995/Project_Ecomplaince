@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="maincontainer">
+    <div class="">
+        <div class=" pull-left">
+            <h3 class="page-title">COMPANY MASTER</h3>
+        </div>
+        <div class="pull-right">
+
+            <div id="myimport" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-import"></span> Import </div>
+            <div id="myexport" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-export"></span> Export </div>
+            <div id="dialog-link" class="col-xs-12 col-sm-4 col-md-4 ad"><span class="glyphicon glyphicon-plus-sign"></span> ADD </div>
+        </div>
+        <div class="clearfix"></div>
+        <div style="border-bottom:2px solid #888;margin:0px 0px 10px;"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div>
+    <div id="dialog" class="col-xs-12 col-sm-12 col-md-12 ">
+        <div class="">
+
+            <div class="clearfix"></div>
+            <div class="row top_content">
+
+                <p>Note: Field with <span>(*)</span> are mandatory </p>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>First Name <sup>*</sup> </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                    <input name="first name" type="text" id="first name" /> <div class="required_field"><span class="sign">!</span>Fill the required field </div>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Last Name <sup>*</sup> </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input name="last name" type="text" id="last name" />
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Email id </label><span class="help-tip">?</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                    <input name="email" type="text" id="email_id" />
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Password <sup>*</sup> </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input name="password" type="password" id="password" />
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label for="select">Gender <sup>*</sup> </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <select>
+                        <option selected> Select Box </option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>D.O.B <sup>*</sup> </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="date" name="bday" max="1979-12-31">
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Uploader</label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Telephone</label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="tel" name="usrtel">
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Age</label><span class="help-tip">?</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="text" name="usrtel">
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Nationality</label><span class="help-tip">?</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <div class="pull-left radiobtn">
+                        <input type="radio" name="group1">
+                        <label for="radio-1"><span>Indian</span></label>
+                    </div>
+                    <div class="pull-left radiobtn">
+                        <input type="radio" name="group1">
+                        <label for="radio-2"><span>Other</span></label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals ">
+                    <label>Agree with our terms & conditions</label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcredit_checkbox section ">
+                    <input type="checkbox" name="group2" id="checkbox-1">
+                    <label for="checkbox-1"><span class="checkbox"></span></label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                    <div class="reset_btn" align="right">
+                        <input type="reset" value="Reset" class="button reset" />
+                        <input type="submit" value="Submit" class="button submit" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-----------------end of popup model------------>
+
+
+</div>
+@*@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/kendujs")
+    @Styles.Render("~/Content/kenducss")
+}*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dialog-link").bind("click", {}, btnAddClick);
+    });
+    function btnAddClick() {
+        var dialog = $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            title: "Act Master",
+            width: 909,
+        });
+        dialog.dialog("open");
+        event.preventDefault();
+    }
+</script>
+

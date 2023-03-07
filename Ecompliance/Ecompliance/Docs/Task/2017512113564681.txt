@@ -1,0 +1,102 @@
+select Top 10 * from car24doc
+
+select  CONVERT(char(10), ActComplitiondate,102) AS ActComplitiondate,* from c24date
+
+select * FROM Sys.objects where Type='u' and name like '%ca%'
+
+
+2016-08-12 00:00:00.000
+
+select top 10 * FROM Ecom_Doc_task
+
+select Action_CompletionDate,CONVERT(char(10), ActComplitiondate,102) AS ActComplitiondate from Ecom_Doc_Task T 
+INNER JOIN c24date D ON T.OLDDOCID=D.TID
+where T.CompanyID=14 AND T.OLDDOCID is not null
+
+
+
+
+UPDATE T SET  T.Action_CompletionDate=CONVERT(char(10), D.ActComplitiondate,102)  from Ecom_Doc_Task T 
+INNER JOIN c24date D ON T.OLDDOCID=D.TID
+where T.CompanyID=14 AND T.OLDDOCID is not null
+
+
+
+
+
+
+
+
+Action_CompletionDate
+
+
+=====================
+select * FROM MMM_MST_FIELDS where EID=98 and DocumentType='Act Document' order by displayname
+
+select TID,
+fld10 AS 'Attachment1',fld48 AS 'Att1Desc',
+fld11 AS 'Attachment2',fld49 AS 'Att2Desc',
+fld12 AS 'Attachment3',fld50 AS 'Att3Desc',
+
+fld13 AS 'Attachment4',fld51 AS 'Att4Desc'
+
+,fld14 AS 'Attachment5',fld52 AS 'Att5Desc'
+from MMM_MST_DOC where EID=98 and DocumentType='Act Document' and fld29='Cars24 Services Private Limited' and
+
+ (
+ fld10 is not null OR
+ fld11 is not null OR
+ fld12 is not null OR
+ fld13 is not null OR
+ fld14 is not null 
+ )
+
+============================================
+
+ALter PROC GetDataMigration
+AS
+BEGIN
+	select [User],OUID,DOCID,CurStatus,CONVERT(char(10), Createdon,102)AS Createdon,CONVERT(char(10), [Expiry Date],102) AS  ExpiryDate,[Activity Type] as ActivityType,CompID,SiteID,
+	ACTID,ACTIVITYID,[Maker Remarks] MakerRemarks,Remarks,[Checker Remarks] CheckerRemarks,Checker
+	from car24doc where  DOCID not in (select OLDDOCID FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null) and SiteID>0 and ActID>0 AND ActivityID>0
+END
+
+--select distinct CurStatus from car24doc
+
+select DOCID,OLDDOCID FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null and DOCID>21988 order by DOCID DESC
+
+
+select Count(*) FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null and DOCID>21988
+
+=================================================
+
+
+select [User],OUID,DOCID,CurStatus,CONVERT(char(10), Createdon,102)AS Createdon,CONVERT(char(10), [Expiry Date],102) AS  ExpiryDate,[Activity Type] as ActivityType,CompID,SiteID,
+ACTID,ACTIVITYID,[Maker Remarks] MakerRemarks,Remarks,[Checker Remarks] CheckerRemarks,Checker
+from car24doc where  DOCID not in (select OLDDOCID FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null)
+
+239
+
+update car24doc Set SiteID=239
+where DOCID not in (select OLDDOCID FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null) and SiteID is null
+
+select top 10 * FROM car24doc
+
+select *
+from car24doc D 
+INNER JOIN Ecom_Mst_Activity A ON A.Name=D.Activity
+
+ where  DOCID not in (select OLDDOCID FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null) and D.ACTIVITYID is null
+
+ select Distinct SIte,S.SiteID
+from car24doc D INNER JOIN Ecom_mst_site S ON S.Name=D.Site
+ where  DOCID not in (select OLDDOCID FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null) and D.SiteID is null
+
+
+ select * FROM Ecom_Mst_Activity where Name like '%Returns under the Act%'
+
+ select * FROM Ecom_Mst_act where ActID=10
+ 
+select ACT, Activity from update car24DOC set ACTIVITYID=158
+
+ where  DOCID not in (select OLDDOCID FROM Ecom_Doc_task T WHERE T.OLDDOCID is not null) and ACTIVITYID is null

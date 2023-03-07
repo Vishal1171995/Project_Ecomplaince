@@ -1,0 +1,54 @@
+﻿@model Ecompliance.Areas.ACT2.Models.ExplorerModel
+@{Uri uri = Request.Url;}
+
+    @*@if (uri.AbsolutePath.ToLower() != "/explorer/")
+    {
+       
+        <a title="Parent"
+           href="@uri.AbsoluteUri.Remove(uri.AbsoluteUri.Length - uri.Segments.Last().Length)">
+            <img src="/Content/up.png" alt="Up" style="width: 20px; height: 20px; border: none" />
+        </a>
+    }*@
+   
+        @*Listing the directories *@
+        @foreach (Ecompliance.Areas.ACT2.Models.DirModel dir in Model.dirModelList)
+        {
+            <ul>
+                <li>
+                    @*<img src="/Content/folder.png" alt="Folder Logo" align="top" style="width: 20px;
+            height: 20px; border: none" />*@
+                    @*<a href="@dir.DirName/" title="@dir.DirName"></a>
+            . . . . . . @dir.DirAccessed*@
+                    <label>@dir.DirName</label>
+
+
+                    @foreach (Ecompliance.Areas.ACT2.Models.ChildDirModel file in Model.ChildDirList)
+                    {
+                    <ul>
+                       <li>
+                    @*<a href="@(uri.AbsolutePath + file.FileName)"
+                       title="@file.FileName" target="_blank">
+                        @file.FileName
+                    </a>. . . . . . @file.FileSizeText
+                    . . . . . . @file.FileAccessed*@
+                           <label id="lblDir" style="display:none">@file.DirPath</label>
+                   <a href="#" id="anchorID" title="@file.ChildDirName">@file.ChildDirName</a>
+                           @*@Html.ActionLink("@file.ChildDirName", "", null, new { @id = "anchorID" })*@
+                      <div id="anchorID" title="@file.ChildDirName" onclick="navigat();"> @file.ChildDirName</div>
+                         
+                    @*<input type="button" title="@file.ChildDirName"  value="@file.ChildDirName" onclick="navigat();" />*@
+                           @*<a href="@Url.RouteUrl("ViewFileDetails")" title="@file.ChildDirName">@file.ChildDirName</a>*@
+            </li>
+                </ul>
+                }
+            </li>
+        </ul>
+    }
+            @*Listing the files *@
+
+            
+@section commanscript{
+    @Scripts.Render("~/Content/CommanScript")
+  
+    @Scripts.Render("~/bundles/bndlFileManager")
+}

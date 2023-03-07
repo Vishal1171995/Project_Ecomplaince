@@ -1,0 +1,21 @@
+﻿@{
+    
+    Layout = null;
+}
+@using Ecompliance.Utils;
+<div class="pull-right" style="margin:0px;">
+    @if (CommanUtills.IsValidAction(ViewBag.ControllerName, "ADDUPDATE"))
+    {
+        <div id="dvAdd" class="col-xs-12 col-sm-4 col-md-4 im mybutton"><span class="glyphicon glyphicon-plus-sign"></span> ADD </div>
+    }
+    @if(CommanUtills.IsValidAction(ViewBag.ControllerName,"ADDUPDATE"))
+    { 
+    <div id="dvimport" class="col-xs-12 col-sm-4 col-md-4 im mybutton"><span class="glyphicon glyphicon-import"></span> Import </div>
+    }
+    @if(CommanUtills.IsValidAction(ViewBag.ControllerName,"VIEW"))
+    {
+    <div id="dvExport" class="col-xs-12 col-sm-4 col-md-4 im mybutton"><span class="glyphicon glyphicon-export"></span> Export </div>
+    }
+   
+</div>
+

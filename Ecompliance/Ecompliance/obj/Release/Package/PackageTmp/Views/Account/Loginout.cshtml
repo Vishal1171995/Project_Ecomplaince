@@ -1,0 +1,38 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Logout</title>
+    @Styles.Render("~/Content/CommanCss")
+</head>
+<body>
+    <div class="container-fluid logout">
+        <div class="container">
+            <div class="col-xs-12 col-sm-12 col-md-12 conmg" style="margin-top:50px;">
+                <div class="logout-msg">Thanks for using ACT Tool.</div>
+                <div class="success-msg">You have successfully Loggedout.</div>
+
+                <div class="col-xs-12 col-sm-6 col-md-6 conmg">
+                    @*<button type="submit" > </button>*@
+                    <a class="btn btn-success green" id="login" style="margin-top:20px;" href="@Url.RouteUrl("loginview")">Login Again</a>
+
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 conmg"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <section id="footer">
+            <div class="container">
+                <p>@System.DateTime.Now.Year  &copy; by <a href="#" target="_blank">Mynd Solution</a> - All rights reserved.</p>
+            </div>
+        </section>
+    </footer>
+</body>
+</html>

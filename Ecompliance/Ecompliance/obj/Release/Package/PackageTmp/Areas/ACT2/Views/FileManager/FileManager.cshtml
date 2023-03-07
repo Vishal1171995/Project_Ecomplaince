@@ -1,0 +1,176 @@
+﻿@model Ecompliance.Areas.ACT2.ViewModel.FileManagerVM
+@{
+    ViewBag.Title = "FileManager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style>
+    span.k-datepicker {
+        width: 350px !important;
+    }
+</style>
+<div>
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+               File Manager
+            </h3>
+        </div>
+        <div class="clearfix"></div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="">
+            <div class="row top_content">
+                @using (Ajax.BeginForm("FileManager", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage", InsertionMode = InsertionMode.Replace }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>PayDate</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-2 allcreditionals">
+                        @Html.DropDownListFor(x => x.PayDate, new SelectList(Model.PayDateList, "Value", "Text"), new { id = "ddlPaydate" })
+                        @Html.ValidationMessageFor(m => m.PayDate)
+                    </div>
+                    <div class="col-xs-4 col-sm-2 col-md-1 allcreditionals">
+                        <label>HUB<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-2 allcreditionals">
+                        @Html.DropDownListFor(x => x.State, new SelectList(Model.StateList, "Value", "Text"), new { id = "ddlState" })
+                        @Html.ValidationMessageFor(m => m.State)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Location</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 allcreditionals">
+                        @Html.DropDownListFor(x => x.Location, new List<SelectListItem> { new SelectListItem { Text = "-- First select a State --", Value = "0" } }, new { id = "ddlLocation" })
+                        @Html.ValidationMessageFor(m => m.Location)
+                    </div>
+                    
+                    
+                    <div class="row extra">
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div align="right">
+                                <input style="margin-top: 5px;" type="reset" id="btnReset" value="Reset" class="button reset" />
+                                <input type="submit" value="Generate" class="button generate" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-xs-12 col-sm-5 col-md-3 grid-tree extra pull-left" style="box-shadow: 0 0 4px #ccc;min-height:50px;overflow:auto;">
+
+                    <!--accordian html starts -->
+                    <div class="tree-view scrollbox3">
+                        <div id="dvTreeView">
+
+                        </div>
+                    </div>
+                    <!-- accordian html ends -->
+                </div>
+                <div class="col-xs-12 col-sm-7 col-md-9 extra pull-right" style="box-shadow: 0 0 4px #ccc;">
+                    <div class="col-xs-12 col-sm-12 col-md-12 extra scrollbox3" style="height:400px;" id="myTable">
+                        <div class="middle-section" id="listView">
+                        </div>
+                        @*<div id="pager" class="k-pager-wrap"></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+</div>
+
+
+@section commanscript{
+@Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var GetLocationForSiteUrl = '@Url.RouteUrl("GetLocationForSite")';
+        var GetReportAllChildFileURL = '@Url.RouteUrl("GetReportAllChildFile")';
+
+        var GetReportTreeViewURL = '@Url.RouteUrl("GetReportTreeView")';
+        var GetFileMetaDataURL = '@Url.RouteUrl("GetRepFileMetaData")';
+        var RepCreateZipAndDownloadURL = '@Url.RouteUrl("RepCreateZipAndDownload")';
+        var GetReportFileInfoURL = '@Url.RouteUrl("GetReportFileInfo")';
+        var SiteUrl = '@Url.RouteUrl("ViewFileDetails")';
+
+        $(document).ready(function () {
+            $("#ddlState").change(function () {
+                var StateID = $(this).val();
+                var ddlLocation = $("#ddlLocation");
+                ddlLocation.empty().append($('<option></option>').val("0").html("Please wait..."));
+                if (StateID != "0") {
+                    $.get(GetLocationForSiteUrl, { StateID: StateID }, function (response) {
+                        if (response.IsSuccess) {
+                            ddlLocation.empty().append($('<option></option>').val("0").html("-- Select --"));
+                            var ds = $.parseJSON(response.Data);
+                            if (ds.length > 0) {
+                                $.each(ds, function () {
+                                    ddlLocation.append($('<option></option>').val(this.LocationID).html(this.Name));
+                                });
+                            }
+                            else {
+                                ddlLocation.empty().append($('<option></option>').val(0).html("--Select--"));
+                            }
+                        }
+                        else {
+                            FailResponse(response);
+                        }
+                    });
+                }
+                else {
+                    ddlLocation.html('').append($('<option></option>').val("0").html("-- first select a state --"));
+                }
+            });
+        
+
+
+            $("#anchorID").click(function () {
+               
+                var a = SiteUrl;
+                var b = $("#lblDir").val();
+                $.ajax({
+                    type: 'POST',
+                    url: SiteUrl,
+                    data: { Dictory: b },
+                    success: function (data) {
+                        var c = data;
+                        //$('#dvTreeView').append(data) ;
+                    }
+                });
+
+            });
+        })
+    </script>
+@Scripts.Render("~/bundles/bndlFileManager")
+    }
+
+<script type="text/x-kendo-template" id="template">
+    #if (FileType=='Folder') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-fd"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.docx') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-wrd"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.doc') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-wrd"></span> <label>#=FileOriginalName#</label></div>
+    # } else if(FileType!='Folder' && FileExtention=='.xlsx') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-xlsx"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.xls') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-xls"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.csv') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-xls"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.pdf') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-pdfload"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.zip') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-zip"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.png') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-peeng"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.gif') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-giif"></span> <label>#=FileOriginalName#</label></div>
+    #} else if(FileType!='Folder' && FileExtention=='.jpg') {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-jeepg"></span> <label>#=FileOriginalName#</label></div>
+    #} else {#
+    <div class="col-xs-4 col-sm-3 col-md-2 tooltext pull-left DoubleClick"><span class="large-fd"></span> <label>#=FileOriginalName#</label></div>
+    #}#
+</script>

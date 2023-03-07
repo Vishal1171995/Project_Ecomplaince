@@ -1,0 +1,321 @@
+﻿@model  Ecompliance.Areas.Report.Models.DashBoard
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container maincontainer">
+    <!--------------Details-------------->
+    <div class="">
+        <div class="filt-strap">
+            <div class="col-xs-12 col-sm-12 col-md-12 extra">
+                <div class="col-xs-12 col-sm-2 col-md-1 comp"><label class="pull-left">Dashboard</label></div>
+                <div class="col-xs-12 col-sm-2 col-md-5 comp"><label id="HlblCompany">Company:<span id="spnCompany" ></span></label></div>
+                <div class="col-xs-12 col-sm-6 col-md-5 comp"><label id="HlblDateRange">Date Range : (<span  id="spnDateRange"></span>)</label></div>
+                <div id="dvSearch" class="col-xs-12 col-sm-2 col-md-1"><div class="pull-right"><input value="" class="filter_btn" type="button"></div></div>
+            </div>
+            <div class="clearfix"></div>
+            <div style="margin:0px 0px 5px;"></div>
+        </div>
+
+        <div id="dvfilter" class="col-xs-12 col-sm-12 col-md-12 modal">
+            <div class="">
+
+                <div class="clearfix"></div>
+                <div class="row top_content">
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>From</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                        <div class='input-group date'>
+                            <input type="hidden" autofocus="autofocus" />
+                            <input id="fromdtpicker" type='text' class="form-control" />
+                            <span id="spnfrmDate" class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>To</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        <div class='input-group date'>
+                            <input id="todtpicker" type='text' class="form-control" />
+                            <span id="spntoDate" class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Company</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 col-md-8  allcreditionals">
+                        @Html.DropDownListFor(x => x.Company, new SelectList(Model.CompanyList, "Value", "Text", "6"))
+                    </div>
+
+                    <div class="col-xs-12 col-sm-2 col-md-2 allcreditionals">
+                        <div class="reset_btn pull-right" style="margin:0px;">
+                            <input id="btnfilter" type="submit" value="Submit" class="button submit" onclick="filterdash();" />
+                            @*onclick="filterDashBoard()"*@ 
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="dashboard-block multibox">
+                <h2 class="blockheadicon">Need To Act</h2>
+
+                @{ if (ViewBag.URole == "User")
+                 {
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a href="javascript:void(0);" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Need To Act', 'MyTask');">
+                            <div class="dashsubbox">
+                                <div class="icon"><img src="~/Content/images/act.png" class="img-responsive"></div>
+
+                                <div class="num">
+                                    <label style="cursor:pointer;" id="anchrNTA"></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Need To Act</div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a id="" href="javascript:void(0);" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('My Request', 'MyTask');">
+                            <div class="dashsubbox" style="background:#60bcff;">
+                                <div class="icon"><img src="~/Content/images/req.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label style="cursor:pointer;" id="anchrMyReq"></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">My Request</div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a id="" href="javascript:void(0);" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('History', 'MyTask');">
+                            <div class="dashsubbox" style="background:#4a366d;">
+                                <div class="icon"><img src="~/Content/images/hist.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label style="cursor:pointer;" id="anchrHis"></label>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">History</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a id="" href="javascript:void(0);" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Due Today', 'MyTask');">
+                            <div class="dashsubbox" style="background:#f47a53;">
+                                <div class="icon"><img src="~/Content/images/due.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label id="anchrDue"></label>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Due Today</div>  @*Document Due*@
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a id="" href="javascript:void(0);" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Due In 5 Days', 'MyTask');">
+                            <div class="dashsubbox" style="background:#13a08b;">
+                                <div class="icon"><img src="~/Content/images/days.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label id="anchrDue5"></label>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Due in 2-5 days</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a id="" href="javascript:void(0);" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Expired SLA', 'MyTask');">
+                            <div class="dashsubbox" style="background:rgb(179, 30, 30);">
+                                <div class="icon"><img src="~/Content/images/expired.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label id="anchrExpired"></label>
+                                </div>
+                                <div class="clearfix"></div>
+                               <div class="ref-content">Expired SLA</div>
+                            </div>
+                        </a>
+                    </div>
+                 }
+                 else
+                 {
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a href="javascript:void(0);" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Pending with maker', 'ViewTask');">
+                            <div class="dashsubbox">
+                                <div class="icon"><img src="~/Content/images/act.png" class="img-responsive"></div>
+
+                                <div class="num">
+                                    <label style="cursor:pointer;" id="anchrPWM"></label>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Pending with Maker</div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a href="javascript:void(0);" id="" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Pending with checker', 'ViewTask');">
+                            <div class="dashsubbox" style="background:#60bcff;">
+                                <div class="icon"><img src="~/Content/images/req.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label style="cursor:pointer;" id="anchrPWC"></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Pending with Checker</div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a href="javascript:void(0);" id="" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('MyAsNeeded', 'ViewTask');">
+                            <div class="dashsubbox" style="background:#4a366d;">
+                                <div class="icon"><img src="~/Content/images/hist.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label style="cursor:pointer;" id="anchrAsNeeded"></label>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">As Needed</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a href="javascript:void(0);" id="" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Due Today', 'ViewTask');">
+                            <div class="dashsubbox" style="background:#f47a53;">
+                                <div class="icon"><img src="~/Content/images/due.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label id="anchrDue"></label>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Due Today</div> @*Document Due*@
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a href="javascript:void(0);" id="" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Due In 5 Days', 'ViewTask');">
+                            <div class="dashsubbox" style="background:#13a08b;">
+                                <div class="icon"><img src="~/Content/images/days.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label id="anchrDue5"></label>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Due in 2-5 days</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 dash">
+                        <a href="javascript:void(0);" id="" style="color: #fff; text-decoration:none;" onclick="javascript: GoToTask('Expired SLA', 'ViewTask');">
+                            <div class="dashsubbox" style="background:rgb(179, 30, 30);">
+                                <div class="icon"><img src="~/Content/images/expired.png" class="img-responsive"></div>
+                                <div class="num">
+                                    <label id="anchrExpired"></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ref-content">Expired SLA</div>
+                            </div>
+                        </a>
+                    </div>
+                 }
+                <input type="hidden" id="hdneventType" value="" />
+                }
+            </div>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="dashboard-block">
+                <h2 class="blockheadicon-com">Company Wise</h2>
+                <div id="ldrCompany" class="gap" style="margin:auto;text-align:center;"><img style="margin:auto;text-align:center; width:150px; height:150px;" class=" img-responsive" src="../Content/images/dashboardloder.gif"></div>
+                <div id="dvPNoData" class="gap" style="margin:auto;text-align:center; display:none;">
+                    No Data found
+                </div>
+                <div id="sitewisewrapper" class="gap">
+                    @*Performed*@ Compliance<br />
+                    <div id="dvper" style="width: 100%;"></div>
+                    @*Not Performed*@ Non Compliance<br />
+                    <div id="dvpafterdue" style="width: 100%;"></div>
+                    In Process<br />
+                    <div id="dvinProcess" style="width: 100%;"></div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-6" style="height:500px;">
+            <div class="dashboard-block" style="height:460px;">
+                <h2 class="blockheadicon-act">Act Wise</h2>
+                @*<div id="ldrActwise" class="loader"></div>*@
+                <div id="ldrActwise" class="gap" style="margin:auto;text-align:center;"><img style="margin:auto;text-align:center; width:150px; height:150px;" class=" img-responsive" src="../Content/images/dashboardloder.gif"></div>
+                <div id="dvGNoData" class="gap" style="margin:auto;text-align:center; display:none;">
+                    No Data found
+                </div>
+                <div id="actwisewrapper">
+                    <div id="ldractwisenorec" style="display:none;color:red;"> No Record Found!</div>
+                    <div class="actwise_container" id="dvActwise"></div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-6" style="height:500px;">
+            <div class="dashboard-block" style="height:460px;">
+                @*<h2 class="blockheadicon-map">Site Map View</h2>*@ @*&nbsp;&nbsp;<input type="button" id="btnViewMore" value="View Window" />*@
+                <h2 class="blockheadicon-map">Site Map View <span class="stmp pull-right"><a id="btnViewMore" href="" target="_blank" title="Map"><img src="../Content/images/map-dashboard.png" class="img-responsive"></a></span></h2>
+
+                @*<div id="ldrSitewise" class="loader"></div>*@
+                <div id="ldrSitewise" class="gap" style="margin:auto;text-align:center;"><img style="margin:auto;text-align:center; width:150px; height:150px;" class=" img-responsive" src="../Content/images/dashboardloder.gif"></div>
+                <div id="dvMapNoData" class="gap" style="margin:auto;text-align:center; display:none;">
+                    No Data found
+                </div>
+                <div class="actwise_container" style="height:400px;">
+                    <div id="ldrSitewisenorec" style="display:none;color:red;"> No Record Found!</div>
+                    <div id="map"></div>
+                </div>
+            </div>
+            <!-----------------end of popup model------------>
+        </div>
+        <!-- POPUP FORM SAMITA ENDS -->
+    </div>
+</div>
+
+<div id="dvpopupgrid" style="display:none;background: center no-repeat url('kendu/content/shared/styles/world-map.png');text-align:center;">
+    @*<div id="ldrdvGrid" class="loader"></div>*@
+    <div id="ldrdvGrid" class="gap" style="margin:auto;text-align:center;"><img style="margin:auto;text-align:center; width:150px; height:150px;" class=" img-responsive" src="../Content/images/dashboardloder.gif"></div>
+    <div id="dvgrid"></div>
+</div>
+
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script>
+        var GetDashBoardHomeCountURL = '@Url.RouteUrl("GetDashBoardHomeCount")';
+        var GetDashBoardCompTotURL = '@Url.RouteUrl("GetDashBoardCompTot")';
+        var GetDashBoardActWiseURL = '@Url.RouteUrl("GetDashBoardActWise")';
+        var GetDashBoardActClickURL = '@Url.RouteUrl("GetDashBoardActClick")';
+        var GetDashBoardSiteWiseURL = '@Url.RouteUrl("GetDashBoardSiteWise")';
+    </script>
+@Scripts.Render("~/bundles/bndlDashBoard")
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqCmulejs-VROzzpz_cJsMl7tEDbdIZrw&callback=initMap">
+</script>
+}
+

@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "TaskFileRun";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+        color: #000;
+    }
+
+    .search_btn > input[type="button"] {
+        width: 125px;
+    }
+</style>
+<div>
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+                Manual Task File Creation
+            </h3>
+        </div>
+        <div class="clearfix"></div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="">
+            <div class="row top_content">
+                <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        <label>Select Customer</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        @Html.DropDownList("ddlCustomer", new SelectList(@ViewBag.CustomerList, "Value", "Text"))
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 extra">
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        <label> Company</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        @Html.DropDownList("ddlCompany", new SelectList(@ViewBag.CompanyList, "Value", "Text"))
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-4 col-md-4 mappingbtn"> <label>Pay Date</label></div>
+                    <div class="col-xs-12 col-sm-6 col-md-7 mappingbtn">
+                        <div class='input-group date'>
+                            <input id="txtDatepicker" type='text' class="form-control" placeholder="MMM-yyyy" />
+                            <span id="spnDatepicker" class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @*@Html.TextBox("txtExpiryDate")*@
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                    <div class="col-xs-12 col-sm-6 col-md-7 mappingbtn">  </div>
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <input id="btnRunFileCreation" type="submit" value="Generate" style="margin: 0;" class="button generate" />
+                        @*<input id="btnRunFileCreation" type="button" style="margin: 0;" value="Submit" />*@
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+            $("#ddlCustomer").change(function () {
+                var CustID = $(this).val();
+                var ddlComp = $("#ddlCompany");
+                ddlComp.empty().append($('<option></option>').val("0").html("Please wait..."));
+                if (CustID != "0") {
+                    $.get('@Url.RouteUrl("GetBackCompany")', { CompanyID: 0, CustID: CustID }, function (response) {
+                        if (response.IsSuccess) {
+                            ddlComp.empty().append($('<option></option>').val("0").html("ALL"));
+                            var ds = $.parseJSON(response.Data);
+                            if (ds.length > 0) {
+                                $.each(ds, function () {
+                                    ddlComp.append($('<option></option>').val(this.CompID).html(this.Name));
+                                });
+                            }
+                        }
+                    });
+                }
+                else {
+                    ddlComp.html('').append($('<option></option>').val("0").html("-- first select a company --"));
+                }
+            });
+            $("#txtDatepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'MM yy',
+                onClose: function (dateText, inst) {
+                    $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                }
+            });//.datepicker("setDate", new Date());
+
+            $("#spnDatepicker").click(function () {
+                $("#txtDatepicker").datepicker('show');
+            })
+            $("#btnRunFileCreation").click(function () {
+                var CustID = $("#ddlCustomer").val();
+                var CompID = $("#ddlCompany").val();
+                var StartDate = $("#txtDatepicker").val();
+                var monthdate = new Date(StartDate);
+                if (StartDate != "") {
+                    var Year = monthdate.getFullYear();
+                    var Month = monthdate.getMonth();
+                }
+
+                if (CustID == 0 || CustID == undefined) {
+                    alert("Please select a customer!.");
+                    return false;
+                } else if (Month == undefined) {
+                    alert("Please select a Date!.");
+                    return false;
+                } else if (Year < 2) {
+                    alert("Check Date Format!.");
+                    return false;
+                }
+                else {
+                    Month = Month + 1;
+                }
+                if (StartDate != undefined && StartDate != "") {
+                    var form = $('#__AjaxAntiForgeryForm');
+                    var token = $('input[name="__RequestVerificationToken"]', form).val();
+                    $.post("TaskFileRunPost", { __RequestVerificationToken: token, Year: Year, Month: Month, CustomerID: CustID, CompanyID: CompID }, function (response) {
+                        if (response.IsSuccess) {
+                            alert("File Generate Success.");
+                        }
+                        else { alert("Something went wrong , please try again later."); }
+                    });
+                }else{alert("Please select Data.")}
+
+
+            });
+        })
+
+
+    </script>
+
+}

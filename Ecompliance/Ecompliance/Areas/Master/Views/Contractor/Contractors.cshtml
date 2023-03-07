@@ -1,0 +1,266 @@
+﻿@using System.Data;
+@model  Ecompliance.Areas.Master.Models.Contractor
+@{
+    ViewBag.Title = "Contractors";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="container maincontainer">
+    @*Snap shot*@
+    <div class="hidden-xs col-sm-2 col-md-2 snapshot extra pull-left" style="box-shadow: 0 0 4px #ccc;height:450px;">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">Snap Shot</h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="margin:0px 0px 10px;"></div>
+        </div>
+        <!--accordian html starts -->
+        <div class="u-vmenu listvmenu scrollbox3">
+            <input type="hidden" id="hdnfilterComp" value="0" />
+            <ul>
+                @{
+                    DataTable Ds = (DataTable)ViewBag.Ds;
+                    if (Ds.Rows.Count > 0)
+                    {
+                        <li><a id="aContractorTotal" href="javascript:void(0);" onclick="javascript:FilterGrid(0,this.id)">ALL</a></li>
+                        for (int i = 0; i < Ds.Rows.Count; i++)
+                        {
+                            string id = "a" + @Ds.Rows[i]["CompID"];
+                            <li><a id="@id" href="javascript:void(0);" onclick="javascript:FilterGrid(@Ds.Rows[i]["CompID"],this.id)">@Ds.Rows[i]["Name"]</a></li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+        <!-- accordian html ends -->
+    </div>
+    @*Snap shot end*@
+    <div class="col-xs-12 col-sm-10 col-md-10 extra pull-right" style="box-shadow: 0 0 4px #ccc;">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">Contractor Master</h3>
+            </div>
+            <div class="pull-right" style="margin:0px;">
+                @{Html.RenderAction("RenderButton", "MasterUtils", new { ControllerName = "Contractor", area = "Master" });}
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div id="Kgrid" style="margin-top:20px;"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div>
+
+</div>
+
+<div id="dvAddUpdateContractor" class="modal">
+    @using (Ajax.BeginForm("CreateContractor", new AjaxOptions
+    {
+        OnSuccess = "SuccessMessage",
+        OnFailure = "FailMessage"
+    }))
+    {  
+        @Html.AntiForgeryToken()
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                @Html.HiddenFor(x => x.ContractorID)
+                <p>Note: Field with <span>(*)</span> are mandatory </p>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Company</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.DropDownListFor(x => x.Company, new SelectList(Model.CompanyList, "Value", "Text"), new { id = "ddlCompany" })
+                    @Html.ValidationMessageFor(m => m.Company)
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Name</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.TextBoxFor(x => x.Name)
+                    @Html.ValidationMessageFor(x => x.Name)
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Address  </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.TextBoxFor(x => x.Address)
+                    @Html.ValidationMessageFor(x => x.Address)
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label style="padding:0px;">Contact Person</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.TextBoxFor(x => x.Contact_Person)
+                    @Html.ValidationMessageFor(x => x.Contact_Person)
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Contact No.  </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.TextBoxFor(x => x.Contact_Number)
+                    @Html.ValidationMessageFor(x => x.Contact_Number)
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>Email  </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.TextBoxFor(x => x.Email)
+                    @Html.ValidationMessageFor(x => x.Email)
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>PF Code  </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.TextBoxFor(x => x.PF_Code)
+                    @Html.ValidationMessageFor(x => x.PF_Code)
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                    <label>ESI Code  </label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    @Html.TextBoxFor(x => x.ESI_Code)
+                    @Html.ValidationMessageFor(x => x.ESI_Code)
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals ">
+                    Is Active
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcredit_checkbox section ">
+                    @Html.CheckBoxFor(x => x.IsAct)
+                    @Html.ValidationMessageFor(x => x.IsAct)
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                    <div class="reset_btn" align="right">
+                        <input id="btnSubmit" type="submit" value="Submit" class="button submit" />
+                        <input id="btnReset" type="reset" value="Reset" class="button reset" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="dialog" class="col-xs-12 col-sm-12 col-md-12 modal">
+            <div class="">
+                <div class="clearfix"></div>
+                <div class="row top_content">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <label>select a CSV file</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+
+                            <input type="file" name="files" id="files" target-control="hdnFileName">
+
+
+                            <input type="hidden" id="hdnFileName" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+
+                            <div class="reset_btn" align="right">
+                                <input type="button" value="Sample" id="btnDownloadSample" class="button download" onclick="DownLoadSampleContractor()" />
+                                <input type="button" value="Upload" id="btnUpload" class="button upload_btn" />
+                            </div>
+
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    } 
+</div>
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalpartial" class="modal">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs topheader-tab">
+            <li id="liDetails" class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+            <li id="liHistory"><a href="#tab_1_2" data-toggle="tab">History</a></li>
+        </ul>
+    </div>
+    <div class="row top_content tab-content">
+        <div class="tab-pane active" id="tab_1_1">
+            <div class="tabinner-content">
+                <div class="tabinner-content newbox">
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Name </label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblName" class="feedback_content"></label></div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Address </label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblAddress" class="feedback_content"></label></div>
+
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Contact Person </label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblContact_Person" class="feedback_content"></label></div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Contact Number </label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblContact_Number" class="feedback_content"></label></div>
+
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Email </label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblEmail" class="feedback_content"></label></div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">PF Code </label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblPF_Code" class="feedback_content"></label></div>
+
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">ESI Code</label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblESI_Code" class="feedback_content"></label></div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Status</label></div>
+                    <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblIsAct" class="feedback_content"></label></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_1_2">
+            <div class="tabinner-content">
+                <div id="GridHis" style="margin-top:20px; width:1150px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var UploadContractorUrl = '@Url.RouteUrl("UploadContractor")';
+        var FilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+        var GetContractorHistoryUrl = '@Url.RouteUrl("GetContractorHistory")';
+        var GetContractorUrl = '@Url.RouteUrl("GetContractor")';
+        var DownLoadResultFileUrl = '@Url.RouteUrl("DownLoadResultFile")';
+        var DownLoadSampleContractorUrl = '@Url.RouteUrl("DownLoadSampleContractor")';
+        var DownloadAllMapppingContractorUrl = '@Url.RouteUrl("DownloadAllMapppingContractor")';
+    </script>
+    @Scripts.Render("~/bundles/bndlContractors")
+
+}

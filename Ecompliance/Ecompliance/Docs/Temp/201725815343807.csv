@@ -1,0 +1,10 @@
+DOCID,Site,Act,Activity,Frequency,NextDueDate,EffectiveDate,RemindDays,IsActive,Maker,Checker,Response,Message
+"0","Chennai","Boilers Act","Annual Report","As Needed","","","0","1","","","Failed","The StartDate field is required."
+"0","Chennai","Bonus Act","Form A Computation of Allocable Surplus","Yearly","31/10/17","","20","1","","","Failed","Duplicate"
+"0","Chennai","Bonus Act","Form B Set -on and set-off of Allocable Surplus","Yearly","31/10/17","","20","1","","","Failed","Duplicate"
+"0","Chennai","Bonus Act","Form C Register of Bonus Paid to Employees","Yearly","30/11/17","","90","1","","","Failed","Duplicate"
+"0","Chennai","Bonus Act","Form D Annual Return","Yearly","31/12/17","","20","1","","","Failed","Duplicate"
+"0","Chennai","Building and Const.","Deposition of Cess","As Needed","","","0","1","","","Failed","The StartDate field is required."
+"0","Chennai","Building and Const.","Principal Employer Registration/Renewal/Amendments","As Needed","","","0","1","","","Failed","The StartDate field is required."
+"0","Chennai","Building and Const.","Register Maintenance","Yearly","30/01/18","","15","1","","","Success",""
+"0","Chennai","Building and Const.","Submission of Returns","Yearly","30/01/18","","15","1","","","Success",""

@@ -1,0 +1,167 @@
+﻿@model  Ecompliance.Areas.Master.Models.Act
+@{
+    ViewBag.Title = "Acts Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">Act Master</h3>
+        </div>
+        <div class="pull-right" style="margin:0px;">
+            @{Html.RenderAction("RenderButton", "MasterUtils", new { ControllerName = "Act", area = "Master" });}
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div>
+    <div id="dvActgrid"></div>
+    <div id="dvAddUpdate" class="modal">
+        @using (Ajax.BeginForm("CreateAct", new AjaxOptions
+              {
+                  OnSuccess = "OnSuccess",
+                  OnFailure = "OnFailure"
+              }))
+        {  @Html.AntiForgeryToken()
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="clearfix"></div>
+                <div class="row top_content">
+                    @Html.HiddenFor(x => x.ActID)
+                    <p>Note: Field with <span>(*)</span> are mandatory </p>
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        @Html.LabelFor(x => x.Full_Name)<sup>*</sup>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        @Html.TextBoxFor(x => x.Full_Name)
+                        @Html.ValidationMessageFor(x => x.Full_Name)
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        @Html.LabelFor(x => x.Short_Name)<sup>*</sup>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        @Html.TextBoxFor(x => x.Short_Name)
+                        @Html.ValidationMessageFor(x => x.Short_Name)
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        Is Active
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcredit_checkbox section">
+                        @Html.CheckBoxFor(x => x.IsAct, new { @checked=true})
+                        @Html.ValidationMessageFor(x => x.IsAct)
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="reset_btn" align="right">
+                            <input type="submit" id="btnSubmit" value="Submit" class="button submit" />
+                            <input id="btnreset" type="reset" value="Reset" class="button reset" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="dvUpload" class="col-xs-12 col-sm-12 col-md-12 modal">
+        <div class="">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <label>select a CSV file</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        <input type="file" name="files" id="files" target-control="hdnFileName">
+                        <input type="hidden" id="hdnFileName" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="reset_btn" align="right">
+                            <input type="button" value="Sample" id="btnDownloadSample" class="button download" onclick="DownLoadSampleAct()" />
+                            <input type="button" value="Upload" id="btnUpload" class="button upload_btn" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvlog" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content"></label>
+                </div>
+
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Fail</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content"></label>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalpartial" class="modal">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs topheader-tab">
+            <li id="liDetails" class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+            <li id="liHistory"><a href="#tab_1_2" data-toggle="tab">History</a></li>
+        </ul>
+    </div>
+    <div class="row top_content tab-content">
+        <div class="tab-pane active" id="tab_1_1">
+            <div class="tabinner-content">
+                <div class="tabinner-content">
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Full Name </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblFull_Name" class="feedback_content"></label></div>
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Short Name </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblShort_Name" class="feedback_content"></label></div>
+
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Status </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblIsAct" class="feedback_content"></label></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_1_2">
+            <div class="tabinner-content">
+                <div id="GridHis" style="margin-top:20px; width:1150px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section commanscript {
+
+@Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    var UploadActUrl= '@Url.RouteUrl("UploadAct")';
+    var FilesUploadUrl= '@Url.RouteUrl("FilesUpload")';
+    var GetActHistoryUrl= '@Url.RouteUrl("GetActHistory")';
+    var GetActUrl= '@Url.RouteUrl("GetAct")';
+    var DownLoadResultFileUrl= '@Url.RouteUrl("DownLoadResultFile")';
+    var DownloadSampleActUrl= '@Url.RouteUrl("DownloadSampleAct")';
+    var DownloadAllMapppingActUrl = '@Url.RouteUrl("DownloadAllMapppingAct")';
+</script>
+@Scripts.Render("~/bundles/bndlacts")
+
+    }
+

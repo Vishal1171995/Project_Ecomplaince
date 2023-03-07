@@ -1,0 +1,559 @@
+﻿@model Tuple<Ecompliance.Models.Task, Ecompliance.ViewModel.TaskVerifyVM>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ACT | Task Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    @Styles.Render("~/Content/CommanCss")
+    <style>
+        .k-filedelete {
+            background-image: url(../../images/close.png) !important;
+            background-repeat: no-repeat;
+            background-position: left center;
+            width: 25px;
+            height: 28px;
+        }
+        .k-filedownload {
+            background-image: url(../../images/download.png) !important;
+            background-repeat: no-repeat;
+            background-position: left center;
+            width: 25px;
+            height: 28px;
+        }
+        .k-upload {
+            position: relative;
+            height: 50px;
+        }
+
+        .k-grid-Download
+        {
+            min-width:25px;
+        }
+        .k-grid tbody .k-button, .k-ie8 .k-grid tbody button.k-button {
+             min-width: 25px;
+        }
+        span.k-datepicker
+        {
+            width: 300px !important;
+        }
+        .k-dropzone {padding:0.4em; }
+        .k-dropzone .k-upload-status { margin: 12px 0px;}
+        .k-grid tr td, .k-pivot-layout .k-grid tr td {
+        border-bottom-width: 1px !important;
+        border-style: solid !important;
+        vertical-align: middle !important;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container-fluid detail-straptop">
+            <div class="col-xs-12 col-sm-2 col-md-4">
+                <div class="actlogo">
+                    @{ 
+                                string Logo = ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).Logo;
+                            }
+                    <a href="javascript:void(0)">
+                        <img src="~/Content/images/@Logo" class="img-responsive" alt="logo">
+                    </a> 
+                    @*<a href="javascript:void(0)"><img src="~/Content/images/myndlogo.png" class="img-responsive" alt="logo"> </a>*@ @*<span class="hidden-sm">| Active Compliance Tracking </span>*@
+                </div>
+            </div>
+            @*===========Progress html===================*@
+            <div class="col-xs-12 col-sm-2 col-md-4">
+                    @{
+                        if (Model.Item1.CurrentStatus == "Pending with maker")
+                        {
+                            <div class="progbar"><img class="img-responsive" src="~/Content/images/pm.png"></div>
+                        }
+                        else if (Model.Item1.CurrentStatus == "Pending with checker")
+                        {
+                            <div class="progbar"><img class="img-responsive" src="~/Content/images/pc.png"></div>
+                        }
+                        else
+                        {
+                            <div class="progbar"><img class="img-responsive" src="~/Content/images/completed.png"></div>
+                        }
+                    }
+            </div>
+                @*==============================================*@
+
+                <div class="col-xs-12 col-sm-7 col-md-4">
+                    @if (Model.Item1.CurrentStatus.ToUpper() != "ARCHIVE")
+                    {
+                        <ul class="detailtab-btn">
+                            @{
+                                if (Model.Item1.CurrentStatus == "Pending with maker" && Model.Item1.CurrUser == ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UID)
+                                {
+                                    <li id="link"><input type="button" value="Send To Verify" class="docattach verify" /></li>
+                                    <li id="verify-link"><input type="button" value="Attach Document" class="docattach attach" /></li>
+                                }
+                                if (Model.Item1.CurrentStatus == "Pending with checker" && Model.Item1.CurrUser == ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UID)
+                                {
+                                    <li id="linkReconsider"><input type="button" value="Reconsider" class="docattach reconsider" /></li>
+                                    <li id="lnkApprove"><input type="button" value="Approve" class="docattach approve" /></li>
+                                }
+                                if (Model.Item1.CurrentStatus.Trim().ToUpper() == "Pending with auditor".Trim().ToUpper() && Model.Item1.CurrUser == ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UID)
+                                {
+                                    <li id="linkReconsider"><input type="button" value="Reconsider" class="docattach reconsider" /></li>
+                                    <li id="lnkApprove"><input type="button" value="Approve" class="docattach approve" /></li>
+                                }
+
+}
+                        </ul>
+                                }
+                </div>
+            </div>
+    </header>
+    <section style="margin:20px 0px;">
+        <div class="container-fluid">
+            <!--------------Details-------------->
+            <div class="container maincontainer">
+                <div class="top_strap">
+                    <div class="heading-title">
+                        <h3 class="page-title">Task Document -[System Document ID: @Model.Item1.DOCID] </h3>
+                    </div>
+                    <div style="margin:0px 0px 10px;"></div>
+                </div>
+                
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <!-- table data starts --->
+                        @*<div class="">*@
+                        <!--BEGIN Table TABS-->
+                        <!-- BEGIN fixed table1-->
+                        <div class="maintable table table-bordered portlet-title">
+                            <div class="titlehead">
+                                General Detail
+                                <span class="tools pull-right">
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#general"></a>
+                                </span>
+                            </div>
+                            <div id="general" class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="newbox">
+                                    <div class="Cell col-xs-12 col-sm-3 col-md-3">Created By</div>
+                                    <div class="Cell col-xs-12 col-sm-3 col-md-3">@Model.Item1.CreatedByText</div>
+                                    <div class="Cell col-xs-12 col-sm-3 col-md-3">Created Date</div>
+                                    <div class="Cell col-xs-12 col-sm-3 col-md-3">@Model.Item1.CreatedDate</div>
+
+                                    <div class="Cell col-sm-3 col-md-3">Current Status</div>
+                                    <div class="Cell col-sm-3 col-md-3">@Model.Item1.CurrentStatus</div>
+                                    <div class="Cell col-sm-3 col-md-3">Activity Type</div>
+                                    <div class="Cell col-sm-3 col-md-3">@Model.Item1.ActivityType</div>
+
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Company</div>
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Company</div>
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Site</div>
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Site</div>
+
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Act</div>
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Act</div>
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Activity</div>
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Activity</div>
+
+                                    <div class="Cell col-sm-3 col-md-3">Contractor</div>
+                                    <div class="Cell col-sm-3 col-md-3">@Model.Item1.Contractor</div>
+                                    <div class="Cell col-sm-3 col-md-3">Activity Completion Date</div>
+                                    <div class="Cell col-sm-3 col-md-3">@Model.Item1.ActivityCompDate</div>
+                                    <div class="Cell col-sm-3 col-md-3">Description</div>
+                                    @{
+                                        string first50 = "";
+                                        if (Model.Item1.Creation_Desc != "" && Model.Item1.Creation_Desc.Length > 30)
+                                        {
+                                            first50 = Model.Item1.Creation_Desc.Substring(0, 30) + "...";
+                                            <div class="Cell col-sm-9 col-md-9">
+                                                @first50 <a id="aVM" href="javascript:void(0);" class="v_more pull-right">View More >></a>
+                                                <input type="hidden" id="hdnVM" value="@Model.Item1.Creation_Desc">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            first50 = Model.Item1.Creation_Desc;
+                                            <div class="Cell col-sm-9 col-md-9">
+                                                @first50
+                                            </div>
+                                        }
+                                    }
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Expiry Date</div>
+                                    <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.ExpiryDate</div>
+                                    @{
+                                        if (Model.Item1.CurrentStatus.ToUpper() != "ARCHIVE")
+                                        {
+                                            if ((((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UID == 32 || ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UID == 33) && Model.Item1.ExtendebleExpDate == 1)
+                                            {
+                                                <div class="Cell col-sm-3 col-md-3">
+                                                    <input id="liExtendExpDate" type="button" data_id="@Model.Item1.ActivityID" value="Extend Expiry Date" class="docattach" />
+                                                </div>
+                                                if (Model.Item1.ExtendebleExpDate_Remarks != "")
+                                                {
+                                                    <div class="Cell col-sm-3 col-md-3">
+                                                        <input id="liExtendExpDateHis" type="button" data_id="@Model.Item1.ActivityID" value="Extend Expiry Date History" class="docattach" />
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        @{Html.RenderAction("bindattachment", "taskfile", new { area = string.Empty, docid = Model.Item1.DOCID });}
+                        @{Html.RenderAction("BindMovement", "Task", new { area = string.Empty, DOCID = Model.Item1.DOCID });}
+                    </div>
+                    <div id="dialog" class="col-xs-12 col-sm-12 col-md-12 modal">
+                        @using (Ajax.BeginForm("TaskVerify", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage", OnBegin = "Validate", InsertionMode = InsertionMode.Replace }))
+                    {
+                    @Html.AntiForgeryToken()
+                    <div class="clearfix"></div>
+                    <div class="row top_content">
+                        <div class="col-xs-12 col-sm-12 col-md-12 pd">
+
+                            <div class="col-xs-12 col-sm-5 col-md-5 allcreditionals">
+                                <label>Activity Completion Date<sup>*</sup></label>
+                            </div>
+                            <div class="col-xs-12 col-sm-7 col-md-7 allcreditionals">
+                                @Html.TextBoxFor(x => x.Item2.ActivityCompDate, new { @Name = "ActivityCompDate", id = "txtActivityCompDate" })
+                                @Html.ValidationMessage("ActivityCompDate")
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-md-5 allcreditionals">
+                                <label>Delay Reason<sup>*</sup></label>
+                            </div>
+                            <div class="col-xs-12 col-sm-7 col-md-7 allcreditionals">
+                                @Html.DropDownListFor(x => x.Item2.DelayReason, new List<SelectListItem>
+                                    {
+                                        new SelectListItem{Text="--Select--", Value="" },
+                                        new SelectListItem{Text="To be Delayed", Value="To be Delayed"},
+                                         new SelectListItem{Text="Information delayed from External Sources", Value="Information delayed from External Sources"},
+                                        new SelectListItem{Text="Information delayed from Internal Sources", Value="Information delayed from Internal Sources"},
+                                        new SelectListItem{Text="Technical Delay", Value="Technical Delay"},
+                                        new SelectListItem{Text="Others", Value="Others"},
+                                    }, new { @Name = "DelayReason", id = "ddlDelayReason" }
+                                    )
+                                @Html.ValidationMessage("DelayReason")
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-md-5 allcreditionals">
+                                <label>Maker Remarks<sup>*</sup></label>
+                            </div>
+                            @Html.HiddenFor(x => x.Item2.DocID, new { @Name = "DocID", id = "hdnVerifyDocID" })
+                            <div class="col-xs-12 col-sm-7 col-md-7 allcreditionals">
+                                @Html.TextBoxFor(x => x.Item2.Remark, new { @Name = "Remark", id = "txtMakerRemarks" })
+                                @*@Html.ValidationMessageFor(m => m.Item2.Remark)*@
+                                @Html.ValidationMessage("Remark")
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                                <div class="verify_btn" align="right">
+                                    <input type="submit" id="btnSendToVerify" value="Send To Verify" class="button submit" />
+                                    <input type="reset" id="btnReset" value="Reset" class="button rset" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    </div>
+                    <!-----------------end of popup model1------------>
+                </div>
+           
+            <!-----------------end of popup model2------------>
+        </div>
+        <!-- POPUP FORM SAMITA ENDS -->
+        </div>
+
+        <div id="dvExtendExpDate" class="col-xs-12 col-sm-12 col-md-12 modal">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <div class="col-xs-12 col-sm-12 col-md-12 pd">
+
+                    <div class="col-xs-12 col-sm-5 col-md-5 allcreditionals">
+                        <label>Extended Expiry Date<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-12 col-sm-7 col-md-7 allcreditionals">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' class="form-control" id="txtExtendedExpDate" readonly />
+                                <span class="input-group-addon" id="spnExtExpdate">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        @*@Html.TextBoxFor(x => x.Item2.ActivityCompDate, new { @Name = "ActivityCompDate", id = "txtActivityCompDate" })*@
+                        @*@Html.ValidationMessage("ActivityCompDate")*@
+                    </div>
+                    <div class="col-xs-12 col-sm-5 col-md-5 allcreditionals">
+                        <label>Remarks<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-12 col-sm-7 col-md-7 allcreditionals">
+                        <input type="text" id="txtRemarks" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="verify_btn" align="right">
+                            <input type="submit" id="btnExtendedExpSubmit" value="Update" class="button submit" />
+                            <input type="reset" id="btnReset" value="Reset" class="button rset" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dvExtendExpDateHis" class="col-xs-12 col-sm-12 col-md-12 modal">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <div class="col-xs-12 col-sm-12 col-md-12 pd">
+                    <div id="KgridExtendExpDateHis">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer>
+        <section id="footer">
+            <div class="container">
+                <p>@System.DateTime.Now.Year  &copy; by <a href="#" target="_blank">Mynd Solution</a> - All rights reserved.</p>
+            </div>
+        </section>
+    </footer>
+</body>
+</html>
+@*Reconsider Dialog HTML===================*@
+<div id="dvReconsider" class="col-xs-12 col-sm-12 col-md-12" style="display:none;">
+    <div class="clearfix"></div>
+    <div class="row top_content">
+        <div class="col-xs-12 col-sm-12 col-md-12 pd">
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Remarks<sup>*</sup></label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                <input id="txtReconsiderRemarks" type="text">
+            </div>
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Upload</label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                <input type="file" name="fileToUpload" id="ReconsiderfileToUpload">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- BEGIN fixed table2-->
+            <div class="maintable table table-bordered">
+                <div class="titlehead">
+                    Attachments
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                    </div>
+                </div>
+                <div id="dvReconsiderAttachGrd">
+                </div>
+            </div>
+            <!-- END fixed table2-->
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+            <div class="chgecol" align="right">
+                <input type="submit" id="btnReconsider" value="Reconsider" class="button submit" />
+            </div>
+        </div>
+    </div>
+</div>
+@*End Reconsider Dialog HTML===============*@
+
+@*Approve Dialog HTML*@
+<div id="dvApprove" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="clearfix"></div>
+    <div class="row top_content">
+        <div class="col-xs-12 col-sm-12 col-md-12 pd">
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Remarks</label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                <input type="text" id="txtApproveRemarks" />
+            </div>
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Upload</label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                <input type="file" name="fileToUpload" id="ApprovefileToUpload">
+            </div>
+            @if(Model.Item1.Frequency=="9")
+            { 
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals pd">
+                <label for="chkRepeat">Is Repetitive</label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 checkbox">
+                <label>
+                    <input type="checkbox" id="chkRepeat">
+                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                </label>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row fullock" id="dvNextDetails" style="display:none;">
+                <div class="col-xs-12 col-sm-12 col-md-12" style="border-bottom:4px solid #ccc;margin-bottom:10px;">
+                    <h5 class="sub-page-title" style="font-weight:normal;">Set Next Due Date For This Activity:</h5>
+                </div>
+ 
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Expiry Date<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' class="form-control" id="txtExpDate" readonly />
+                                <span class="input-group-addon" id="spnEdate">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Remind Days<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        <input type="text" id="txtRemindDays">
+                    </div>
+ 
+            </div>
+            }
+            <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                <div class="approvecol" align="right">
+                    <input type="submit" id="btnApproveSubmit" value="Approve" class="button submit" />
+                    <input type="reset" id="btnApproveReset" value="Reset" class="button rset" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- BEGIN fixed table2-->
+            <div class="maintable table table-bordered">
+                <div class="titlehead">
+                    Attachments
+                    <div class="tools">
+                        <a href="javascript:void(0)" class="collapse"></a>
+                    </div>
+                </div>
+                <div id="dvApproveAttachGrd">
+                </div>
+            </div>
+            <!-- END fixed table2-->
+        </div>
+
+        
+    </div>
+</div>
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="row top_content">
+        <div class="col-xs-12 col-sm-12 col-md-12 pd">
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Upload</label>
+            </div>
+            <div class="col-xs-6 col-sm-10 col-md-10 allcreditionals">
+                <input type="file" name="fileToUpload" id="fileToUpload">
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- BEGIN fixed table2-->
+            <div class="maintable table table-bordered">
+                <div class="titlehead">
+                    Attachments
+                </div>
+                <div id="dvAttachGrd">
+                </div>
+            </div>
+            <!-- END fixed table2-->
+        </div>
+        <div style="text-align:right;"><input type="button" id="btnAttachOK" class="ok button" value="OK" /></div>
+    </div>
+</div>
+
+<div id="dvViewMore" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div id="dvContant" class="row top_content">
+        @*<div style="text-align:right;"><input type="button" id="btnAttachOK" class="ok button" value="OK" /></div>*@
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+@Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    var Item1DOCID =@Model.Item1.DOCID;
+    var UploadTaskFileUrl = '@Url.RouteUrl("UploadTaskFile")';
+    var GetTaskFilesUrl = '@Url.RouteUrl("GetTaskFiles")';
+    var RemoveTaskFileUrl = '@Url.RouteUrl("RemoveTaskFile")';
+    var DownloadTaskFileUrl = '@Url.RouteUrl("DownloadTaskFile")';
+    var GetHashCodeUrl='@Url.RouteUrl("GenerateSHASH")';
+    var ApproveUrl = '@Url.RouteUrl("Approve")';
+    var ReconsiderUrl = '@Url.RouteUrl("Reconsider")';
+    var GetExtExPDateUrl = '@Url.RouteUrl("GetExtExPDate")';
+    var SetExtExpDateUrl ='@Url.RouteUrl("SetExtExpDate")';
+    var GETExtendedExpDateHisUrl ='@Url.RouteUrl("GETExtendedExpDateHis")';
+    var chkRepeat= $("#chkRepeat");
+    if(chkRepeat.length>0)
+    {
+        $("#chkRepeat").click(function(){
+            var IsChecked=$(this).prop("checked");
+            if(IsChecked)
+            {
+                $("#dvNextDetails").show();
+            }
+            else
+            {
+                $("#dvNextDetails").hide();
+            }
+        });
+    }
+    $("#btnApproveSubmit").click(function () {
+        var Remarks = $("#txtApproveRemarks").val();
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        var Repeat=0;
+        var NextDueDate="";
+        var RemindDays=0;
+        //string Remarks,int DocID,int Repeat,string NextDueDate,int RemindDays
+        if(chkRepeat.length>0)
+        {
+            var IsChecked=$("#chkRepeat").prop("checked");
+            if(IsChecked)
+            {
+                Repeat=1;
+                NextDueDate=$("#txtExpDate").val().trim();
+                RemindDays=$("#txtRemindDays").val().trim();
+                var ErrorMsg="Error(s) in your submission.\n----------------------\n";
+                if(NextDueDate=="")
+                {
+                    ErrorMsg+="Expiry Date required.";
+                    $("#txtExpDate").focus();
+                    alert(ErrorMsg);
+                    return;
+                }
+                if(RemindDays=="")
+                {
+                    ErrorMsg+="Remind Days required.";
+                    $("#txtRemindDays").focus();
+                    alert(ErrorMsg);
+                    return;
+                }
+
+                //txtExpDate txtRemindDays
+            }
+        }
+        $.post(ApproveUrl, {__RequestVerificationToken: token, Remarks: Remarks,DocID:Item1DOCID,Repeat:Repeat,StrNextDueDate:NextDueDate,StrRemindDays:RemindDays }, function (response) {
+            if (response.IsSuccess) {
+                createSuccessPOPForTask(response.Message);
+                $("#btnReset").click();
+            }
+            else
+            {
+                createErrPOP(response.Message);
+            }
+        });
+    });
+</script>
+@Scripts.Render("~/bundles/bndlTaskDetails")

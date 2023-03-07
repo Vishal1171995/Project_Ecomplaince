@@ -1,0 +1,9 @@
+FrequencyID,Frequency,Status,
+,,,
+Display Name,Mandatory Fields,Data Type,Remarks
+Frequency,Yes,Text,
+Status,Yes,Boolean,Possible values - 0 or 1
+,,,
+,,,
+,,,
+"		",,,

@@ -1,0 +1,8 @@
+UID,User_Name,Email,Role,RoleText,Contact_Number,Company,Customer,CompanyText,Contractor,ContractorText,Skey,Password,IsAuth,First_Name,Last_Name,RoleName,CompName,ContName,CustName,USERID
+"42","amit_Nehra","amit.nehra@myndsol.com","17","Central Admin","","0","0","","0","","F3R94H","GVsx8U5Tb7DKGQVOkbuaJg==","1","Amit","Nehra","Central Admin","","","","42"
+"33","checker","checker@myndsol.com","21","User","","0","0","","0","","OMYVNH","/+3shLd5RW16DGNW2olV4A==","1","Ravi","Sharma","User","","","","33"
+"45","CompanyAdmin","palnish.mit@gmail.com","19","Company Admin","9810383968","2","0","Ecomp Company","0","","X6H1AA","5a+uFqQmZ+wyZcXoeMVbmw==","1","Company","Admin","Company Admin","Ecomp Company","","","45"
+"3","CustAdmin","palnish.mit@gmail.com","18","Customer Admin","9810383968","0","32","","0","","001","CX2PSOAlG6w0fGTKkGV+Wg==","1","Customer Admin","admin","Customer Admin","","","Test Customer","3"
+"32","maker","maker@gmail.com","21","User","","0","0","","0","","OZTDK2","m5hkqrzjqmkww38Nj/vxyA==","1","Test","Maker","User","","","","32"
+"34","MayankGarg","mayank.garg@myndsol.com","21","User","9643894758","12","0","","15","","001","3sC9kuf5YLExIVmFt2HBzw==","1","Mayank","Garg","User","","","","34"
+"36","Pallavi Test","palnish.mit@gmail.com","20","Contractor Admin","9810383968","0","0","","1","Contractor A","001","3sC9kuf5YLExIVmFt2HBzw==","1","Pallavi Test","Test","Contractor Admin","","Contractor A","","36"

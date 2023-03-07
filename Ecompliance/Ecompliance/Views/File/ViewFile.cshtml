@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "ViewFile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/kendujs")
+@Styles.Render("~/Content/kenducss")
+@*@Styles.Render("~/Content/css")*@
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .k-grid tr td, .k-pivot-layout .k-grid tr td {
+        border-bottom-width: 1px !important;
+        border-style: solid !important;
+        vertical-align: middle !important;
+    }
+
+    .k-button, .k-toolbar .k-button {
+        line-height: 0px;
+        padding: 0px 6px;
+    }
+
+    .k-grid .k-button {
+        min-width: 0px !important;
+        /*border-radius: 4px;*/
+    }
+
+    .k-grid {
+        font-size: 12px;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+
+        .k-grid td {
+            line-height: 12px;
+            vertical-align: middle;
+            border-style: solid !important;
+            border-width: 0 0 0 1px !important;
+        }
+
+        .k-grid th {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+    .k-link {
+        padding: 0 0px;
+    }
+
+    /*.k-grid-header {
+        background-color: #1e52a4 !important;
+    }
+
+    .k-grouping-header {
+        background-color: #3967ae !important;
+    }*/
+
+    /*.k-grid-header .k-header {
+        background-color: #1e52a4 !important;
+    }
+    .k-grid-header th.k-header {
+        color: #fff !important;
+    }
+    .k-grid-header th.k-header > .k-link {
+        color: #fff !important;
+    }*/
+    /*.k-grid th {
+        background-color:#1e52a4 !important;
+    }*/
+</style>
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+                File Document
+                <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">I am a tooltip!</div></span>
+            </h3>
+        </div>
+        <div class="pull-right" style="margin:0px;">
+
+            <div id="myimport" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-import"></span> Import </div>
+            <div id="myexport" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-export"></span> Export </div>
+            <div id="dialog-link" class="col-xs-12 col-sm-4 col-md-4 ad"><span class="glyphicon glyphicon-plus-sign"></span> ADD </div>
+        </div>
+        <div class="clearfix"></div>
+        @*<div style="margin:0px 0px 10px;"></div>*@
+    </div>
+    <div>
+        <div id="Kgrid"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        BindGrid("VEcom_Doc_File", "FileID");
+    });
+    var Kgrid;
+    function BindGrid(tableName, ID) {
+        var url ='@Url.RouteUrl("GetGridData")';
+        $("#Kgrid").kendoGrid({
+            dataSource: {
+                type: "json",
+                transport: {
+                    read: {
+                        url: url, //'testKgrid.aspx/GetData',
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8"
+                    },
+                    parameterMap: function (data, type) {
+                        return JSON.stringify({
+                            tableName: tableName,
+                            ID:ID,
+                            page: data.page,
+                            pageSize: data.pageSize,
+                            skip: data.skip,
+                            take: data.take,
+                            sorting: data.sort === undefined ? null : data.sort,
+                            filter: data.filter === undefined ? null : data.filter
+                        });
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            CompName: { type: "string" },
+                            SiteName: { type: "string" },
+                            Full_Name: { type: "string" },
+                            Year: { type: "string" },
+                            Month: { type: "string" },
+                        }
+                    },
+                    data: function (data) {
+                        //                    return $.parseJSON(data.d).Data || [];
+                        //alert(data.IsSuccess);
+                        var res = $.parseJSON(data.Data);
+                        if (res.Data.length > 0) {
+                            return res.Data || [];
+                        }
+                    },
+                    total: function (data) {
+                        var res = $.parseJSON(data.Data);
+                        if (res.Data.length > 0) {
+                            return res.Total || [];
+                        }
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            },
+            noRecords: true,
+            groupable: true,
+            filterable: true,
+            sortable: {
+                mode: "multiple"
+            },
+            pageable: {
+                pageSizes: true,
+                refresh: true
+            },
+            columns: [
+                          { field: "CompName", title: "Company Name", width: 100 },
+                          { field: "SiteName", title: "Site Name", width: 100 },
+                          { field: "Full_Name", title: "Act Name", width: 100 },
+                          { field: "Year", title: "Year", width: 100 },
+                          { field: "Month", title: "Month", width: 100 },
+            ]
+        });
+    }
+</script>

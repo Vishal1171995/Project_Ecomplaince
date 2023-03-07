@@ -1,0 +1,5 @@
+ActID,Full_Name,Short_Name,Status
+Display Name,Mandatory Fields,Data Type,Remarks
+Full_Name,Yes,Text,
+Short_Name,Yes,Text,
+Status,Yes,Boolean,Possible values - 0 or 1

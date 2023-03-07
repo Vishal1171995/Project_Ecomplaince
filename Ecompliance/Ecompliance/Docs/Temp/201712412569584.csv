@@ -1,0 +1,5 @@
+CompID,Name,Code,Customer,Address,Contact_Person,Phone_Number,Email,Maker,Checker,IsAct,IsActNm,CustomerNm,MakerNm,CheckerNm
+"2","Ecomp Company","","33","855, Sector 31 gurgaon","Pallavi Ghode","9810383968","palnish.mit@gmail.com","34","33","1","Active","Customer 1","MayankGarg","checker"
+"4","Feedback Infra","","35","","Ajeet","","","32","33","1","Active","Feedback Infotech Corporate India Provate Limited","maker","checker"
+"1","Mynd","","32","","Ajeet","","","32","33","1","Active","Test Customer","maker","checker"
+"3","Quick Start Comp","","34","","AAA","","","47","47","1","Active","Quick Start ","Quick","Quick"

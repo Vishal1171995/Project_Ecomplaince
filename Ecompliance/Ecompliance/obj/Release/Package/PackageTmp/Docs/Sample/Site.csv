@@ -1,0 +1,13 @@
+SiteID,Company,Customer,Name,State,Location,Contact_Person,Contact_Number,Address,Maker,Checker,Status
+Display Name,Mandatory Fields,Data Type,Remarks,,,,,,,,
+Company,Yes,Text,,,,,,,,,
+Customer,Yes,Text,,,,,,,,,
+Name,Yes,Text,,,,,,,,,
+State,Yes,Text,,,,,,,,,
+Location,No,Text,,,,,,,,,
+Contact_Person,No,Text,,,,,,,,,
+Contact_Number,No,Text,,,,,,,,,
+Address,No,Text,,,,,,,,,
+Maker,No,Text,,,,,,,,,
+Checker,No,Text,,,,,,,,,
+Status,Yes,Boolean,Possible values - 0 or 1,,,,,,,,

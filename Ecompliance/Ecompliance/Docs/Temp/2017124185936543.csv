@@ -1,0 +1,5 @@
+CompanyID,Customer,Name,Address,Contact_Person,Phone_Number,Email,Maker,Checker,Status
+"2","Customer 1","Ecomp Company","855, Sector 31 gurgaon","Pallavi Ghode","9810383968","palnish.mit@gmail.com","MayankGarg","checker","Active"
+"4","Feedback Infotech Corporate India Provate Limited","Feedback Infra","","Ajeet","","","maker","checker","Active"
+"1","Test Customer","Mynd","","Ajeet","","","maker","checker","Active"
+"3","Quick Start ","Quick Start Comp","","AAA","","","Quick","Quick","Active"

@@ -1,0 +1,11 @@
+CompanyID,Company,Customer,Address,Contact_Person,Phone_Number,Email,Maker,Checker,Status
+"15","BlackRock Services India Private Limited","BlackRock","","Neelam Kishanpuria","","","kumar.satish","narendra.singh","Active"
+"10","CAIRN INDIA LIMITED","CAIRN","","SANJAY KUMAR","","","maker","checker","Active"
+"14","Cars24 Services Private Limited","Cars24","","Nitin Tiwari","","","manju","devanand.bhatt","Active"
+"13","Dealskart Online Solutions Private Limited","Dealskart","","Nitin Tiwari","","","manish.kumar","puneet.manocha","Active"
+"16","Fujifilm India Private Limited","Fujifilm","","Nitin Tiwari","","","manju","devanand.bhatt","Active"
+"5","Micromax Informatics Limited","MicroMax","90'-B,Sector '-18,Gurgaon '-122001","'=INFO(""OSVERSION"")","","asdsa@mvm.vom","nivesh_micromax","spsingh","Active"
+"1","Mynd","abc","","Ajeet","","","maker","checker","Active"
+"12","Test comp","abc","","Ajeet","","","maker","checker","Active"
+"17","Test Company","Test cust","","Test person","8800256550","","Saudit_User","Saudit_User","Active"
+"6","Test Mentor","Mynd Cust","","Sonal","9278646536","sonal@gmail.com","rajesh.singh","rajesh.singh","Active"

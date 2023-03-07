@@ -1,0 +1,170 @@
+﻿@model  Ecompliance.Areas.Master.Models.State
+@{
+    ViewBag.Title = "State Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">State Master</h3>
+        </div>
+        @{Html.RenderAction("RenderButton", "MasterUtils", new { ControllerName="State" ,area="Master"});}
+        <div class="clearfix"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div>
+    <div id="dvStategrid"></div>
+    <div id="dvState" class="modal">
+        @using (Ajax.BeginForm("CreateState", new AjaxOptions
+        {
+            OnSuccess = "OnSuccessPage",
+            OnFailure = "OnFailure"
+        }))
+        {  @Html.AntiForgeryToken()
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="clearfix"></div>
+                <div class="row top_content">
+                    @Html.HiddenFor(x => x.StateID)
+                    <p>Note: Field with <span>(*)</span> are mandatory </p>
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        <label> Country  </label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        @Html.DropDownListFor(x => x.Country, new SelectList(Model.CountyList, "Value", "Text", "0"))
+                        @Html.ValidationMessageFor(x => x.Country)
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        <label>Name</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        @Html.TextBoxFor(x => x.Name)
+                        @Html.ValidationMessageFor(x => x.Name)
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        Is Active
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcredit_checkbox section">
+                        @Html.CheckBoxFor(x => x.IsAct)
+                        @Html.ValidationMessageFor(x => x.IsAct)
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="reset_btn" align="right">
+                            <input id="btnSubmit" type="submit" value="Submit" class="button submit" />
+                            <input id="btnreset" type="reset" value="Reset" class="button reset" />
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        }
+    </div>
+
+    <div id="dvUpload" class="col-xs-12 col-sm-12 col-md-12 modal">
+        <div class="">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <label>select a CSV file</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+
+                        <input type="file" name="files" id="files" target-control="hdnFileName">
+                        <input type="hidden" id="hdnFileName" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+
+                        <div class="reset_btn" align="right">
+                            <input type="button" value="Sample" id="btnDownloadSample" class="button download" onclick="DownloadSampleState()" />
+                            <input type="button" value="Upload" id="btnUpload" class="button upload_btn" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvlog" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content"></label>
+                </div>
+
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content"></label>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalpartial" class="modal">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs topheader-tab">
+            <li id="liDetails" class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+            <li id="liHistory"><a href="#tab_1_2" data-toggle="tab">History</a></li>
+        </ul>
+    </div>
+    <div class="row top_content tab-content">
+        <div class="tab-pane active" id="tab_1_1">
+            <div class="tabinner-content">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Name </label></div>
+                        <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblState_Name" class="feedback_content"></label></div>
+                        <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Country</label></div>
+                        <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblCountry_Name" class="feedback_content"></label></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        
+                        <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Active </label></div>
+                        <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblIsAct" class="feedback_content"></label></div>
+                        <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag"></label></div>
+                        <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblGeoFance_Name" class="feedback_content"></label></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_1_2">
+            <div class="tabinner-content">
+                <div id="GridHis" style="margin-top:20px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var UploadStateUrl = '@Url.RouteUrl("UploadState")';
+        var GetStateHistoryUrl = '@Url.RouteUrl("GetStateHistory")';
+        var GetStateUrl = '@Url.RouteUrl("GetState")';
+        var DownloadSampleStateUrl = '@Url.RouteUrl("DownloadSampleState")';
+        var FilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+        var DownLoadResultFileUrl = '@Url.RouteUrl("DownLoadResultFile")';
+        var DownloadAllMapppingStateUrl = '@Url.RouteUrl("DownloadAllMapppingState")';
+   </script>
+    @Scripts.Render("~/bundles/bndlState")
+}

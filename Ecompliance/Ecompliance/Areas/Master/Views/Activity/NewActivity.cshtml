@@ -1,0 +1,590 @@
+﻿@model  Ecompliance.Areas.Master.Models.Activity
+@{
+    ViewBag.Title = "Activity Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">Activity Master</h3>
+        </div>
+        <div class="pull-right" style="margin:0px;">
+            <div id="myimport" onclick="OpenUploadPopup()" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-import"></span> Import </div>
+            <div id="myexport" onclick="DownLoadAllMapping()" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-export"></span> Export </div>
+            <div id="dialog-link" onclick="btnAddClick()" class="col-xs-12 col-sm-4 col-md-4 ad"><span class="glyphicon glyphicon-plus-sign"></span> ADD </div>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div>
+    <div id="dvActivitygrid"></div>
+
+    <div id="myModal" class="modal">
+
+        @using (Ajax.BeginForm("CreateActivity", new AjaxOptions
+        {
+
+            OnSuccess = "OnSuccess",
+
+            OnFailure = "OnFailure"
+        }))
+        {  @Html.AntiForgeryToken()
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="clearfix"></div>
+                <div class="row top_content">
+                    @Html.HiddenFor(x => x.ActivityID)
+                    <p>Note: Field with <span>(*)</span> are mandatory </p>
+
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label> Name  </label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                        @Html.TextBoxFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label> Act  </label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.Act, new SelectList(Model.ActList, "Value", "Text", "0"))
+                        @Html.ValidationMessageFor(x => x.Act)
+                    </div>
+
+
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label> Desc  </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                        @Html.TextBoxFor(x => x.Activity_Desc) @Html.ValidationMessageFor(x => x.Activity_Desc)
+                    </div>
+
+
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Frequency </label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                        @Html.DropDownListFor(x => x.Frequency, new SelectList(Model.FrequencyList, "Value", "Text", "0"))
+                        @Html.ValidationMessageFor(x => x.Frequency)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Date Of Month </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                        @Html.TextBoxFor(x => x.Date_Of_Month)
+                        @Html.ValidationMessageFor(x => x.Date_Of_Month)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Month </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                        @Html.DropDownListFor(x => x.Month, new List<SelectListItem> {
+                            new SelectListItem { Text = "Select", Value = "" },
+                            new SelectListItem { Text = "January", Value = "1" },
+                            new SelectListItem { Text = "February", Value = "1" },
+                            new SelectListItem { Text = "March", Value = "3" },
+                            new SelectListItem { Text = "April", Value = "4" },
+                            new SelectListItem { Text = "May", Value = "5" },
+                            new SelectListItem { Text = "June", Value = "6" },
+                            new SelectListItem { Text = "July", Value = "7" },
+                            new SelectListItem { Text = "August", Value = "8" },
+                            new SelectListItem { Text = "September", Value = "9" },
+                            new SelectListItem { Text = "October", Value = "10" },
+                            new SelectListItem { Text = "November", Value = "11" },
+                            new SelectListItem { Text = "December", Value = "12" }
+                                           })
+                        @Html.ValidationMessageFor(x => x.Month)
+                    </div>
+
+
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Year </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+
+                        @Html.DropDownListFor(x => x.Year, new List<SelectListItem> {
+
+                                                                   new SelectListItem { Text = "Select", Value = "" },
+                                                                   new SelectListItem { Text = "2015", Value = "2015" },
+                                                                    new SelectListItem { Text = "2016", Value = "2016" },
+                                                              })
+                        @Html.ValidationMessageFor(x => x.Year)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Remind Days </label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+
+                        @Html.TextBoxFor(x => x.RemindDays)
+                        @Html.ValidationMessageFor(x => x.RemindDays)
+                    </div>
+
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals ">
+                        <label>Is Active</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcredit_checkbox section ">
+                        @Html.CheckBoxFor(x => x.IsAct)
+                        @Html.ValidationMessageFor(x => x.IsAct)
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="reset_btn" align="right">
+
+                            <input type="submit" value="Submit" id="btnSubmit" class="button submit" />
+
+                            <input id="btnreset" type="reset" value="Reset" class="button reset" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+    <div id="dialog" class="col-xs-12 col-sm-12 col-md-12 modal">
+        <div class="">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <label>select a CSV file</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+
+                        <input type="file" name="files" id="files" target-control="hdnFileName">
+
+
+                        <input type="hidden" id="hdnFileName" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+
+
+                        <div class="reset_btn" align="right">
+                            <input type="button" value="Sample" id="btnDownloadSample" class="button download" onclick="DownLoadSampleActivity()" />
+                            <input type="button" value="Upload" id="btnUpload" class="button upload_btn" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content">500</label>
+                </div>
+
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content">500</label>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalpartial" class="modal">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs topheader-tab">
+            <li class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+            <li><a href="#tab_1_2" data-toggle="tab">History</a></li>
+        </ul>
+    </div>
+    <div class="row top_content tab-content">
+        <div class="tab-pane active" id="tab_1_1">
+            <div class="tabinner-content">
+                <div class="tabinner-content">
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Activity </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblName" class="feedback_content"></label></div>
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Act </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblAct" class="feedback_content"></label></div>
+
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Frequency </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblFrequency" class="feedback_content"></label></div>
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Date Of Month </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblDOM" class="feedback_content"></label></div>
+
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Month </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblMonth" class="feedback_content"></label></div>
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Year </label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblYear" class="feedback_content"></label></div>
+
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Remind Days</label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblRemindDays" class="feedback_content"></label></div>
+                    <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Status</label></div>
+                    <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblIsAct" class="feedback_content"></label></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_1_2">
+            <div class="tabinner-content">
+                <div id="GridHis" style="margin-top:20px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/kendujs")
+    @Styles.Render("~/Content/kenducss")
+
+}
+<script type="text/javascript">
+    var kgrid="";
+    $(document).ready(function () {
+        $("#menu_2").addClass("active-menu");
+        GridData(0);
+        $("#tabstrip").kendoTabStrip({
+        });
+
+        $("#btnUpload").click(function (event) {
+            var fileName = $("#hdnFileName").val();
+            if (fileName.trim() == "") {
+                alert("Please select a CSV file");
+                return false;
+            }
+
+            var Data = { FileName: fileName };
+            $.ajax({
+                type: "GET",
+                url: '@Url.RouteUrl("UploadActivity")',
+                contentType: "application/json; charset=utf-8",
+                data: Data,
+                dataType: "json",
+                success: function (response) {
+                    if (response.IsSuccess == true) {
+
+                        var Data = JSON.parse(response.Data);//.split(",");
+                        //    alert(Data);
+                        $("#lblTotSuccess").html(Data["Success"]);
+                        $("#lblTotFailed").html(Data["Failed"]);
+                        $("#hdnresultFile").val(Data["FileName"]);
+
+                        $("#dialog").dialog("close");
+                        $("#log").dialog({
+                            autoOpen: false,
+                            width: 500,
+                            title: "Result",
+                            closeText: ""
+                        });
+                        $("#log").dialog("open");
+                        $('.ui-dialog-titlebar').show();
+                    }
+                    else {
+                        alert(response.Message);
+                    }
+                    $("#dvDetails").show();
+                },
+                error: function (data) {
+                    alert("Please try again later!!! Error occured while  binding.");
+                }
+            });
+        });
+
+        $("#files").kendoUpload({
+            async: {
+                saveUrl: "@Url.RouteUrl("FilesUpload")",
+                removeUrl: "remove",
+                autoUpload: true
+            },
+            upload: function (e) {
+                e.data = { Folder: "Temp" };
+            },
+            select: function (event) {
+                var notAllowed = false;
+                $.each(event.files, function (index, value) {
+                    if (value.extension !== '.csv') {
+                        alert("Plese select a csv file only!");
+                        notAllowed = true;
+                    }
+                });
+                var breakPoint = 0;
+                if (notAllowed == true) e.preventDefault();
+            },
+            multiple: false,
+            success: onSuccess,
+            remove: onRemove,
+            showFileList: false
+        });
+
+    });
+
+</script>
+
+<script type="text/javascript">
+    function reset() {
+        var validator = $("#myModal").validate();
+        validator.resetForm();
+    }
+    function OnSuccess(e) {
+        HandleResponse(e, "myModal", "btnReset", "ActivityID");
+        GridData(0);
+    }
+    function OnFailure() {
+        alert("Failure");
+    }
+
+    function GridData(ActID) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.RouteUrl("GetActivity")",
+            contentType: "application/json; charset=utf-8",
+            data: '{"ActivityID":"0","ActID":' + ActID + '}',
+            dataType: "json",
+            success: function (response) {
+                bindGrid(response.Data);
+            },
+            error: function (data) {
+                alert("error");
+
+            }
+        });
+    }
+    function bindGrid(Data1) {
+        if (kgrid) {
+            $('#dvActivitygrid').kendoGrid('destroy').empty();
+        }
+        kgrid = $("#dvActivitygrid").kendoGrid({
+            dataSource: {
+                pageSize: 15,
+                data: JSON.parse(Data1)
+            },
+            dataBound: function (e) {
+                var grid = e.sender;
+                if (grid.dataSource.total() == 0) {
+                    var colCount = grid.columns.length;
+                    $(e.sender.wrapper)
+                        .find('tbody')
+                        .append('<tr class="kendo-data-row"><td colspan="' + colCount + '" class="no-data"><span style="margin-left:46%;">No data found.</span></td></tr>');
+                }
+            },
+            columns: [
+
+                       { field: "ActNm", title: "Act" },
+                       { field: "Name", title: "Activity" },
+                       { field: "FrequencyNm", title: "Frequency", width: 110 },
+                       { field: "Date_Of_Month", title: "Date", width: 70 },
+                       { field: "MonthNm", title: "Month", width: 100 },
+                       { field: "Status", title: "Status", width: 82 },
+
+             {
+                 command: [{ name: "Edit", text: "", imageClass: "k-icon k-edit", click: EditHandler, title: "Edit" },
+                     { name: "View", text: "", imageClass: "k-icon k-view", click: ViewHandler, title: "View" }
+
+                 ], title: "Action", width: 150
+             }
+            ]
+            ,
+            height: 400,
+            pageable: true,
+            filterable: true,
+            sortable: true,
+            resizable: true
+        });
+
+    }
+
+    function HistoryGridData(ActivityID) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.RouteUrl("GetActivityHistory")",
+            contentType: "application/json; charset=utf-8",
+            data: '{"ActivityID":"' + ActivityID + '"}',
+            dataType: "json",
+            success: function (response) {
+                HistorybindGrid(response.Data);
+                var dialog = $("#modalpartial").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    title: "Activity Details",
+                    width: 909,
+                    closeText: ""
+                });
+                dialog.dialog("open");
+            },
+            error: function (data) {
+                alert(data.error);
+
+            }
+        });
+    }
+    function HistorybindGrid(Data1) {
+
+        kgrid = $("#GridHis").kendoGrid({
+            dataSource: {
+                pageSize: 10,
+                data: JSON.parse(Data1)
+            },
+            dataBound: function (e) {
+                var grid = e.sender;
+                if (grid.dataSource.total() == 0) {
+                    var colCount = grid.columns.length;
+                    $(e.sender.wrapper)
+                        .find('tbody')
+                        .append('<tr class="kendo-data-row"><td colspan="' + colCount + '" class="no-data"><span style="margin-left:46%;">No data found.</span></td></tr>');
+                }
+                else {
+                    var rows = grid.dataSource.total();
+                    var colCount = grid.columns.length;
+                    for (var i = rows - 1; i > 0 ; i--) {
+                        for (var k = 0; k < colCount; k++) {
+
+                            if (grid.tbody[0].children[i].cells[k].innerText != grid.tbody[0].children[i - 1].cells[k].innerText) {
+                                grid.tbody[0].children[i - 1].cells[k].bgColor = "red";
+                            }
+                        }
+
+                    }
+                }
+            },
+            pageable: true,
+            sortable: true,
+            resizable: true
+        });
+
+    }
+    function btnAddClick() {
+        $("#btnreset").click();
+        $("#btnSubmit").val("Submit");
+        $("#ActivityID").val(0);
+        var dialog = $("#myModal").dialog({
+            autoOpen: false,
+            modal: true,
+            title: "Activity Master",
+            width: 909,
+            closeText: ""
+        });
+        dialog.dialog("open");
+        event.preventDefault();
+    }
+    // For Upload popup
+
+    function OpenUploadPopup() {
+        $("#dialog").dialog({
+            autoOpen: false,
+            width: 500,
+            title: "Upload Activity",
+            closeText: ""
+        });
+        $("#dialog").dialog("open");
+        event.preventDefault();
+    }
+
+    function DownLoadResultFile() {
+        var FileName = $("#hdnresultFile").val();
+        var Data = { FileName: FileName };
+        var URL = '@Url.RouteUrl("DownLoadResultFile")' + '?FileName=' + FileName;
+        window.location = URL;
+        return false;
+    }
+
+    function DownLoadSampleActivity() {
+        //public ActionResult GetMapppingCount(string CompIDS,string sitesIDs,string ActIds,string ContractorIds)
+        var URL = '@Url.RouteUrl("DownloadSampleActivity")'
+        window.location = URL;
+        return false;
+    }
+
+    //Handlers Section
+
+
+    var ViewHandler = function ViewHandler(e) {
+        e.preventDefault();
+        var dataItem = {};
+        dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var ActivityID = dataItem.ActivityID;
+        $.post('@Url.RouteUrl("GetActivity")', { ActivityID: ActivityID, ActID: 0 }, function (response) {
+            //console.log(response);
+            if (response.IsSuccess) {
+                var data = JSON.parse(response.Data)[0];
+                $("#lblAct").html(data.ActNm);
+                $("#lblName").html(data.Name);
+                $("#lblFrequency").html(data.FrequencyNm);
+                $("#lblDOM").html(data.Date_Of_Month);
+                $("#lblMonth").html(data.MonthNm);
+                $("#lblYear").html(data.Year);
+                $("#lblRemindDays").html(data.RemindDays);
+                var IsAct = data.IsAct;
+                (IsAct == 1) ? $('#lblIsAct').html('Active') : $('#lblIsAct').html('In Active');
+                HistoryGridData(ActivityID);
+            }
+            else {
+                alert("Error Occured infetching data");
+            }
+        });
+    }
+    var EditHandler = function EditHandler(e) {
+        e.preventDefault();
+        var dataItem;
+        dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var ActivityID = dataItem.ActivityID;
+        $.post('@Url.RouteUrl("GetActivity")', { ActivityID: ActivityID, ActID: 0 }, function (response) {
+            //console.log(response);
+            if (response.IsSuccess) {
+                var data = JSON.parse(response.Data)[0];
+                $("#Act").val(data.Act);
+                $("#Name").val(data.Name);
+                $("#Frequency").val(data.Frequency);
+                $("#Date_Of_Month").val(data.Date_Of_Month);
+                $("#Month").val(data.Month);
+                $("#Year").val(data.Year);
+                $("#RemindDays").val(data.RemindDays);
+                $("#ActivityID").val(data.ActivityID);
+                var IsAct = data.IsAct;
+                (IsAct == 1) ? $('#IsAct').prop('checked', true) : $('#IsAct').prop('checked', false);
+                $("#btnSubmit").val("Update");
+                var dialog = $("#myModal").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    title: "Activity Master",
+                    width: 909,
+                    closeText: ""
+                });
+                dialog.dialog("open");
+            }
+            else {
+                alert("Error Occured in fetching data");
+            }
+        });
+        return false;
+    }
+    var DeleteHandler = function DeleteHandler(e) {
+        alert("Delete");
+        return false;
+    }
+
+    function DownLoadAllMapping() {
+        //public ActionResult GetMapppingCount(string CompIDS,string sitesIDs,string ActIds,string ContractorIds)
+        var URL = '@Url.RouteUrl("DownloadAllMapppingActivity")'
+        window.location = URL;
+        return false;
+    }
+</script>
+
+
+
+

@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ACT | @ViewBag.Title</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.png">
+    @Styles.Render("~/Content/CommanCss")
+</head>
+<body>
+    <header class="navbar-fixed-top">
+        <div class="top-header container-fluid">
+            <div class="container">
+                <div class="col-xs-12 col-sm-4 col-md-5">
+                    <div class="actlogo">
+                        <a href="javascript:void(0)">
+                            @{ 
+                                string Logo = ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).Logo;
+                            }
+                            <img src="~/Content/images/@Logo" class="img-responsive" alt="logo"> 
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-8 col-md-7">
+                    <div class="var-list">
+                        <ul class="nav pull-right">
+                            <li class="supt">
+                                @{
+                                    int Role = ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).Role;
+                                    if (Role == 18 || Role == 19)
+                                    {
+                                        <a href="@Url.RouteUrl("QuickStart")"><span><img src="../images/qck-st.png" class="img-responsive"></span></a>
+                                    }
+                                }
+
+                                @*<span><img src="../images/qck-st.png" class="img-responsive"></span>*@
+                            </li>
+                            <li>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle login-link" type="button" data-toggle="dropdown">
+                                        <img src="~/images/profile.png"> <span>
+                                            @if (Session["uBo"] != null)
+                                            {
+                                                string userName = ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).First_Name;
+                                                string userRole = ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UserRole;
+                                                @:Welcome <br>
+                                                <strong>
+                                                    @userName
+                                                </strong>
+                                            }
+
+                                        </span>
+                                        <span class="caret arow"></span>
+                                    </button>
+                                    <ul class="dropdown-menu menu-icons">
+                                        <li><a href="@Url.RouteUrl("UpdateProfile")"> <span class="glyphicon glyphicon-user pull-left"></span> <span class="fieldtxt">Profile</span> </a></li>
+                                        <li><a href="https://myedms.myndsolution.com/default.aspx" target="_blank"> <span class="glyphicon glyphicon-th-list pull-left"></span> <span class="fieldtxt">Old Data </span></a></li>
+                                        <li><a href="@Url.RouteUrl("ChangePassword")"> <span class="glyphicon glyphicon-lock pull-left"></span> <span class="fieldtxt">Change Password</span> </a></li>
+                                        <li><a href="@Url.RouteUrl("loginout")"> <span class="glyphicon glyphicon-log-out pull-left"></span> <span class="fieldtxt">Signout</span> </a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle login-link" type="button" data-toggle="dropdown">
+                                        <img src="~/images/profile.png"> <span>
+                                            Your Role
+                                            <br>
+                                            @if (Session["uBo"] != null)
+                                            {
+                                                string userRole = ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UserRole;
+                                                <strong>@userRole </strong>
+                                            }
+
+
+                                        </span>
+                                        <span class="caret arrow"></span>
+                                    </button>
+                                    @*<ul class="dropdown-menu menu-icons">
+                                            <li><a href="#"> <span class="glyphicon glyphicon-user pull-left"></span> <span class="fieldtxt">Admin</span> </a></li>
+                                            <li><a href="#"> <span class="glyphicon glyphicon-user pull-left"></span> <span class="fieldtxt">User</span> </a></li>
+                                        </ul>*@
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{Html.RenderAction("RenderMenu", "Menu", new { area = string.Empty });}
+    </header>
+    <section class="nvfixed">
+        <div class="container outercontainer">
+            @RenderBody()
+        </div>
+    </section>
+    <section id="footer">
+        <div class="container">
+            <p>@*© @System.DateTime.Now.Year copyrights by <a href="http://www.myndsolution.com/" target="_blank">Mynd Solution</a> - All rights reserved.*@</p>
+            <p>© Powered by Mynd Integrated Solutions  @System.DateTime.Now.Year copyrights - All rights reserved</p>
+        </div>
+    </section>
+</body>
+</html>
+
+@RenderSection("commanscript", required: false)
+@RenderSection("scripts", required: false)

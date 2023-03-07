@@ -1,0 +1,453 @@
+﻿
+@{
+    ViewBag.Title = "MappingPENew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/kendujs")
+@Styles.Render("~/Content/kenducss")
+<script src="~/Content/js/Utils.js"></script>
+
+<div class="maincontainer">
+
+    <div class="top_strap">
+        <div class="heading-title">
+            <h3 class="page-title">
+                Activity Mapping
+            </h3>
+        </div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row fullock">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="border-bottom:4px solid #ccc;">
+                <h3 class="sub-page-title">Filter</h3>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+
+                <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Company</label> </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                    @Html.DropDownList("ddlcompany", new SelectList(ViewBag.CompList, "Value", "Text"))
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    @*<input type="button" value="All" class="all_btn" />*@
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Site</label> </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn" id="dvSite">
+                    <select id="ddlSite">
+                        <option value="0">--Select--</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <input type="button" value="All" class="all_btn" id="btnAllSite" />
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Act</label> </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                    @Html.DropDownList("ddlAct", new SelectList(ViewBag.ActList, "Value", "Text"), new { @multiple = "multiple", @data_placeholder = "Select Act..." })
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <input type="button" value="All" class="all_btn" id="btnAllActs" />
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-4 col-md-4 mapload">
+                    <input type="button" id="btnShow" value="Show" class="button show_btn" />
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div id="dvdet" class="col-xs-12 col-sm-12 col-md-12" style="display:none;">
+        <div class="pull-right">
+            <input type="button" id="btnUpload" value="Submit" class="button upload_btn" />
+        </div>
+        <div id="dvgrid" style="margin-top:50px;"></div> 
+    </div>
+    <!-----------------end of popup model------------>
+</div>
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-4 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-2">
+                    <label id="lblTotSuccess" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-4">
+                    <label class="headtag">Total Duplicate</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-2">
+                    <label id="lblTotDuplicate" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-4 top_content">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-2">
+                    <label id="lblTotFailed" class="feedback_content"></label>
+                </div>
+                @*<div class="col-xs-12 col-sm-3 col-md-3">
+                    
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                  
+                </div>*@
+              
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var ObjSite = "";
+    var ObjActs = "";
+    var ObjContractor = "";
+    $(document).ready(function () {
+        $("#menu_2").addClass("active-menu");
+        $("#btnShow").bind("click", {}, GetMapping);
+        $("#btnUpload").bind("click", {}, btnSubmitClick);
+
+        $("#log").dialog({
+            autoOpen: false,
+            width: 500,
+            title: "Result",
+            closeText: ""
+        });
+       // $("#btnUploadOpen").click(btnUploadClick);
+        $("#ddlcompany").change(function () {
+            var Company = $(this).val();
+            BindSite(Company);
+        });
+
+        ObjActs = $("#ddlAct").kendoMultiSelect({
+            autoClose: false
+        }).data("kendoMultiSelect");
+
+       
+        $("#btnAllSite").click(SelectALLSites);
+        $("#btnAllActs").click(SelectALLActs);
+      //  $("#btnAllContracotor").click(SelectALLContractors);
+    });
+    function SelectALLSites() {
+        var multiSelect = $("#ddlSite").data("kendoMultiSelect");
+        var selectedValues = "";
+        var strComma = "";
+        for (var i = 0; i < multiSelect.dataSource.data().length; i++) {
+            var item = multiSelect.dataSource.data()[i];
+            selectedValues += strComma + item.SiteID;
+            strComma = ",";
+        }
+        multiSelect.value(selectedValues.split(","));
+    }
+
+    function SelectALLActs() {
+        var multiSelect = $("#ddlAct").data("kendoMultiSelect");
+        var selectedValues = "";
+        var strComma = "";
+        for (var i = 0; i < multiSelect.dataSource.data().length; i++) {
+            var item = multiSelect.dataSource.data()[i];
+            selectedValues += strComma + item.value;
+            strComma = ",";
+        }
+        multiSelect.value(selectedValues.split(","));
+    }
+    function BindSite(CompID) {
+        var Data = { CompID: CompID };
+        $.ajax({
+            type: "GET",
+            url: '@Url.RouteUrl("GetSiteOfCompPE")',
+            contentType: "application/json; charset=utf-8",
+            data: Data,
+            dataType: "json",
+            success: function (response) {
+                if (response.IsSuccess) {
+                    var res = response.Data;
+                    var data;
+                    //dvSite
+                    $("#dvSite").html("");
+                    var str = '<select id="ddlSite"   multiple="multiple" data-placeholder="Select site..." >' +
+                               '</select>';
+                    $("#dvSite").html(str);
+                    if (response.IsSuccess == true) {
+                        data = $.parseJSON(res);
+                    }
+                    else {
+                        data = { "Name": "-----Select-------", "SiteID": "0" };
+                    }
+                    ObjSite = $("#ddlSite").kendoMultiSelect({
+                        dataTextField: "Name",
+                        dataValueField: "SiteID",
+                        dataSource: data,
+                        autoClose: false
+                    }).data("kendoMultiSelect");
+                }
+                else {
+                    FailResponse(response);
+                }
+            },
+            error: function (data) {
+                alert("Please try again later!!! Error occured while  binding.");
+            }
+        });
+    }
+    var kgrdPE = "";
+    function GetMapping() {
+        var CompIDS = "0";
+        CompIDS = $("#ddlcompany").val();
+        if (CompIDS == "0") {
+            alert("Please select company");
+            return;
+        }
+        var sitesIDs = ObjSite.value() + "";
+        var ActIds = ObjActs.value() + "";
+
+        if (sitesIDs == "") {
+            alert("Please select site");
+            return;
+        }
+        if (ActIds == "") {
+            alert("Please select act");
+            return;
+        }
+        var Data = {  sitesIDs: sitesIDs, ActIds: ActIds };
+        $.ajax({
+            type: "GET",
+            url: '@Url.RouteUrl("GetMapppingPENew")',
+            contentType: "application/json; charset=utf-8",
+            data: Data,
+            dataType: "json",
+            success: function (response) {
+                $("#dvdet").show();
+                if (response.IsSuccess == true) {
+                    var Data = response.Data.split(",");
+                    var data = JSON.parse(response.Data);
+                    var Columns = data.columns;
+                    var js =JSON.parse( data.data);
+                    if (kgrdPE != "") {
+                        $('#dvgrid').kendoGrid('destroy').empty();
+                    }
+                    kgrdPE = $("#dvgrid").kendoGrid({
+                        dataSource: {
+                            data:js
+                            
+                        },
+                        dataBound: function (e) {
+                            var grid = e.sender;
+                            if (grid.dataSource.total() == 0)
+                            {
+                                var colCount = grid.columns.length;
+                                $(e.sender.wrapper)
+                                    .find('tbody')
+                                    .append('<tr class="kendo-data-row"><td colspan="' + colCount + '" class="no-data"><span style="margin-left:46%;">No data found.</span></td></tr>');
+                            }
+                        },
+                        columns:Columns,
+                       
+                        width: 900,
+                        height: 400,
+                        pageable: false,
+                        filterable: true,
+                        sortable: false,
+                        resizable: true,
+                       
+
+                    });
+
+                   
+                }
+                else {
+                    FailResponse(response);
+                }
+                
+            },
+            error: function (data) {
+                alert("Please try again later!!! Error occured while  binding.");
+            }
+        });
+        return false;
+    }
+
+    var TotSuccess = 0;
+    var TotDuplicate = 0;
+    var TotFailed = 0;
+    var CountTobeProcessed = 0;
+    var Processed = 0;
+    function btnSubmitClick()
+    {
+         TotSuccess = 0;
+         TotDuplicate = 0;
+         TotFailed = 0;
+        CountTobeProcessed = 0
+        Processed = 0;
+        GetCountGrid();
+        UploadMapping();
+      
+    }
+    function GetCountGrid()
+    {
+
+        var grddata = $("#dvgrid").data("kendoGrid").dataSource._data;
+        var grdfields = $("#dvgrid").data("kendoGrid").dataSource.options.fields;
+
+    
+        for (var i = 0 ; i < grddata.length; i++) {
+            for (var y = 0; y < grdfields.length; y++) {
+                if (grdfields[y].field != "Act" && grdfields[y].field != "Activity" && grdfields[y].field != "Frequency" && grdfields[y].field != "StartDate"
+                    && grdfields[y].field != "RemindDays") {
+                    var dataitem = grddata[i];
+                    if (dataitem[grdfields[y].field] == "1") {
+                        CountTobeProcessed += 1;
+                    }
+                }
+            }
+        }
+    }
+
+    function UploadMapping()
+    {
+        var grddata = $("#dvgrid").data("kendoGrid").dataSource._data;
+        var grdfields = $("#dvgrid").data("kendoGrid").dataSource.options.fields;
+        
+        CompID = $("#ddlcompany").val();
+      
+        for (var i = 0 ; i < grddata.length; i++)
+        {
+            for (var y = 0; y < grdfields.length; y++)
+            {
+                if (grdfields[y].field != "Act" && grdfields[y].field != "Activity" && grdfields[y].field != "Frequency" && grdfields[y].field != "StartDate"
+                    && grdfields[y].field != "RemindDays") {
+                    var dataitem = grddata[i];
+                    if (dataitem[grdfields[y].field] == "1") {
+                      
+                        var Act = dataitem["Act"];
+                        var Site = grdfields[y].field;
+                        var Activity = dataitem["Activity"];
+                        var StartDate = dataitem["StartDate"];
+                        var RemindDays = dataitem["RemindDays"];
+                        var Data = { CompID: CompID, Act: Act, Activity: Activity, StartDate: StartDate, RemindDays: RemindDays, Site: Site };
+                        $.ajax({
+                            type: "GET",
+                            url: '@Url.RouteUrl("UploadMappingPENew")',
+                            contentType: "application/json; charset=utf-8",
+                            data: Data,
+                            dataType: "json",
+                            success: function (response) {
+                                Processed += 1;
+                                if (response.IsSuccess == true) {
+                                    if (response.Message == "Success")
+                                    { TotSuccess += 1; }
+                                    else if (response.Message == "Duplicate")
+                                    { TotDuplicate += 1; }
+                                }
+                                else {
+                                    TotFailed += 1;
+                                }
+
+                            },
+                            error: function (data) {
+                                Processed += 1;
+                                alert("Please try again later!!! Error occured while  binding.");
+                            },
+                            complete: function (data)
+                            {
+                                
+                                if(Processed == CountTobeProcessed)
+                                {
+                                    $("#lblTotSuccess").html(TotSuccess);
+                                    $("#lblTotDuplicate").html(TotDuplicate);
+                                    $("#lblTotFailed").html(TotFailed);
+                                    $("#log").dialog("open");
+                                }
+                               
+                            }
+                        });
+                    }
+                }
+            }
+        }       
+    }
+  
+    
+</script>
+<script>
+    $(function () {
+        $('#dvgrid').on('change', '.chkbx', function () {
+
+       
+            var checked = $(this).is(':checked');
+            var grid = $('#dvgrid').data().kendoGrid;
+            grid.closeCell();
+            var dataItem = grid.dataItem($(this).closest('tr'));
+            var col = $(this).closest('td');
+            grid.editCell(col);
+            if (checked == true)
+            {
+                dataItem.set(grid.columns[col.index()].field, 1);
+            }
+            else
+            {
+                dataItem.set(grid.columns[col.index()].field, 0);
+            }
+
+            grid.closeCell(col);
+
+        });
+    });
+
+    
+
+    $(function () {
+
+        $('#dvgrid').on('click', '.chkbxAll', function ()
+        {
+
+           var value =($(this).attr('chk'));
+           var checked = $(this).is(':checked');
+           if (checked == true) {
+               $(".chkbx[chk='" + value + "']").prop("checked", true);
+               var grid = $('#dvgrid').data().kendoGrid;
+               grid.closeCell();
+               var grddata = $("#dvgrid").data("kendoGrid").dataSource._data;
+
+               for (var i = 0 ; i < grddata.length; i++)
+               {
+                   var dataItem = grddata[i];
+                   var col = $(this).closest('td');
+                   grid.editCell(col);                
+                   dataItem.set(value, 1);
+               }
+           }
+           else {
+               $(".chkbx[chk='" + value + "']").prop("checked", false);
+               var grid = $('#dvgrid').data().kendoGrid;
+               grid.closeCell();
+               var grddata = $("#dvgrid").data("kendoGrid").dataSource._data;
+
+               for (var i = 0 ; i < grddata.length; i++) {
+                   var dataItem = grddata[i];
+                   var col = $(this).closest('td');
+                   grid.editCell(col);
+                   dataItem.set(value, 0);
+               }
+           }
+        
+        });
+
+
+    });
+</script>
+
+
+

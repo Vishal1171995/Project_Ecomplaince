@@ -1,0 +1,133 @@
+﻿@using Ecompliance.ViewModel
+@model  Ecompliance.ViewModel.TaskVM
+@{
+    ViewBag.Title = "Alert Document";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    span.k-datepicker
+        {
+            width: 350px !important;
+        }
+</style>
+<div>
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+                Alert Document
+            </h3>
+        </div>
+        <div class="clearfix"></div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="">
+            <div class="row top_content">
+                <p>Note: Field with <span>(*)</span> are mandatory </p>
+                @using (Ajax.BeginForm("Task", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage", OnBegin = "Validate", InsertionMode = InsertionMode.Replace }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col-xs-4 col-sm-2 col-md-2 allcreditionals">
+                        <label>Activity Type<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.HiddenFor(x=> x.DOCID,new { id="hdnDocID"})
+                        @Html.DropDownListFor(x => x.ActivityType, new List<SelectListItem>
+                                    {
+                                        new SelectListItem{Text="--Select--", Value="" },
+                                        new SelectListItem{Text="Contractor", Value="Contractor"},
+                                        new SelectListItem{Text="PE", Value="PE"}}
+                                    )
+                        @Html.ValidationMessageFor(m => m.ActivityType)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Company<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.CompanyID, new SelectList(Model.CompanyList, "Value", "Text"), new { id = "ddlCompany" })
+
+                        @Html.ValidationMessageFor(m => m.CompanyID)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Site<sup>*</sup> </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                        @Html.DropDownListFor(x => x.SiteID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a company --", Value = "0" } }, new { id = "ddlSite" })
+                        @Html.ValidationMessageFor(m => m.SiteID)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals modal" id="dvContracotrlbl">
+                        <label>Contractor<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals modal" id="dvContracotr">
+                        @Html.DropDownListFor(x => x.ContractorID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a site --", Value = "0" } }, new { id = "ddlContractor" })
+                        @Html.ValidationMessageFor(m => m.ContractorID)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Act</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.ActID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a site --", Value = "0" } }, new { id = "ddlAct" })
+                        @Html.ValidationMessageFor(m => m.ActID)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label for="select">Activity<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.ActivityID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a act --", Value = "0" } }, new { id = "ddlActivity" })
+                        @Html.ValidationMessageFor(m => m.ActivityID)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Expiry Date<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextBoxFor(x => x.ExpiryDate, new { id = "txtExpiryDate" })
+                        @Html.ValidationMessageFor(m => m.ExpiryDate)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Remind Days<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextBoxFor(x => x.RemindDays, new { id = "txtRemindDays" })
+                        @Html.ValidationMessageFor(m => m.RemindDays)
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label for="select">Description</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextAreaFor(m => m.Creation_Desc, new { id = "txtCreationDesc" })
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Remarks</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextAreaFor(m => m.Creation_Remarks, new { id = "txtCreationRemarks" })
+                    </div>
+                    <div class="row extra">
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div class="reset_btn" align="right">
+                                <input type="reset" id="btnReset" value="Reset" class="button reset" />
+                                <input type="submit" value="Submit" class="button submit" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section commanscript {
+
+@Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    var DocID = '@ViewBag.DocID';
+
+    var GetMappedSiteUrl = '@Url.RouteUrl("GetMappedSite")';
+    var GetMappedActsUrl = '@Url.RouteUrl("GetMappedActs")';
+    var GetMappedContractorUrl = '@Url.RouteUrl("GetMappedContractor")';
+    var GetMappedActivityUrl = '@Url.RouteUrl("GetMappedActivity")';
+    var GetAsneededDocumentUrl = '@Url.RouteUrl("GetAsneededDocument")'
+    var ViewAsNeededUrl = '@Url.RouteUrl("ViewAsNeeded")';
+</script>
+@Scripts.Render("~/bundles/bndlTask")
+}

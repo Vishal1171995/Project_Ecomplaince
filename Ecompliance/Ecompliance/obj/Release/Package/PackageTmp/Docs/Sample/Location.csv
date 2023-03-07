@@ -1,0 +1,5 @@
+LocationID,State,Name,Status
+Display Name,Mandatory Fields,Data Type,Remarks
+State,Yes,Text,
+Name,Yes,Text,
+Status,Yes,Boolean,Possible values - 0 or 1

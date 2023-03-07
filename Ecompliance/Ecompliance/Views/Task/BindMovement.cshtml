@@ -1,0 +1,80 @@
+﻿@using System.Data;
+@model DataSet
+@{
+    Layout = null;
+}
+@{
+    DataTable dt = Model.Tables[0];
+    DataTable dtN = Model.Tables[1];
+}
+<div class="maintable table table-bordered portlet-title">
+    <div class="titlehead">
+        Movement Detail
+        <span class="tools pull-right">
+            <a href="javascript:;" data-toggle="collapse" data-target="#movement-detail"></a>
+        </span>
+    </div>
+    <div id="movement-detail" class="col-xs-12 col-sm-12 col-md-12">
+        <div class="maintop-heading col-xs-12 col-sm-12 col-md-12">
+            <div class="Cell col-xs-12 col-sm-1 col-md-1">S.No</div>
+            <div class="Cell col-xs-12 col-sm-2 col-md-2">User Name</div>
+            <div class="Cell col-xs-12 col-sm-1 col-md-1">Stage</div>
+            <div class="Cell col-xs-12 col-sm-2 col-md-2">In Date</div>
+            <div class="Cell col-xs-12 col-sm-2 col-md-2">Out Date</div>
+            <div class="Cell col-xs-12 col-sm-1 col-md-1">P.SLA</div>
+            <div class="Cell col-xs-12 col-sm-1 col-md-1">A. SLA</div>
+            <div class="Cell col-xs-12 col-sm-2 col-md-2">Remarks</div>
+        </div>
+        <div class="newbox col-xs-12 col-sm-12 col-md-12">
+            @{
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    int Row = i + 1;
+                    <div class="Cell col-xs-12 col-sm-1 col-md-1">@Row</div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2">@dt.Rows[i]["UserName"]</div>
+                    <div class="Cell col-xs-12 col-sm-1 col-md-1"> @dt.Rows[i]["AprStatus"] </div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2"> @dt.Rows[i]["InDate"]</div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2">@dt.Rows[i]["OutDate"]</div>
+                    <div class="Cell col-xs-12 col-sm-1 col-md-1">@dt.Rows[i]["PTat"]</div>
+                    <div class="Cell col-xs-12 col-sm-1 col-md-1">@dt.Rows[i]["ATat"]</div>
+               
+                    if (dt.Rows[i]["Remark"] != "" && dt.Rows[i]["Remark"].ToString().Length > 12)
+                    {
+                        string remarkCount = @dt.Rows[i]["Remark"].ToString().Substring(0, 12) + "...";
+                        <div class="Cell col-xs-12 col-sm-2 col-md-2">@remarkCount<a id="aVM1" href="javascript:void(0);" class="v_more pull-right" onclick="javascript:openRemarksPopup('@dt.Rows[i]["Remark"].ToString()');">View More >></a></div>
+                    }
+                    else
+                    {
+                        <div class="Cell col-xs-12 col-sm-2 col-md-2">@dt.Rows[i]["Remark"]</div>
+                    }
+
+                }
+                }
+        </div>
+    </div>
+</div>
+@if (dtN.Rows[0]["CurrStatus"].ToString() == "Pending with maker")
+{ 
+<div class="maintable table table-bordered portlet-title">
+    <div class="titlehead">
+        Future Movements
+        <span class="tools pull-right">
+            <a href="javascript:;" data-toggle="collapse" data-target="#future-detail"></a>
+        </span>
+    </div>
+    <div id="future-detail" class="col-xs-12 col-sm-12 col-md-12">
+        <div class="maintop-heading col-xs-12 col-sm-12 col-md-12">
+            <div class="Cell col-xs-12 col-sm-3 col-md-3"> S.No </div>
+            <div class="Cell col-xs-12 col-sm-3 col-md-3"> User to Action </div>
+            <div class="Cell col-xs-12 col-sm-3 col-md-3"> Stage </div>
+            <div class="Cell col-xs-12 col-sm-3 col-md-3"> SLA </div>
+        </div>
+        <div class="newbox col-xs-12 col-sm-12 col-md-12">
+            <div class="Cell col-xs-12 col-sm-3 col-md-3">1</div>
+            <div class="Cell col-xs-12 col-sm-3 col-md-3">@dtN.Rows[0]["Uname"].ToString()</div>
+            <div class="Cell col-xs-12 col-sm-3 col-md-3">Pending with checker</div>
+            <div class="Cell col-xs-12 col-sm-3 col-md-3">2</div>
+        </div>
+    </div>
+</div>
+}

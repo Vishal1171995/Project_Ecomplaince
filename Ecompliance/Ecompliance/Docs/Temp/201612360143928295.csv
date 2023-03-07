@@ -1,0 +1,8 @@
+CompID,Name,Code,Customer,Address,Contact_Person,Phone_Number,Email,Maker,Checker,IsAct,IsActNm,CustomerNm,MakerNm,CheckerNm
+"15","Ajeet Kumar Test","","3","","Kumar","","","3","3","0","InActive","Macmillan Publishers","Pallavi Test","Pallavi Test"
+"9","Alcatel Lucent India Limited","C0025","7","","Bhavesh Jha","8989898989","test@gmail.com","32","33","1","Active","Alcatel Lucent","maker","checker"
+"7","Cars24 Services Private Limited","C0027","2","","","0","test@gmail.com","32","33","1","Active","Cars24","maker","checker"
+"6","Fujifilm India Private Limited_update","C0028","19","","cvbcvbbv_update","0","test@gmail.com","32","33","1","Active","Feedback","maker","checker"
+"8","Macmillan Publishers India Pvt Ltd","C0026","3","","","0","test@gmail.com","32","33","1","Active","Macmillan Publishers","maker","checker"
+"12","Micromax Informatics Ltd","C0011","12","280 gurgaon","ABC","9999999999","test@gmail.com","32","33","1","Active","Micromax Informatics Ltd","maker","checker"
+"13","TestCompany","011","2","Gurgaon","Pallavi","9810383968","pal@gmail.com","32","33","1","Active","Cars24","maker","checker"

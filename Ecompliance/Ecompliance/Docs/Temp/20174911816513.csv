@@ -1,0 +1,5 @@
+ActID,Full_Name,Short_Name,Status,Response,Message
+"Display Name","Mandatory Fields","Data Type","Remarks","Failed","Invalid Data Format"
+"Full_Name","Yes","Text","","Failed","Invalid Data Format"
+"Short_Name","Yes","Text","","Failed","Invalid Data Format"
+"Status","Yes","Boolean","Possible values '- 0 or 1","Failed","Invalid Data Format"

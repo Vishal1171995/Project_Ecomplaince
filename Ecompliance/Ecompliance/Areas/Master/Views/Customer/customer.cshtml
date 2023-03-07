@@ -1,0 +1,244 @@
+﻿@using Ecompliance.Areas.Master.Models
+@model Customer
+@{
+    ViewBag.Title = "Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">Customer Master</h3>
+        </div>
+        <div class="pull-right" style="margin:0px;">
+            @{Html.RenderAction("RenderButton", "MasterUtils", new { ControllerName = "Customer", area = "Master" });}
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div>
+    <div>
+        <div id="Kgrid"></div>
+    </div>
+    <div id="dvCustomer" class="modal">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <p>Note: Field with <span>(*)</span> are mandatory </p>
+                @using (Ajax.BeginForm("CreateCustomer", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage", UpdateTargetId = "result", InsertionMode = InsertionMode.Replace }))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(m => m.CustID, new { id = "hdnCustID" })
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        <label>Name<sup>*</sup> </label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals ">
+                        @Html.TextBoxFor(m => m.Name, new { id = "txtName" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 allcreditionals">
+                        <label>Sub Domain<sup>*</sup> </label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals ">
+                        @Html.TextBoxFor(m => m.SubDomain, new { id = "SubDomain" })
+                        @Html.ValidationMessageFor(m => m.SubDomain, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-3 allcreditionals">
+                        Is Active
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-2 allcredit_checkbox section">
+                        @Html.CheckBoxFor(m => m.IsAct, new { id = "IsAct" })
+                        @Html.ValidationMessageFor(m => m.IsAct, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-xs-12 col-sm-8 col-md-5 allcreditionals">
+                      Enable IP Address
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-1 allcredit_checkbox section">
+                        @Html.CheckBoxFor(m => m.EableIPAddress, new { id = "EableIPAddress" })
+                        @Html.ValidationMessageFor(m => m.EableIPAddress, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="reset_btn" align="right">
+                            <input type="submit" value="Submit" id="btnSubmit" class="button submit" />
+                            <input type="reset" id="btnReset" value="Reset" class="button reset" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="Uploaddialog" class="col-xs-12 col-sm-12 col-md-12 modal">
+        <div class="">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <label>select a CSV file</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+                        <input type="file" name="files" id="files" target-control="hdnFileName">
+                        <input type="hidden" id="hdnFileName" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+
+                        <div class="reset_btn" align="right">
+                            <input type="button" value="Sample" id="btnDownloadSample" class="button download" onclick="DownloadSampleCustomer()" />
+                            <input type="button" value="Upload" id="btnUpload" class="button upload_btn" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvlog" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content">500</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content">500</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalpartial" class="modal">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs topheader-tab">
+            <li id="liDetails" class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+            <li id="liHistory"><a href="#tab_1_2" data-toggle="tab">History</a></li>
+        </ul>
+    </div>
+    <div class="row top_content tab-content">
+        <div class="tab-pane active" id="tab_1_1">
+            <div class="tabinner-content">
+                <div class="tabinner-content">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Name </label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblName" class="feedback_content"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Source </label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblSource" class="feedback_content"></label></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Sub Domain</label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblSubDomain" class="feedback_content"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Status</label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblIsAct" class="feedback_content"></label></div>
+                           
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">IP Address Enable</label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblIPAddressE" class="feedback_content"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-6 col-md-6"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_1_2">
+            <div class="tabinner-content">
+                <div id="GridHis" style="margin-top:20px; height:350px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvIPRang" class="col-xs-12 col-sm-12 col-md-12 modal" style="overflow:hidden;">
+    
+        <div class="reset_btn" align="right">
+            <input type="button" value="Add" id="btnAddIPRange" class="button submit" />
+        </div>
+   
+    <div class="row top_content tab-content">
+            <div id="grdIPRang" style="width:750px; height:350px;">
+            </div>
+    </div>
+</div>
+<div id="dialogIPRange" class="modal">
+    <div class="row top_content">
+        <div style="margin-top:15px;">
+            <div class="col-xs-4 col-sm-3 col-md-4 allcreditionals">
+                <label>IP Range<sup>*</sup></label>
+            </div>
+            <div class="col-xs-5 col-sm-4 col-md-5" style="padding-right: 0px;">
+                <input class="form-control" placeholder="xxx.xxx.xxx.xxx" id="txtIPRange" name="myTextBox" type="text" value="Enter IP Range" />
+                <span class="field-validation-valid text-danger" id="spnIPAdd"></span>
+            </div>
+            <div style="float: left; width: 61px;">
+                <input class="form-control" style="border-left: 0 !important;" id="txtIPEnd" name="myTextBox" type="text" />
+                <span class="field-validation-valid text-danger" id="spnIPEnd"></span>
+            </div>
+
+                @*<div class="col-xs-4 col-sm-2 col-md-2 allcreditionals">
+                <label>Is Active</label>
+            </div>
+            <div class="col-xs-3 col-sm-2 col-md-1">
+                <input id="chkIsAct"    type="checkbox" />
+            </div>*@
+            </div>
+        </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+        <div class="reset_btn" align="right">
+            <input type="submit" value="Submit" id="btnUpdateIPRange" class="button submit" />
+            <input type="reset" id="btnResetIP" value="Reset" class="button reset" />
+        </div>
+    </div>
+    <input id="hdnIPCustID"   type="hidden"  />
+    <input id="hdnTID" type="hidden" />
+</div>
+
+<div id="dvDelete" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="row top_content">
+        <div id="dvDeleteResponse">
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top:10px;">
+            <div class="btnReject" align="right">
+                @* <input type="submit" value="OK" id="btnDelete" class="button submit" />*@
+                <input type="submit" id="btnReject" class="btn btn-primary BtnWhiteLg BtnWidth99" value="Cancel" />
+                <input type="submit" id="btnDelete" class="btn btn-primary BtnBlueLg BtnWidth99" value="Delete" />
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var UploadCustomerUrl = '@Url.RouteUrl("UploadCustomer")';
+        var FilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+        var GetCustomerHistoryUrl = '@Url.RouteUrl("GetCustomerHistory")';
+        var GetCustomerUrl = '@Url.RouteUrl("GetCustomer")';
+        var DownLoadResultFileUrl = '@Url.RouteUrl("DownLoadResultFile")';
+        var DownloadSampleCustomerUrl = '@Url.RouteUrl("DownloadSampleCustomer")';
+        var DownloadAllMapppingCustomerUrl = '@Url.RouteUrl("DownloadAllMapppingCustomer")';
+        var GetIPRangeGridUrl = '@Url.RouteUrl("GetIPRangeGrid")';
+        var AddUpdateIPRangefURL = '@Url.RouteUrl("AddUpdateIPRange")';
+         var DeleteIPRangeURL = '@Url.RouteUrl("DeleteIPRange")';
+    </script>
+    @Scripts.Render("~/bundles/bndlCustomer")
+}

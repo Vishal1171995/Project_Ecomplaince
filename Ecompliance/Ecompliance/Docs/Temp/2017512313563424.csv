@@ -1,0 +1,9 @@
+DocID,Site,Contractor,Act,Activity,Frequency,StartDate,RemindDays,IsActive,Maker,Checker
+"50","Chennai","Contractor A","PF","Monthly Deposit","Monthly","02/01/2017","0","0","0","0"
+"51","Chennai","Contractor A","PF","PF ECR","Monthly","02/01/2017","0","0","0","0"
+"52","Chennai","Contractor A","PF","Registration","As Needed","02/01/2017","0","0","0","0"
+"53","Chennai","Contractor A","PF","Transfer","As Needed","02/01/2017","0","0","0","0"
+"56","Chennai","Contractor B","PF","Monthly Deposit","Monthly","02/01/2017","0","0","0","0"
+"57","Chennai","Contractor B","PF","PF ECR","Monthly","02/01/2017","0","0","0","0"
+"58","Chennai","Contractor B","PF","Registration","As Needed","02/01/2017","0","0","0","0"
+"59","Chennai","Contractor B","PF","Transfer","As Needed","02/01/2017","0","0","0","0"

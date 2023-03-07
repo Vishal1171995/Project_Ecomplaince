@@ -1,0 +1,2 @@
+ContractorID,Name,Company,Address,Contact_Person,Contact_Number,Email,PF_Code,ESI_Code,Status,Response,Message
+"0","Test Contractor","Mynd","","Ajeet","","","","","1","Failed","Please select a company. The Email field is not a valid e'-mail address."

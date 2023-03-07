@@ -1,0 +1,420 @@
+﻿@using Ecompliance.Models;
+@model  Ecompliance.Models.File
+@{
+    ViewBag.Title = "Task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/kendujs")
+@Styles.Render("~/Content/kenducss")
+@*@Styles.Render("~/Content/css")*@
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .k-autocomplete.k-state-default, .k-dropdown-wrap.k-state-default, .k-numeric-wrap.k-state-default, .k-picker-wrap.k-state-default {
+        width:361px;
+    }
+</style>
+<div>
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+                File document
+            </h3>
+        </div>
+        <div class="clearfix"></div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="">
+            <div class="row top_content">
+                <p>Note: Field with <span>(*)</span> are mandatory </p>
+                @using (Ajax.BeginForm("CreateDocFile", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage", OnBegin = "Validate", UpdateTargetId = "result", InsertionMode = InsertionMode.Replace }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col-xs-4 col-sm-2 col-md-2 allcreditionals">
+                        <label>Activity Type<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.ActivityType, new List<SelectListItem>
+                                    {
+                                        new SelectListItem{Text="--Select--", Value="" },
+                                        new SelectListItem{Text="Contractor", Value="Contractor"},
+                                        new SelectListItem{Text="PE", Value="PE"}}, new { id = "ddlActivityType" }
+                                    )
+                        @Html.ValidationMessageFor(m => m.ActivityType)
+                    </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Company</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @*<input type="text" id="txtCompany" />*@
+                            @Html.TextBoxFor(x => x.CompanyText, new { id = "txtCompany", placeholder = "Search for company" })
+                            @Html.HiddenFor(x => x.CompanyID, new { id = "hdnCompID" })
+                            @Html.ValidationMessageFor(m => m.CompanyText, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Site</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.SiteID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a company --", Value = "0" } }, new { id = "ddlSite" })
+                            @Html.ValidationMessageFor(m => m.SiteID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals modal" id="dvContracotrlbl">
+                            <label>Contractor<sup>*</sup></label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals modal" id="dvContracotr">
+                            @Html.DropDownListFor(x => x.ContractorID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a site --", Value = "0" } }, new { id = "ddlContractor" })
+                            @Html.ValidationMessageFor(m => m.ContractorID)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label for="select">Act</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.ActID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a site --", Value = "0" } }, new { id = "ddlAct" })
+                            @Html.ValidationMessageFor(m => m.ActID, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label for="select">Activity</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.ActivityID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a act --", Value = "0" } }, new { id = "ddlActivity" })
+
+                            @Html.ValidationMessageFor(m => m.ActivityID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Year</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.Year, new List<SelectListItem> { new SelectListItem { Text = "-- Select --", Value = "" } }, new { id = "ddlYear" })
+                            @Html.ValidationMessageFor(m => m.Year, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label for="select">Month</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.Month, new List<SelectListItem>
+                                {new SelectListItem{Text="--Select--", Value="" },
+                                new SelectListItem{Text="JUN", Value="JUN"},
+                                new SelectListItem{Text="FEB", Value="FEB"},
+                                new SelectListItem{Text="MAR", Value="MAR"},
+                                new SelectListItem{Text="APR", Value="APR"},
+                                new SelectListItem{Text="MAY", Value="MAY"},
+                                new SelectListItem{Text="JUN", Value="JUN"},
+                                new SelectListItem{Text="JULY", Value="JULY"},
+                                new SelectListItem{Text="AUG", Value="AUG"},
+                                new SelectListItem{Text="SEP", Value="SEP"},
+                                new SelectListItem{Text="OCT", Value="OCT"},
+                                new SelectListItem{Text="NOV", Value="NOV"},
+                                new SelectListItem{Text="DEC", Value="DEC"}})
+                            @Html.ValidationMessageFor(m => m.Month, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Attach File 1</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            <input name="files" type="file" id="fl1" target-control="hdnAttachment1" target-control-orignal="hdnAttachFileName1" />
+                            @Html.HiddenFor(m => m.Attachment1, new { id = "hdnAttachment1" })
+                            @Html.HiddenFor(m => m.Attachment1_FileName, new { id = "hdnAttachFileName1" })
+
+                            @Html.ValidationMessageFor(m => m.Attachment1, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label for="select">Attach File 2</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            <input name="files" type="file" id="fl2" target-control="hdnAttachment2" target-control-orignal="hdnAttachFileName2" />
+                            @Html.HiddenFor(m => m.Attachment2, new { id = "hdnAttachment2" })
+                            @Html.HiddenFor(m => m.Attachment2_FileName, new { id = "hdnAttachFileName2" })
+
+                            @Html.ValidationMessageFor(m => m.Attachment2, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Attach File 3</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            <input name="files" type="file" id="fl3" target-control="hdnAttachment3" target-control-orignal="hdnAttachFileName3" />
+                            @Html.HiddenFor(m => m.Attachment3, new { id = "hdnAttachment3" })
+                            @Html.HiddenFor(m => m.Attachment3_FileName, new { id = "hdnAttachFileName3" })
+
+                            @Html.ValidationMessageFor(m => m.Attachment1, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label for="select">Attach File 4</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            <input name="files" type="file" id="fl4" target-control="hdnAttachment4" target-control-orignal="hdnAttachFileName4" />
+                            @Html.HiddenFor(m => m.Attachment4, new { id = "hdnAttachment4" })
+                            @Html.HiddenFor(m => m.Attachment4_FileName, new { id = "hdnAttachFileName4" })
+                            @Html.ValidationMessageFor(m => m.Attachment4, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Attach File 5</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            <input name="files" type="file" id="fl5" target-control="hdnAttachment5" target-control-orignal="hdnAttachFileName5" />
+                            @Html.HiddenFor(m => m.Attachment5, new { id = "hdnAttachment5" })
+                            @Html.HiddenFor(m => m.Attachment5_FileName, new { id = "hdnAttachFileName5" })
+
+                            @Html.ValidationMessageFor(m => m.Attachment4, "", new { @class = "text-danger" })
+                        </div>
+
+                    <div class="row extra">
+                        <div class="row extra">
+                            <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                                <div class="reset_btn" align="right">
+                                    <input type="reset" id="btnReset" value="Reset" class="button reset" />
+                                    <input type="submit" value="Submit" class="button submit" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @*<input type="hidden" id="hdnCompID" value="0" />*@
+
+    <!-----------------end of popup model------------>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#hdnCompID").val("");
+        $("#ddlActivityType").change(function () {
+            var ActivityType = $("#ddlActivityType").val();
+            if (ActivityType == "Contractor") {
+                $("#dvContracotrlbl,#dvContracotr").removeClass("modal");
+            }
+            else {
+                $("#dvContracotrlbl,#dvContracotr").addClass("modal");
+                $("#ddlContractor").val("0")
+                $("#ddlContractor").next().removeClass("field-validation-error").addClass("field-validation-valid").html("");
+            }
+        })
+        getYear();
+        BindCompany();
+        FileUpload('#fl1,#fl2,#fl3,#fl4,#fl5','@Url.RouteUrl("FilesUpload")');
+        $("#ddlSite").change(function () {
+            BindActDropDown();
+            BindContractorDropDown();
+        });
+        $("#ddlContractor").change(function () {
+            BindActDropDown();
+            //BindActivityDropDown();
+        });
+        $("#ddlAct").change(function () {
+            BindActivityDropDown();
+        });
+    });
+
+    function SuccessMessage(e) {
+        HandleResponse(e, "", "btnReset", "");
+        $("#hdnAttachment1,#hdnAttachFileName1,#hdnAttachment2,#hdnAttachFileName2,#hdnAttachment3,#hdnAttachFileName3,#hdnAttachment4,#hdnAttachFileName4,#hdnAttachment5,#hdnAttachFileName5").val("");
+    }
+    function FailMessage() {
+        alert("Fail Post");
+    }
+    function Validate() {
+        var ActivityType = $("#ActivityType").val();
+        var Contractor = $("#ddlContractor").val();
+        if (ActivityType == "Contractor" && Contractor == "0") {
+            $("#ddlContractor").next().toggleClass("field-validation-error").toggleClass("field-validation-valid").html("Please select a contractor");
+            return false;
+        }
+        $("#ddlContractor").next().toggleClass("field-validation-error").toggleClass("field-validation-valid").html("");
+        return true;
+    }
+    function getYear() {
+        var date = new Date();
+        var CurrYear = date.getFullYear();
+        var PrevYear = date.getFullYear() - 1;
+        var PastYear = date.getFullYear() + 1;
+        $("#ddlYear").append($('<option></option>').val(PrevYear).html(PrevYear));
+        $("#ddlYear").append($('<option></option>').val(CurrYear).html(CurrYear));
+        $("#ddlYear").append($('<option></option>').val(PastYear).html(PastYear));
+    }
+
+    function BindCompany() {
+        $("#txtCompany").kendoAutoComplete({
+            dataTextField: "Name",
+            dataValueField: "CompID",
+            filter: "contains",
+            minLength: 3,
+            width:600,
+            select: function (ev) {
+                //var dataItem = this.dataItem(e.item.index());
+                var dataItem = this.dataItem(ev.item.index());
+                $('#hdnCompID').val(dataItem.CompID);
+                GetSite(dataItem.CompID);
+            },
+            dataSource: {
+                serverFiltering: true,
+                transport: {
+                    read: function (options) {
+                        var text = $("#txtCompany").val();
+                        var d = "{'str':'" + text + "'}";
+                        //var url1 = "NewMaster.aspx/GetAutoCompleteValue";
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: '@Url.RouteUrl("getAutoCompleteCompany")',
+                            global: false,
+                            data: d,
+                            dataType: "json",
+                            async: true,
+                            success: function (msg) {
+                                if (msg.IsSuccess) {
+                                    var Data = $.parseJSON(msg.Data);
+                                    options.success(Data);
+                                }
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+    function GetSite(CompID) {
+        var ddlSite = $("#ddlSite");
+        ddlSite.empty().append($('<option></option>').val("0").html("Please wait..."));
+        $("#ddlContractor").empty().append($('<option></option>').val("0").html("first select a site..."))
+        $("#ddlAct").empty().append($('<option></option>').val("0").html("first select a site..."))
+        $("#ddlActivity").empty().append($('<option></option>').val("0").html("first select a act..."))
+        if (CompID != "0") {
+            $.get('@Url.RouteUrl("GetMappedSite")', { CompanyID: CompID }, function (response) {
+                if (response.IsSuccess) {
+                    ddlSite.empty().append($('<option></option>').val("0").html("-- Select --"));
+                    var ds = $.parseJSON(response.Data);
+                    if (ds.length > 0) {
+                        $.each(ds, function () {
+                            ddlSite.append($('<option></option>').val(this.SiteID).html(this.Name));
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            ddlSite.html('').append($('<option></option>').val("0").html("-- first select a company --"));
+        }
+    }
+    function BindActDropDown() {
+        var CompID = $('#hdnCompID').val();
+        var ContractorID = $("#ddlContractor").val();
+        var SiteID = $("#ddlSite").val();
+        var ddlAct = $("#ddlAct");
+        $("#ddlActivity").empty().append($('<option></option>').val("0").html("first select a act..."))
+        if (CompID != "0" && SiteID != "0") {
+            $.get('@Url.RouteUrl("GetMappedActs")', { CompID: CompID, ContractorID: ContractorID, SiteID: SiteID }, function (response) {
+                if (response.IsSuccess) {
+                    ddlAct.empty().append($('<option></option>').val("0").html("-- Select --"));
+                    var ds = $.parseJSON(response.Data);
+                    if (ds.length > 0) {
+                        $.each(ds, function () {
+                            ddlAct.append($('<option></option>').val(this.ActID).html(this.Name));
+                        });
+                    }
+                    else {
+                        ddlAct.empty().append($('<option></option>').val("0").html("-- Select --"));
+                    }
+                }
+            });
+        }
+        else {
+            ddlAct.empty().append($('<option></option>').val("0").html("first select a site..."));
+        }
+    }
+
+    function BindContractorDropDown() {
+        var CompID = $('#hdnCompID').val();
+        var SiteID = $("#ddlSite").val();
+        var ddlContractor = $("#ddlContractor");
+        if (CompID != "0" && SiteID != "0") {
+            $.get('@Url.RouteUrl("GetMappedContractor")', { CompID: CompID, SiteID: SiteID }, function (response) {
+                if (response.IsSuccess) {
+                    ddlContractor.empty().append($('<option></option>').val("0").html("-- Select --"));
+                    var ds = $.parseJSON(response.Data);
+                    if (ds.length > 0) {
+                        $.each(ds, function () {
+                            ddlContractor.append($('<option></option>').val(this.ContractorID).html(this.Name));
+                        });
+                    }
+                    else {
+                        ddlContractor.empty().append($('<option></option>').val("0").html("-- Select --"));
+                    }
+                }
+            });
+        }
+        else {
+            ddlContractor.empty().append($('<option></option>').val("0").html("first select a site..."));
+        }
+    }
+
+    function BindActivityDropDown() {
+        var CompID = $('#hdnCompID').val();
+        var ContractorID = $("#ddlContractor").val();
+        var SiteID = $("#ddlSite").val();
+        var ActID = $("#ddlAct").val();
+        var ddlActivity = $("#ddlActivity");
+
+        if (CompID != "0" && SiteID != "0" && ActID !="0") {
+            $.get('@Url.RouteUrl("GetMappedActivity")', { CompanyID: CompID, ContractorID: ContractorID, SiteID: SiteID, ActID: ActID }, function (response) {
+                if (response.IsSuccess) {
+                    ddlActivity.empty().append($('<option></option>').val("0").html("-- Select --"));
+                    var ds = $.parseJSON(response.Data);
+                    if (ds.length > 0) {
+                        $.each(ds, function () {
+                            ddlActivity.append($('<option></option>').val(this.ActivityID).html(this.Name));
+                        });
+                    }
+                    else {
+                        ddlActivity.empty().append($('<option></option>').val("0").html("-- Select --"));
+                    }
+                }
+            });
+        }
+        else {
+            ddlActivity.empty().append($('<option></option>').val("0").html("first select a act..."));
+        }
+    }
+</script>
+
+@*<script type="text/javascript">
+    $("#fl1").kendoUpload({
+        async: {
+            saveUrl: "@Url.RouteUrl("Files")",
+        removeUrl: "remove",
+        autoUpload: true
+    },
+        multiple: false,
+    success: onSuccess,
+    remove: onRemove,
+    showFileList: false
+    });
+    function onSuccess(e) {
+        if (e.operation == 'upload') {
+            var responseData = e.response;
+            if (responseData.Success == true) {
+                var Filename = (responseData.Result);
+                alert(Filename);
+                
+            }
+            else {
+                $(".k-upload-files.k-reset").find("li").remove();
+                $("#hdnFile").val("")
+                alert(responseData.Message);
+            }
+        }
+    }
+    function onError(e) {
+        $(".k-upload-files.k-reset").find("li").remove();
+    }
+    function onRemove(e) {
+        $(".k-upload-files.k-reset").find("li").remove();
+        $("#hdnFile").val("")
+    }
+
+</script>*@

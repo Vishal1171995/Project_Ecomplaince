@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+@{
+    ViewBag.Title = "exception";
+    Layout = null;
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ACT | @ViewBag.Title</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.png">
+    @Styles.Render("~/Content/CommanCss")
+</head>
+<body>
+    <div class="top-header container-fluid">
+        <div class="container">
+            <div class="col-xs-12 col-sm-12 col-md-10">
+                <div class="note-msg mg-0">Your Account is not configured to run on your current IP. </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-2">
+                    <div class="pull-right mg-top15">
+                        <a href="@Url.RouteUrl("Defaultloginview")" class="btn btn-primary" >Back To Home</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container outercontainer">
+            <div class="outercontainer">
+                <img class="img-responsive" src="~/Content/images/unauthorizedip.png">
+            </div>
+        </div>
+    </section>
+    <section id="footer">
+        <div class="container">
+            <p>@*© @System.DateTime.Now.Year copyrights by <a href="http://www.myndsolution.com/" target="_blank">Mynd Solution</a> - All rights reserved.*@</p>
+            <p>© Powered by Mynd Integrated Solutions  @System.DateTime.Now.Year copyrights - All rights reserved</p>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "MappingPE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="maincontainer">
+
+    <div class="top_strap">
+        <div class="heading-title">
+            <h3 class="page-title">
+                Activity Mapping 
+            </h3>
+        </div>
+        <div style="margin:0px 0px 10px;"></div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row fullock">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="border-bottom:4px solid #ccc;">
+                <h3 class="sub-page-title">Filter</h3>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+
+                <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Company</label> </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                    @Html.DropDownList("ddlcompany", new SelectList(ViewBag.CompList, "Value", "Text"))
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    @*<input type="button" value="All" class="all_btn" />*@
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Site</label> </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn" id="dvSite">
+                    <select id="ddlSite">
+                        <option value="0">--Select--</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <input type="button" value="All" class="all_btn" id="btnAllSite" />
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 singleblock">
+                <div class="col-xs-12 col-sm-3 col-md-2 mappingbtn"> <label>Act</label> </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 mappingbtn">
+                    @Html.DropDownList("ddlAct", new SelectList(ViewBag.ActList, "Value", "Text"), new { @multiple = "multiple", @data_placeholder = "Select Act..." })
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <input type="button" value="All" class="all_btn" id="btnAllActs" />
+                </div>
+            </div>
+          
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-4 col-md-4 mapload">
+                    <input type="button" id="btnShow" value="Show" class="button show_btn" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row fullock trackmap" id="dvDetails" style="display:none;">
+            <div class="col-xs-12 col-sm-12 col-md-12" style="border-bottom:4px solid #ccc;">
+                <h3 class="sub-page-title">Request</h3>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 mapbtn">
+                <div class="trackloc">
+                    Total Activities <br><a id="anchALLTaskDownload" href="#" onclick="DownLoadAllMapping();"><span id="spnTotalRecord"></span></a><span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">Total possible scheduled task</div></span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 mapbtn">
+                <div class="trackloc">
+                    Scheduled <br><a id="DownLoadAllScheduled" href="#" onclick="DownLoadAllScheduled();"> <span id="spnTotalSchTask"></span></a> <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">Total active scheduled task</div></span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 mapbtn">
+                <div class="trackloc">
+                    Unscheduled <br><a id="DownLoadAllUnScheduled" href="#" onclick="DownLoadAllUnScheduled();"> <span id="spnTotalUnSchTask"></span> </a><span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">Total Unscheduled task</div></span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 mapbtn">
+                <div class="trackloc">
+                    In-Active scheduled <br><a id="DownLoadAllInActive" href="#" onclick="DownLoadAllInActive();"> <span id="spnTotalInActSchTask"></span></a> <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">Total in active shceduled task</div></span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div id="link" class="col-xs-12 col-sm-4 col-md-4 mapload">
+                    <input type="button" value="Upload" class="button upload_btn" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" class="col-xs-12 col-sm-12 col-md-12 modal">
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <label>select a CSV file</label>
+                </div>
+                <div class="col-xs-12 col-sm-7 col-md-8">
+                    <input type="file" name="files" id="files" target-control="hdnFIleName">
+                    @*<div class="demo-hint">You can only upload <strong>CSV</strong> files.</div>*@
+                    <input type="hidden" id="hdnFIleName"/>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                    <div class="reset_btn" align="right">
+                        <input type="submit" value="Submit" id="tbnUpload" class="button submit" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-----------------end of popup model------------>
+</div>
+
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content"></label>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var FilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+        var GetSiteOfCompPEUrl = '@Url.RouteUrl("GetSiteOfCompPE")';
+        var GetMapppingCountPEUrl = '@Url.RouteUrl("GetMapppingCountPE")';
+        var DownloadAllMapppingPEUrl = '@Url.RouteUrl("DownloadAllMapppingPE")';
+        var DownloadAllScheduledPEUrl = '@Url.RouteUrl("DownloadAllScheduledPE")';
+        var DownloadAllUnScheduledPEUrl = '@Url.RouteUrl("DownloadAllUnScheduledPE")';
+        var DownloadAllInActivePEUrl = '@Url.RouteUrl("DownloadAllInActivePE")';
+        var DownLoadResultFilePEUrl = '@Url.RouteUrl("DownLoadResultFilePE")';
+        var UploadMappingPEUrl = '@Url.RouteUrl("UploadMappingPE")';
+    </script>
+    @Scripts.Render("~/bundles/bndlMappingpe")
+}
+

@@ -1,0 +1,6 @@
+CustID,Name,Code,SubDomain,Status
+Display Name,Mandatory Fields,Data Type,Remarks,
+Name,Yes,Text,,
+Code,No,Text,Combination of alphabets and digits,
+SubDomain,Yes,Text,,
+Status,Yes,Boolean,Possible values - 0 or 1,

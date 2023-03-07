@@ -1,0 +1,6 @@
+StateID,Country,Name,Geofence,Status
+Display Name,Mandatory Fields,Data Type,Remarks,
+Country,Yes,Text,,
+Name,Yes,Text,,
+Geofence,No,Text,Numeric digits seperated by a comma,
+Status,Yes,Boolean,Possible values - 0 or 1,

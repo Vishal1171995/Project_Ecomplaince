@@ -1,0 +1,380 @@
+﻿@model Tuple<Ecompliance.Models.Task, Ecompliance.ViewModel.TaskVM>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ACT | Task Details</title>
+    @Styles.Render("~/Content/CommanCss")
+    <style>
+        .k-filedelete {
+            background-image: url(../../images/close.png) !important;
+            background-repeat: no-repeat;
+            background-position: left center;
+            width: 25px;
+            height: 28px;
+        }
+
+        .k-filedownload {
+            background-image: url(../../images/download.png) !important;
+            background-repeat: no-repeat;
+            background-position: left center;
+            width: 25px;
+            height: 28px;
+        }
+
+        .k-grid-Download {
+            min-width: 25px;
+        }
+
+        .k-grid tbody .k-button, .k-ie8 .k-grid tbody button.k-button {
+            min-width: 25px;
+        }
+
+        span.k-datepicker {
+            width: 300px !important;
+        }
+
+        .k-grid tr td, .k-pivot-layout .k-grid tr td {
+            border-bottom-width: 1px !important;
+            border-style: solid !important;
+            vertical-align: middle !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container-fluid detail-straptop">
+            <div class="col-xs-12 col-sm-2 col-md-4">
+                <div class="actlogo">
+                    <a href="javascript:void(0)"><img src="~/Content/images/a8.png" class="img-responsive" alt="logo"> </a>
+                    @*<a href="javascript:void(0)"><img src="~/Content/images/myndlogo.png" class="img-responsive" alt="logo"> </a>*@ @*<span class="hidden-sm">| Active Compliance Tracking </span>*@
+                </div>
+            </div>
+                <div class="col-xs-12 col-sm-7 col-md-4"></div>
+                <div class="col-xs-12 col-sm-7 col-md-4" style="text-align:right;">
+                    @if (Model.Item1.CreatedBy == ((Ecompliance.Areas.Admin.Models.User)Session["uBo"]).UID)
+                    {
+                        <ul class="detailtab-btn">
+                            <li id="link"><input id="btnEdit" type="button" value="Edit" class="docattach attach" style="width:80px;" /></li>
+                        </ul>
+                    }
+                </div>
+            </div>
+    </header>
+    <section style="margin:20px 0px;">
+        <div class="container-fluid">
+
+            <!--------------Details-------------->
+            <div class="container maincontainer">
+                <div class="top_strap">
+                    <div class="heading-title">
+                        <h3 class="page-title">As Needed Document -[System Document ID: @Model.Item1.DOCID] </h3>
+                    </div>
+                    <div style="margin:0px 0px 10px;"></div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <!-- table data starts --->
+                    @*<div class="">*@
+                    <!--BEGIN Table TABS-->
+                    <!-- BEGIN fixed table1-->
+                    <div class="maintable table table-bordered portlet-title">
+                        <div class="titlehead">
+                            General Detail
+                            <span class="tools pull-right">
+                                <a href="javascript:;" data-toggle="collapse" data-target="#general"></a>
+                            </span>
+                        </div>
+                        <div id="general" class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="newbox">
+                                <div class="Cell col-xs-12 col-sm-3 col-md-3">Created By</div>
+                                <div class="Cell col-xs-12 col-sm-3 col-md-3">@Model.Item1.CreatedByText</div>
+                                <div class="Cell col-xs-12 col-sm-3 col-md-3">Created Date</div>
+                                <div class="Cell col-xs-12 col-sm-3 col-md-3">@Model.Item1.CreatedDate</div>
+
+                                <div class="Cell col-sm-3 col-md-3">Current Status</div>
+                                <div class="Cell col-sm-3 col-md-3"></div>
+                                <div class="Cell col-sm-3 col-md-3">Activity Type</div>
+                                <div class="Cell col-sm-3 col-md-3">@Model.Item1.ActivityType</div>
+
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Company</div>
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Company</div>
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Site</div>
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Site</div>
+
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Act</div>
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Act</div>
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Activity</div>
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.Activity</div>
+
+                                <div class="Cell col-sm-3 col-md-3">Contractor</div>
+                                <div class="Cell col-sm-3 col-md-3">@Model.Item1.Contractor</div>
+                                <div class="Cell col-sm-3 col-md-3">Activity Completion Date</div>
+                                <div class="Cell col-sm-3 col-md-3"></div>
+
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">Expiry Date</div>
+                                <div class="Cell col-sm-3 col-md-3 label-success badge-success diff-col">@Model.Item1.ExpiryDate</div>
+                                <div class="Cell col-sm-3 col-md-3">Description</div>
+                                <div class="Cell col-sm-3 col-md-3">@Model.Item1.Creation_Desc</div>
+
+                                @*<div class="Cell">Maker Remarks</div>
+                                    <div class="Cell">@Model.Item1.MakerRemarks</div>
+                                    <div class="Cell">Checker</div>
+                                    <div class="Cell">@Model.Item1.Checker</div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="maintable table table-bordered portlet-title">
+                        <div class="titlehead">
+                            As Needed History
+                            <span class="tools pull-right">
+                                <a href="javascript:;" data-toggle="collapse" data-target="#movement-detail"></a>
+                            </span>
+                        </div>
+                        <div id="movement-detail" class="col-xs-12 col-sm-12 col-md-12">
+                            <div id="dvKgridHistory" style="width:1237px;"></div>
+                        </div>
+                    </div>
+                <!-----------------end of popup model1------------>
+            </div>
+
+            <!-----------------end of popup model2------------>
+        </div>
+        <!-- POPUP FORM SAMITA ENDS -->
+        </div>
+    </section>
+
+    <footer>
+        <section id="footer">
+            <div class="container">
+                <p>2016 &copy; by <a href="#" target="_blank">Mynd Solution</a> - All rights reserved.</p>
+            </div>
+        </section>
+    </footer>
+</body>
+</html>
+@*============Edit Dialog HTML=================*@
+<div id="dvPopupEdit" class="col-xs-12 col-sm-12 col-md-12" style="display:none;">
+    <div class="">
+        <div class="row top_content">
+            <p>Note: Field with <span>(*)</span> are mandatory </p>
+            @using (Ajax.BeginForm("Task", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessMessage", OnFailure = "FailMessage", OnBegin = "Validate", InsertionMode = InsertionMode.Replace }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-xs-4 col-sm-2 col-md-2 allcreditionals">
+                    <label>Activity Type<sup>*</sup></label> 
+                </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.HiddenFor(x => x.Item2.DOCID, new { @Name = "DocID", id = "hdnDocID" })
+                        @Html.DropDownListFor(x => x.Item2.ActivityType, new List<SelectListItem>
+                                    {
+                                        new SelectListItem{Text="--Select--", Value="" },
+                                        new SelectListItem{Text="Contractor", Value="Contractor"},
+                                        new SelectListItem{Text="PE", Value="PE"}}, new { @Name = "ActivityType", id = "ddlActivityType" }
+                                    )
+                        @Html.ValidationMessage("ActivityType")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Company<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.Item2.CompanyID, new SelectList(Model.Item2.CompanyList, "Value", "Text"), new { @Name = "CompanyID", id = "ddlCompany" })
+
+                        @Html.ValidationMessage("CompanyID")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Site<sup>*</sup> </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                        @Html.DropDownListFor(x => x.Item2.SiteID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a company --", Value = "0" } }, new { @Name = "SiteID", id = "ddlSite" })
+                        @Html.ValidationMessage("SiteID")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals modal" id="dvContracotrlbl">
+                        <label>Contractor<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals modal" id="dvContracotr">
+                        @Html.DropDownListFor(x => x.Item2.ContractorID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a site --", Value = "0" } }, new {@Name= "ContractorID", id = "ddlContractor" })
+                        @Html.ValidationMessage("ContractorID")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Act</label><sup>*</sup>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.Item2.ActID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a site --", Value = "0" } }, new {@Name= "ActID", id = "ddlAct" })
+                        @Html.ValidationMessage("ActID")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label for="select">Activity<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.DropDownListFor(x => x.Item2.ActivityID, new List<SelectListItem> { new SelectListItem { Text = "-- First select a act --", Value = "0" } }, new {@Name= "ActivityID", id = "ddlActivity" })
+                        @Html.ValidationMessage("ActivityID")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Expiry Date<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextBoxFor(x => x.Item2.ExpiryDate, new {@Name= "ExpiryDate", id = "txtExpiryDate" })
+                        @Html.ValidationMessage("ExpiryDate")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Remind Days<sup>*</sup></label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextBoxFor(x => x.Item2.RemindDays, new {@Name= "RemindDays", id = "txtRemindDays" })
+                        @Html.ValidationMessage("RemindDays")
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label for="select">Description</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextAreaFor(m => m.Item2.Creation_Desc, new {@Name= "Creation_Desc", id = "txtCreationDesc" })
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                        <label>Remarks</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        @Html.TextAreaFor(m => m.Item2.Creation_Remarks, new {@Name= "Creation_Remarks", id = "txtCreationRemarks" })
+                    </div>
+                    <div class="row extra">
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div class="reset_btn" align="right">
+                                <input type="reset" id="btnReset" value="Reset" class="button reset" />
+                                <input type="submit" value="Submit" class="button submit" />
+                            </div>
+                        </div>
+                    </div>
+            }
+        </div>
+    </div>
+</div>
+
+@*============End Edit Dialog HTML=============*@
+@*Reconsider Dialog HTML===================*@
+<div id="dvReconsider" class="col-xs-12 col-sm-12 col-md-12" style="display:none;">
+    <div class="clearfix"></div>
+    <div class="row top_content">
+        <div class="col-xs-12 col-sm-12 col-md-12 pd">
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Remarks<sup>*</sup></label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                <input id="txtReconsiderRemarks" type="text">
+            </div>
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Upload</label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                <input type="file" name="fileToUpload" id="ReconsiderfileToUpload">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- BEGIN fixed table2-->
+            <div class="maintable table table-bordered">
+                <div class="titlehead">
+                    Attachments
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                    </div>
+                </div>
+                <div id="dvReconsiderAttachGrd">
+                </div>
+            </div>
+            <!-- END fixed table2-->
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+            <div class="chgecol" align="right">
+                <input type="submit" id="btnReconsider" value="Reconsider" class="button submit" />
+            </div>
+        </div>
+    </div>
+</div>
+@*End Reconsider Dialog HTML===============*@
+
+@*Approve Dialog HTML*@
+<div id="dvApprove" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="clearfix"></div>
+    <div class="row top_content">
+        <div class="col-xs-12 col-sm-12 col-md-12 pd">
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Remarks</label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                <input type="text" id="txtApproveRemarks" />
+            </div>
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Upload</label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                <input type="file" name="fileToUpload" id="ApprovefileToUpload">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- BEGIN fixed table2-->
+            <div class="maintable table table-bordered">
+                <div class="titlehead">
+                    Attachments
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                    </div>
+                </div>
+                <div id="dvApproveAttachGrd">
+                </div>
+            </div>
+            <!-- END fixed table2-->
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+            <div class="approvecol" align="right">
+                <input type="submit" id="btnApproveSubmit" value="Approve" class="button submit" />
+                <input type="reset" id="btnApproveReset" value="Reset" class="button reset" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="log" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="row top_content">
+        <div class="col-xs-12 col-sm-12 col-md-12 pd">
+            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                <label>Upload</label>
+            </div>
+            <div class="col-xs-6 col-sm-10 col-md-10 allcreditionals">
+                <input type="file" name="fileToUpload" id="fileToUpload">
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- BEGIN fixed table2-->
+            <div class="maintable table table-bordered">
+                <div class="titlehead">
+                    Attachments
+                </div>
+                <div id="dvAttachGrd">
+                </div>
+            </div>
+            <!-- END fixed table2-->
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    var docID ='@Model.Item1.DOCID';
+    var GetAsNeeded_HisUrl = '@Url.RouteUrl("GetAsNeeded_His")';
+    var GetMappedSiteUrl = '@Url.RouteUrl("GetMappedSite")';
+    var GetMappedActsUrl = '@Url.RouteUrl("GetMappedActs")';
+    var GetMappedContractorUrl = '@Url.RouteUrl("GetMappedContractor")';
+    var GetMappedActivityUrl = '@Url.RouteUrl("GetMappedActivity")';
+    var GetAsneededDocumentUrl = '@Url.RouteUrl("GetAsneededDocument")';
+</script>
+@Scripts.Render("~/bundles/bndlAsneededDetails")
+
+
+

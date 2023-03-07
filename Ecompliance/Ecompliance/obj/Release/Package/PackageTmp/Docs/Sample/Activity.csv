@@ -1,0 +1,8 @@
+ActivityID,Act,Name,Frequency,StartDate,RemindDays,Status
+Display Name,Mandatory Fields,Data Type,Remarks,,,
+Act,Yes,Text,,,,
+Name,Yes,Text,,,,
+Frequency,Yes,Text,,,,
+StartDate,Yes,Date,,,,
+RemindDays,Yes,numeric,,,,
+Status,Yes,Boolean,Possible values - 0 or 1,,,

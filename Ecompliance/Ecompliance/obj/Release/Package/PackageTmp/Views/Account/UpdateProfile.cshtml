@@ -1,0 +1,132 @@
+﻿@model Ecompliance.Areas.Admin.Models.User
+@{
+    ViewBag.Title = "Update Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Ajax.BeginForm("UpdateProfile", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container outercontainer">
+        <!--------------Details-------------->
+        <div class="">
+            <div class="top_strap">
+                <div class="pull-left">
+                    <h3 class="page-title">Update Profile <span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">You can update your profile!</div></span></h3>
+                </div>
+
+                <div class="clearfix"></div>
+                <div style="margin:0px 0px 10px;"></div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="">
+                    <!--BEGIN Form-->
+                    <div class="row top_content">
+
+                        <p>Note: Field with <span>(*)</span> are mandatory </p>
+                        @Html.HiddenFor(model => model.UID)
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>First Name</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                            @Html.TextBoxFor(x => x.First_Name)
+                            @Html.ValidationMessageFor(x => x.First_Name)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Last Name</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.TextBoxFor(x => x.Last_Name)
+                            @Html.ValidationMessageFor(x => x.Last_Name)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>User Name</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.TextBoxFor(x => x.User_Name)
+                            @Html.ValidationMessageFor(x => x.User_Name)
+                        </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Email id</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.TextBoxFor(x => x.Email)
+                            @Html.ValidationMessageFor(x => x.Email)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Contact Number</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.TextBoxFor(x => x.Contact_Number)
+                            @Html.ValidationMessageFor(x => x.Contact_Number)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label for="select">Role</label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.Role, new SelectList(Model.RoleList, "Value", "Text","0"), new { disabled = "disabled" })
+                            @Html.HiddenFor(model => model.Role)
+                        </div>
+                        @if (Model.Role == 18)
+                        {
+                            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                                <label for="select">Customer</label>
+                            </div>
+                            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                                @Html.DropDownListFor(x => x.Customer, new SelectList(Model.CustomerList, "Value", "Text", "0"), new { disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Customer)
+                            </div>
+                        }
+                        @if (Model.Role == 19)
+                        {
+                            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                                <label for="select">Company</label>
+                            </div>
+                            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                                @Html.DropDownListFor(x => x.Company, new SelectList(Model.CompanyList, "Value", "Text", "0"), new { disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Company)
+                            </div>
+                        }
+                        @if (Model.Role == 20)
+                        {
+                            <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                                <label for="select">Contractor</label>
+                            </div>
+                            <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                                @Html.DropDownListFor(x => x.Contractor, new SelectList(Model.ContractorList, "Value", "Text", "0"), new { disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Contractor);
+                            </div>
+                        }
+                        
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div class="reset_btn" align="right">
+                                @*<input id="btnReset" type="reset" value="Reset" class="button reset" />*@
+                                <input type="submit" value="Submit" class="button submit" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--END Form-->
+                </div>
+            </div>
+
+
+
+            <!-----------------end of popup model------------>
+
+
+        </div>
+        <!-- POPUP FORM SAMITA ENDS -->
+    </div>
+}
+@section commanscript {
+@Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    function OnSuccess(e) {
+        HandleResponse(e, "", "", "");
+    }
+</script>
+    }
+

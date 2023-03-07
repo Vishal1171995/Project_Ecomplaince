@@ -1,0 +1,353 @@
+﻿@model  Ecompliance.Areas.Master.Models.Company
+    @using System.Data;
+@{
+    ViewBag.Title = "Company";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<div class="container maincontainer">
+    @*Snap shot*@
+    <div class="hidden-xs col-sm-2 col-md-2 snapshot extra pull-left" style="box-shadow: 0 0 4px #ccc;height:450px;">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">Snap Shot</h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="margin:0px 0px 10px;"></div>
+        </div>
+        <!--accordian html starts -->
+        <div class="u-vmenu listvmenu scrollbox3">
+            <input type="hidden" id="hdnFilterCustID" value="0" />
+            <ul>
+                @{
+                    DataTable Ds = (DataTable)ViewBag.Ds;
+                    if (Ds.Rows.Count > 0)
+                    {
+
+                        <li><a id="aCompanyTotal" href="javascript:void(0);" onclick="javascript:FilterGrid(0,this.id)">ALL</a></li>
+                        for (int i = 0; i < Ds.Rows.Count; i++)
+                        {
+                            string id = "a" + @Ds.Rows[i]["CustID"];
+                            <li><a id="@id" href="javascript:void(0);" onclick="javascript:FilterGrid(@Ds.Rows[i]["CustID"],this.id)">@Ds.Rows[i]["Name"]</a></li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+        <!-- accordian html ends -->
+    </div>
+    @*Snap shot end*@
+    <div class="col-xs-12 col-sm-10 col-md-10 extra pull-right" style="box-shadow: 0 0 4px #ccc;">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">Company Master</h3>
+            </div>
+            <div class="pull-right" style="margin:0px;">
+                @{Html.RenderAction("RenderButton", "MasterUtils", new { ControllerName = "Company", area = "Master" });}
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+            </div>
+        </div>
+        <div id="dvCompanygrid"></div>
+    </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+        </div>
+        
+        <div id="dvAddUpdate" class="modal">
+            @using (Ajax.BeginForm("CreateCompany", new AjaxOptions
+            {
+                OnSuccess = "OnSuccess",
+                OnFailure = "OnFailure"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="clearfix"></div>
+                    <div class="row top_content">
+
+                        @Html.HiddenFor(x => x.CompanyID)
+                        <p>Note: Field with <span>(*)</span> are mandatory </p>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Customer </label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.DropDownListFor(x => x.Customer, new SelectList(Model.CustomerList, "Value", "Text", "0"))
+                            @Html.ValidationMessageFor(x => x.Customer)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Company Name </label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                            @Html.TextBoxFor(x => x.Name)
+                            @Html.ValidationMessageFor(x => x.Name)
+                        </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Company Code </label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                            @Html.TextBoxFor(x => x.CompanyCode)
+                        </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Contact Person</label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.TextBoxFor(x => x.Contact_Person)
+                            @Html.ValidationMessageFor(x => x.Contact_Person)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Phone Number </label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.TextBoxFor(x => x.Phone_Number)
+                            @Html.ValidationMessageFor(x => x.Phone_Number)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Email </label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.TextBoxFor(x => x.Email)
+                            @Html.ValidationMessageFor(x => x.Email)
+                        </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label> Maker1  </label> <sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.DropDownListFor(x => x.Maker, new SelectList(Model.UserList, "Value", "Text", "0"))
+                            @Html.ValidationMessageFor(x => x.Maker)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label> Checker1 </label><sup>*</sup>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.DropDownListFor(x => x.Checker, new SelectList(Model.UserList, "Value", "Text", "0"))
+                            @Html.ValidationMessageFor(x => x.Checker)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            @Html.LabelFor(m => m.Maker2)
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.Maker2, new SelectList(Model.UserList, "Value", "Text"), new { id = "ddlMaker2" })
+                            @Html.ValidationMessageFor(m => m.Maker2)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            @Html.LabelFor(m => m.Checker2)
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.Checker2, new SelectList(Model.UserList, "Value", "Text"), new { id = "ddlChecker2" })
+                            @Html.ValidationMessageFor(m => m.Checker2)
+                        </div>
+
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            @Html.LabelFor(m => m.Auditor1)
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.Auditor1, new SelectList(Model.AuditorList, "Value", "Text"), new { id = "ddlAuditor1" })
+                            @Html.ValidationMessageFor(m => m.Auditor1)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            @Html.LabelFor(m => m.Auditor2)
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                            @Html.DropDownListFor(x => x.Auditor2, new SelectList(Model.AuditorList, "Value", "Text"), new { id = "ddlAuditor2" })
+                            @Html.ValidationMessageFor(m => m.Auditor2)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals">
+                            <label>Address </label>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                            @Html.TextAreaFor(x => x.Address)
+                        </div>
+                        <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals ">
+                            Is Active
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4 allcredit_checkbox section ">
+                            @Html.CheckBoxFor(x => x.IsAct) @Html.ValidationMessageFor(x => x.IsAct)
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div class="reset_btn" align="right">
+                                <input type="submit" value="Submit" id="btnSubmit" class="button submit" />
+                                <input id="btnreset" type="reset" value="Reset" class="button reset" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div id="dvUpload" class="col-xs-12 col-sm-12 col-md-12 modal">
+            <div class="">
+                <div class="clearfix"></div>
+                <div class="row top_content">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <label>select a CSV file</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-8 allcreditionals">
+
+                            <input type="file" name="files" id="files" target-control="hdnFileName">
+                            <input type="hidden" id="hdnFileName" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                            <div class="reset_btn" align="right">
+                                <input type="button" value="Sample" id="btnDownloadSample" class="button download" onclick="DownLoadSampleCompany()" />
+                                <input type="button" value="Upload" id="btnUpload" class="button upload_btn" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="dvUploadLog" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row top_content">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-3 col-md-3 top_content">
+                    <label class="headtag">Total Success</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotSuccess" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label class="headtag">Total Loss</label>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <label id="lblTotFailed" class="feedback_content"></label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="reset_btn" align="right">
+                        <input type="hidden" id="hdnresultFile" />
+                        <input type="button" value="Download" onclick="DownLoadResultFile();" class="button download" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvCompanyDetail" class="col-xs-12 col-sm-12 col-md-12 modal">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs topheader-tab">
+            <li id="liDetails" class="active"><a href="#tab_1_1" data-toggle="tab">Detail</a></li>
+            <li id="liHistory"><a href="#tab_1_2" data-toggle="tab">History</a></li>
+        </ul>
+    </div>
+    <div class="row top_content tab-content">
+        <div class="tab-pane active" id="tab_1_1">
+            <div class="tabinner-content">
+                <div class="tabinner-content">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Name </label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblName" class="feedback_content"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Customer </label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblCustomer" class="feedback_content"></label></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Contact Person </label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblContact_Person" class="feedback_content"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Phone Number </label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblPhone_Number" class="feedback_content"></label></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Email </label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblEmail" class="feedback_content"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Maker</label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblMaker" class="feedback_content"></label></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Checker</label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblChecker" class="feedback_content"></label></div>
+                            <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Maker2</label></div>
+                            <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblMaker2" class="feedback_content"></label></div>
+
+                            <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Checker2</label></div>
+                            <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblChecker2" class="feedback_content"></label></div>
+                            <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Auditor1</label></div>
+                            <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblAuditor1" class="feedback_content"></label></div>
+
+                            <div class="Cell col-xs-12 col-sm-2 col-md-2"><label class="headtag">Auditor2</label></div>
+                            <div class="Cell col-xs-12 col-sm-4 col-md-4"><label id="lblAuditor2" class="feedback_content"></label></div>
+
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Address</label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblAddress" class="feedback_content"></label></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag">Status</label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"><label id="lblIsAct" class="feedback_content"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-2 col-md-2"><label class="headtag"></label></div>
+                            <div class="feedback-table col-xs-12 col-sm-4 col-md-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_1_2">
+            <div class="tabinner-content">
+                <div id="GridHis" style="margin-top:20px; width:1150px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvCompanyMapping" class="col-xs-12 col-sm-12 col-md-12 modal" style="overflow:hidden;">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs topheader-tab">
+            <li id="liComp" class="active"><a href="#tabdvPE" data-toggle="tab">Company</a></li>
+            <li id="liContractor"><a href="#tabdvCont" data-toggle="tab">Contractor</a></li>
+        </ul>
+    </div>
+    <div class="row top_content tab-content">
+        <div class="tab-pane active" id="tabdvPE">
+            <div id="grdPE" style="margin-top:20px; width:1100px; height:350px;">
+
+            </div>
+        </div>
+        <div class="tab-pane" id="tabdvCont">
+            <div id="grdCont" style="margin-top:20px; width:1100px; height:350px;">
+
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var UploadCompanyUrl = '@Url.RouteUrl("UploadCompany")';
+        var FilesUploadUrl = '@Url.RouteUrl("FilesUpload")';
+        var GetCompanyHistoryUrl = '@Url.RouteUrl("GetCompanyHistory")';
+        var GetCompanyUrl = '@Url.RouteUrl("GetCompany")';
+        var DownLoadResultFileUrl = '@Url.RouteUrl("DownLoadResultFile")';
+        var DownLoadSampleCompanyUrl = '@Url.RouteUrl("DownLoadSampleCompany")';
+        var GetCompanyMappingUrl = '@Url.RouteUrl("GetCompanyMapping")';
+        var GetContractorMappingUrl = '@Url.RouteUrl("GetContractorMapping")';
+
+        var DownloadAllMapppingCompanyUrl = '@Url.RouteUrl("DownloadAllMapppingCompany")';
+    </script>
+    @Scripts.Render("~/bundles/bndlacompany")
+<script id="template" type="text/x-kendo-template">
+    <a class="k-button" href="\#" onclick="return expandAll()"><span class="k-icon k-i-arrow-s"></span>Expand All</a>
+</script>
+<script id="template1" type="text/x-kendo-template">
+    <a class="k-button" href="\#" onclick="return collapseAll()"><span class="k-icon"></span>Collapse All</a>
+</script>
+<script id="expandallcont" type="text/x-kendo-template">
+    <a class="k-button" href="\#" onclick="return expandAllcont()"><span class="k-icon k-i-arrow-s"></span> Expand All</a>
+</script>
+<script id="collapseallcont" type="text/x-kendo-template">
+    <a class="k-button" href="\#" onclick="return collapseAllcont()"><span class="k-icon"></span>Collapse All</a>
+</script>
+}
+
+

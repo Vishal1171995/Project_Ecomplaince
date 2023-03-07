@@ -1,0 +1,2 @@
+CustID,Name,Code,Status,Response,Message
+"0","Test Customer 2","","1","Failed","Invalid Data Format"

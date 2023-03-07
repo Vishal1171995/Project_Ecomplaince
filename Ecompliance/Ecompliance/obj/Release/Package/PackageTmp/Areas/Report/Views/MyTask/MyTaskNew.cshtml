@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = ViewBag.Type;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/kendujs")
+    @Styles.Render("~/Content/kenducss")
+
+}
+<div class="container maincontainer">
+    <!--------------Details-------------->
+    <div class="">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">@ViewBag.Type</h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="margin:0px 0px 10px;"></div>
+        </div>
+        <div id="dvpgrid" style="text-align:center;">
+            <div id="ldrdvGrid" class="loader"></div>
+            <div id="dvgrid"></div>
+        </div>
+    </div>
+</div>
+    <style>
+        .k-grid-toolbar {
+            text-align :right;
+        }
+
+    </style>
+        <script>
+            var grid;
+            $(document).ready(function () {
+                BindGrid();
+            });
+            function BindGrid() {
+                var str = '{"Type":"' + '@ViewBag.Type' + '"}';
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.RouteUrl("MyTaskGrid")',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: str,
+                    success: function (data) {
+                        grid = $("#dvgrid").data("kendoGrid");
+                        if (grid != undefined) {
+                            grid.destroy(); // destroy the Grid
+                            $("#dvgrid").empty();
+                        }
+                        if (data.Data.length == 0) {
+                            //  alert("No Record Found!");
+                            // return;
+                        }
+
+                        else {
+                            var StrData = $.parseJSON(data.Data);
+                            $("#dvgrid").kendoGrid({
+                                dataSource: {
+                                    pageSize: 10,
+                                    data: StrData,
+                                },
+                                columns: [
+                                      {
+                                          command: [{ name: "View", text: "", imageClass: "k-icon k-view", click: ViewHandler, title: "View" }
+
+                                          ], title: "View", width: 60
+                                      },
+                                    { field: "CompName", title: "Company", width: 200 },
+                                    { field: "SiteName", title: "Site", width: 100 },
+                                    { field: "ActName", title: "Act", width: 100 },
+                                    { field: "ActivityName", title: "Activity", width: 150 },
+                                    { field: "ActivityType", title: "Type", width: 100 },
+                                    { field: "ContName", title: "Contractor", width: 150 },
+                                    { field: "CurrStatus", title: "Status", width: 150 },
+                                    { field: "Recievedon", title: "Received On", width: 150, type: "date", format: "{0:dd/MM/yyyy HH.mm.ss}" },
+                                    { field: "Expiry_Date", title: "Expiry Date", width: 150, type: "date", format: "{0:dd/MM/yyyy}" },
+                                    { field: "PendingDays", title: "Pending Days", width: 150 }
+                                ],
+                                //dataBound: function (e) {
+                                //    var grid = e.sender;
+                                //    if (grid.dataSource.total() == 0) {
+                                //        var colCount = grid.columns.length;
+                                //        $(e.sender.wrapper)
+                                //            .find('tbody')
+                                //            .append('<tr class="kendo-data-row"><td colspan="' + colCount + '" class="no-data"><span style="margin-left:46%;">No data found.</span></td></tr>');
+                                //    }
+
+                                //},
+                                height: 420,
+                                scrollable: true,
+                                resizable: true,
+                                reorderable: true,
+                                //groupable: true,
+                                sortable: true,
+                                pageable: true,
+                                noRecords: true,
+                                filterable: true,
+                                toolbar: [{ name: "excel" }],
+                                excel: {
+                                    fileName: "MyTask.xlsx",
+                                    filterable: true
+                                },
+                                //  columns: columns
+                            });
+                        }
+                    },
+                    complete: function (data) {
+                        if (filtersNeedToAct != null) {
+                            $("#dvgrid").data("kendoGrid").refresh();
+                            $("#dvgrid").data("kendoGrid").dataSource.filter(filtersNeedToAct);
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.error);
+                        $("#ldrdvGrid").hide();
+                    }
+
+                });
+
+            }
+            var ViewHandler = function ViewHandler(e) {
+                //alert("ViewDet");
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                var DocID = dataItem.DOCID;
+                var URL = '../../document/Task/' + DocID;
+                OpenWindow(URL);
+            }
+            var new_window;
+            function OpenWindow(url) {
+                var new_window = window.open(url, "List", "scrollbars=yes,resizable=yes,width=800,height=480");
+                return false;
+            }
+            var filtersNeedToAct;
+            function childClose() {
+                if ($('#dvgrid').length > 0)
+                    filtersNeedToAct = $("#dvgrid").data("kendoGrid").dataSource.filter();
+                BindGrid();
+            }
+        </script>

@@ -1,0 +1,185 @@
+﻿@using System.Data;
+@model DataTable
+@{
+    Layout = null;
+}
+@{
+    //Getting Menu list from model
+    DataTable dt = Model;
+    DataView dv = new DataView(dt);
+    //Filtering All Parent Lavel Menu
+    dv.RowFilter = "Pmenu=0";
+    dv.Sort = "DisplayOrder ASC";
+    DataTable dtP = dv.ToTable();
+}
+<div class="menu">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand" href="#"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="main-menu">
+                <ul class="nav navbar-nav listing">
+                    @for (int i = 0; i < dtP.Rows.Count; i++)
+                    {
+                        string Cssclass = "";
+                        string Route = "";
+                        if (!string.IsNullOrEmpty(Convert.ToString(dtP.Rows[i]["Image"])))
+                        {
+                            Cssclass = " " + dtP.Rows[i]["Image"].ToString();
+                        }
+                        if (!string.IsNullOrEmpty(Convert.ToString(dtP.Rows[i]["ROUTE"])))
+                        {
+                            try
+                            {
+                                Route = @Url.RouteUrl(Convert.ToString(dtP.Rows[i]["ROUTE"]));
+                            }
+                            catch
+                            {
+                                Route = "Javascript:void('0')";
+                            }
+
+                        }
+                        else
+                        {
+                            Route = "Javascript:void('0')";
+                        }
+                        <li class="dropdown">
+                            @if (@dtP.Rows[i]["Name"].ToString().Trim().ToUpper() == "HOME")
+                            {
+                                <a href="@Route" id="menu_@dtP.Rows[i]["TID"]">
+                                    <span class="glyphicon pull-left @Cssclass"></span>
+                                    <span class="fieldtxt">
+                                        @dtP.Rows[i]["Name"]
+                                        <b class="caret"></b>
+                                    </span>
+
+                                </a>
+                            }
+                            else
+                            { 
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="@Route" id="menu_@dtP.Rows[i]["TID"]">
+                                <span class="glyphicon pull-left @Cssclass"></span>
+                                <span class="fieldtxt">
+                                    @dtP.Rows[i]["Name"]
+                                    <b class="caret"></b>
+                                </span>
+
+                            </a>
+                            }
+                            @{
+                        DataView dvChild = new DataView(dt);
+                        int Mid = Convert.ToInt32(dtP.Rows[i]["Tid"]);
+                        dvChild.RowFilter = "Pmenu=" + Mid;
+                        dvChild.Sort = "DisplayOrder ASC";
+                        DataTable dtC = dvChild.ToTable();
+                            }
+                            @if (dtC.Rows.Count > 0)
+                            {
+                                <ul class="dropdown-menu multi-level dropdown-content" role="menu" aria-labelledby="dropdownMenu">
+                                    @for (int j = 0; j < dtC.Rows.Count; j++)
+                                    {
+                                        Cssclass = "";
+                                        if (!string.IsNullOrEmpty(Convert.ToString(dtC.Rows[j]["Image"])))
+                                        {
+                                            Cssclass = " " + dtC.Rows[j]["Image"].ToString();
+                                        }
+                                        if (!string.IsNullOrEmpty(Convert.ToString(dtC.Rows[j]["ROUTE"])))
+                                        {
+                                            try
+                                            {
+                                                Route = @Url.RouteUrl(Convert.ToString(dtC.Rows[j]["ROUTE"]));
+                                                //Route = Convert.ToString(dtC.Rows[j]["ROUTE"]);
+                                            }
+                                            catch
+                                            {
+                                                Route = "Javascript:void('0')";
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            Route = "Javascript:void('0')";
+                                        }
+
+                                        DataView dvChild2 = new DataView(dt);
+                                        int Mid2 = Convert.ToInt32(dtC.Rows[j]["Tid"]);
+                                        dvChild2.RowFilter = "Pmenu=" + Mid2;
+                                        dvChild2.Sort = "DisplayOrder ASC";
+                                        DataTable dtC2 = dvChild2.ToTable();
+                                        string arrowClass = "";
+                                        if (dtC2.Rows.Count > 0)
+                                        {
+                                            arrowClass = "dropdown-submenu";
+                                        }
+                                        <li class="@arrowClass ddsub">
+                                            <a href="@Route">
+                                                <span class="glyphicon pull-left @Cssclass"></span>
+                                                <span class="fieldtxt">
+                                                    @dtC.Rows[j]["Name"]
+                                                </span>
+                                            </a>
+                                            @if (dtC2.Rows.Count > 0)
+                                            {
+                                                <ul class="dropdown-menu">
+                                                    @for (int k = 0; k < dtC2.Rows.Count; k++)
+                                                    {
+                                                        Cssclass = "";
+                                                        if (!string.IsNullOrEmpty(Convert.ToString(dtC2.Rows[k]["Image"])))
+                                                        {
+                                                            Cssclass = "" + dtC2.Rows[k]["Image"].ToString();
+                                                        }
+                                                        if (!string.IsNullOrEmpty(Convert.ToString(dtC2.Rows[k]["ROUTE"])))
+                                                        {
+                                                            try
+                                                            {
+                                                                Route = @Url.RouteUrl(Convert.ToString(dtC2.Rows[k]["ROUTE"]));
+                                                                //Route = Convert.ToString(dtC.Rows[j]["ROUTE"]);
+                                                            }
+                                                            catch
+                                                            {
+                                                                Route = "Javascript:void('0')";
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            Route = "Javascript:void('0')";
+                                                        }
+
+                                                        <li>
+                                                            <a href="@Route">
+                                                                <span class="glyphicon pull-left @Cssclass"></span>
+                                                                <span class="fieldtxt">
+                                                                    @dtC2.Rows[k]["Name"]
+                                                                </span>
+                                                            </a>
+                                                        </li>
+
+                                                    }
+                                                </ul>
+                                            }
+
+                                        </li>
+
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+
+                </ul>
+
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+</nav>
+</div>

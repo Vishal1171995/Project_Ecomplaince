@@ -1,0 +1,85 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+    <title> Active Compliance Tracking </title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- http://davidbcalhoun.com/2010/viewport-metatag -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body class="animated fadeInDown">
+    <!-- possible classes: minified, no-right-panel, fixed-ribbon, fixed-header, fixed-width-->
+    <header id="header">
+        <div id="logo-group">
+            <a class="brand" href="/">
+                <img alt="Simpliance" src="~/Content/images/a8.png" style="margin-left:10px;">
+            </a>
+        </div>
+    </header>
+
+    <!-- START ROW -->
+    <section id="widget-grid" class="thtop">
+        <!-- NEW COL START -->
+        <link rel="stylesheet" type="text/css" href="~/Content/css/smart-forms.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/css/main.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/css/sstyle.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/css/jarvis-widgets.css" />
+
+
+        <article class="col-sm-12 col-md-2 col-lg-2"></article>
+        <article class="col-sm-12 col-md-8 col-lg-8">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header id="headerss">
+                    <span class="widget-icon"></span>
+                    <h3><strong>Registered Successfully</strong></h3>
+                </header>
+                <!-- widget div-->
+                <div>
+                    <!-- widget edit box -->
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="thank-pg"><img class="img-responsive" src="~/Content/images/thanku.png"></div>
+                            <div class="thank-pg">
+                                <img class="img-responsive" src="~/Content/images/msg-thanku.png">
+                                <div class="content-thank">Congratulations you have been registered successfully. Please check your mail for further activation of your account. </div>
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+        </article>
+        <article class="col-sm-12 col-md-2 col-lg-2"></article>
+
+        <!-- end widget -->
+        <!-- Modal -->
+        <!-- /.modal -->
+
+    </section>
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container">
+            <p style="color:#333;text-align:center;">@DateTime.Now.Year &copy; by <a href="#" target="_blank">Mynd Solution</a> - All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="~/Content/js/bootstrap.min.js"></script>
+</body>
+</html>

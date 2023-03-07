@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Document";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row inner-info">
+    <h2>Basic Details:</h2>
+    <p>Note: Field with <span>(*)</span> are mandatory </p>
+    <div>
+        <div class="col-xs-12 col-sm-12 col-md-12 extra">
+
+            <div class="row extra">
+                <div class="col-xs-4 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>First Name</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals ">
+                    <input name="first name" type="text" id="first name" /> <div class="required_field"><span class="sign">!</span>Fill the required field </div>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Last Name</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input name="last name" type="text" id="last name" />
+                </div>
+            </div>
+
+            <div class="row extra">
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Email id </label><span class="help-tip">?</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4  allcreditionals">
+                    <input name="email" type="text" id="email_id" />
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Password</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input name="password" type="password" id="password" />
+                </div>
+            </div>
+
+            <div class="row extra">
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label for="select">Gender</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <select>
+                        <option selected> Select Box </option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>D.O.B</label><sup>*</sup>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="date" name="bday" max="1979-12-31">
+                </div>
+            </div>
+
+            <div class="row extra">
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Uploader</label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Telephone</label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="tel" name="usrtel">
+                </div>
+            </div>
+
+            <div class="row extra">
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Age</label><span class="help-tip">?</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <input type="text" name="usrtel">
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Qualification</label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 listbox">
+                    <input type="checkbox" name="vehicle" value="Bike"> I have a bike<br>
+                    <input type="checkbox" name="vehicle" value="Car" checked="checked"> I have a car<br>
+                    <input type="checkbox" name="vehicle" value="Bike"> I have a bike<br>
+                    <input type="checkbox" name="vehicle" value="Car" checked="checked"> I have a car<br>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="row extra">
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Agree with our terms & conditions</label>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcredit_checkbox section ">
+                    <input type="checkbox" name="group2" id="checkbox-1">
+                    <label for="checkbox-1"><span class="checkbox"></span></label>
+                </div>
+
+                <div class="col-xs-6 col-sm-2 col-md-2 allcreditionals txtname">
+                    <label>Nationality</label><span class="help-tip">?</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                    <div class="pull-left radiobtn">
+                        <input type="radio" name="group1">
+                        <label for="radio-1"><span>Indian</span></label>
+                    </div>
+                    <div class="pull-left radiobtn">
+                        <input type="radio" name="group1">
+                        <label for="radio-2"><span>Other</span></label>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="row extra">
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="reset_btn" align="right">
+                            <input type="reset" value="Reset" class="button reset" />
+                            <input type="submit" value="Submit" class="button submit" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-----------------end of popup model------------>
+</div>
+

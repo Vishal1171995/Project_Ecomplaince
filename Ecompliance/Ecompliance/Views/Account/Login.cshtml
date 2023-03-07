@@ -1,0 +1,204 @@
+﻿@model  Ecompliance.ViewModel.LoginVM
+@using CaptchaMvc.HtmlHelpers;
+@using CaptchaMvc;
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+ <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>ACT | Login Page</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+    @Styles.Render("~/Content/logincss")
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="login">
+    <!-- BEGIN Top Header -->
+    <header>
+        <div class="logo-txt">
+            ACT
+        </div>
+    </header>
+    <!-- END Top Header -->
+    <!-- BEGIN LOGIN -->
+    <section>
+        <div class="content">
+            <!-- BEGIN LOGIN FORM -->
+            <form class="form-vertical login-form" action="/login" id="UserLoginForm" method="post" accept-charset="utf-8" autocomplete="off">
+                <div class="actlogo">
+                    @*<a href=""><img src="~/Content/images/a8.png" class="img-responsive" alt="logo"> </a>*@
+                </div>
+                @Html.AntiForgeryToken()
+                <h3 class="form-title">Login to your account</h3>
+                <div class="control-group">
+                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                    <label class="label control-label visible-ie8 visible-ie9">Username</label>
+                    <div class="controls">
+                        <div class="input-icon left">
+                            <i class="icon-user"></i>
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "m-wrap placeholder-no-fix", @placeholder = "Username", @name = "username", @autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.UserName)
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label visible-ie8 visible-ie9">Password</label>
+                    <div class="controls">
+                        <div class="input-icon left">
+                            <i class="icon-lock"></i>
+                            @Html.PasswordFor(model => model.Password, new
+                       {
+                           @class = "m-wrap placeholder-no-fix",
+                           @placeholder = "Password",
+                           @name = "password",
+                           @autocomplete = "off",
+                           @readonly = "readonly", 
+                            @onfocus="$(this).removeAttr('readonly');" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </div>
+                    </div>
+                </div>
+                @*<div>
+                  @{ if (ViewBag.ShowCaptcha == 1)
+                   {
+                      @Html.Captcha("Refresh", "Enter the text shown in image", 5, "Please enter the Captcha Code.", true)
+                   }
+                  }
+
+            </div>*@
+                <div class="srybtn">
+                    @Html.ValidationSummary(true)
+                </div>
+                <div class="form-actions" style="margin-top:20px;">
+                    <button type="submit" class="btn green pull-right">
+                        Login <i class="m-icon-swapright m-icon-white"></i>
+                    </button>
+                </div>
+
+                <div class="forget-password">
+                    <h4>Forgot your password ?</h4>
+                    <p>
+                        <b>
+                            no worries, click <a href="javascript:void(0)" class="" id="login">here</a>
+                            to reset your password.
+                        </b>
+                    </p>
+
+                    <p>
+                        <b> I am a New User. <a href="/Registration" class="">Register Me.</a></b>
+                    </p>
+                </div>
+
+            </form>
+            <!-- END LOGIN FORM -->
+        </div>
+
+       
+    </section>
+    <!-- END LOGIN -->
+    <!-- BEGIN Text -->
+    <section>
+        <div class="col-md-12 col-sm-12 col-lg 12 active">Active Compliance Tracking</div>
+    </section>
+    <!-- END Text -->
+    <!-- BEGIN COPYRIGHT -->
+    <footer>
+        <div class="copyright">
+            @*Copyright &copy; 2013-@DateTime.Now.Year, Mynd Solutions Pvt. Ltd. All rights reserved.*@
+            <p>© Powered by Mynd Integrated Solutions  @System.DateTime.Now.Year copyrights - All rights reserved</p>
+        </div>
+    </footer>
+    <!-- END COPYRIGHT -->
+    <div id="dialog" class="col-xs-12 col-sm-12 col-md-12 modal">
+        <div class="">
+            <div class="clearfix"></div>
+            <div class="row top_content">
+                <div id="udtl">
+                    <div class="col-xs-6 col-sm-4 col-md-4 allcreditionals">
+                        <label for="txtUserName">User Name </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 col-md-8 allcreditionals ">
+                        <input name="first name" type="text" id="txtUserName" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 allcreditionals">
+                        <div class="reset_btn" align="right">
+                            <input type="submit" value="Submit" class="button submit" id="btnForgotPass" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12" id="dvmsg">
+                    <p id="pmsg"> </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+<!-- END BODY -->
+</html>
+
+@Scripts.Render("~/Content/LoginScript")
+<script>
+    sessionStorage.clear();
+    $("#dialog").dialog({
+        autoOpen: false,
+        width: 400,
+        title: "Generate Password",
+        closeText :"",
+        modal:true
+    });
+
+    // Link to open the dialog
+    $("#login").click(function (event) {
+        //udtl dvmsg
+        $("#udtl").show();
+        $("#dvmsg").hide();
+        $("#txtUserName").val("");
+        $("#pmsg").html("");
+        $("#dialog").dialog("open");
+        event.preventDefault();
+    });
+    $("#btnForgotPass").click(function () {
+        var UserName = $("#txtUserName").val();
+        if(UserName.trim()=="")
+        {
+            alert("Please enter your user name");
+            return false;
+        }
+        $.ajax({
+            type: "GET",
+            url: "@Url.RouteUrl("ForgetPassword")",
+            contentType: "application/json; charset=utf-8",
+            data: { UserName: UserName },
+            success: function (response)
+            {
+                $("#pmsg").html(response.Message);
+                $("#udtl").hide();
+                $("#dvmsg").show();
+            },
+            error: function (data) {
+                alert("Something went wrong");
+            }
+        });
+    })
+    
+</script>
+<script>
+    $("a").show();
+</script>
+

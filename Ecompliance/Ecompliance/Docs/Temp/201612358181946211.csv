@@ -1,0 +1,9 @@
+DocID,Site,Contractor,Act,Activity,Date_Of_Month,Year,RemindDays,IsActive
+"7","Mumbai","PE","DVAT","Tax Deposit","20","","0","1"
+"11","Mumbai","Quess Corp Pvt. Limited","DVAT","Tax Deposit","20","","0","1"
+"25","Mumbai","SIS","DVAT","Tax Deposit","20","","0","1"
+"13","New Delhi","PE","DVAT","Tax Deposit","20","","0","1"
+"17","New Delhi","Quess Corp Pvt. Limited","DVAT","Tax Deposit","20","","0","1"
+"26","New Delhi","SIS","DVAT","Tax Deposit","20","","0","1"
+"19","Zirakpur","PE","DVAT","Tax Deposit","20","","0","1"
+"23","Zirakpur","Quess Corp Pvt. Limited","DVAT","Tax Deposit","20","","0","1"

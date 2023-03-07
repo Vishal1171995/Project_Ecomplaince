@@ -1,0 +1,12 @@
+CompanyID,Name,Address,Customer,Contact_Person,Phone_Number,Email,Maker,Checker,Status
+,,,,,,,,,
+Display Name,Mandatory Fields,Data Type,Remarks,,,,,,
+Name,Yes,Text,,,,,,,
+Address,No,Text,,,,,,,
+Customer,Yes,Text,,,,,,,
+Contact_Person,Yes,Text,,,,,,,
+Phone_Number,No,Numeric Digits,,,,,,,
+Email,No,Text,,,,,,,
+Maker,No,Text,,,,,,,
+Checker,Yes,Text,,,,,,,
+Status,Yes,Boolean,Possible values - 0 or 1,,,,,,

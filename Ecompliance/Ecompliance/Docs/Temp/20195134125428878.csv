@@ -1,0 +1,5 @@
+DOCID,Site,Act,Activity,Frequency,NextDueDate,EffectiveDate,RemindDays,IsActive,Maker1,Maker2,Checker1,Checker2,Auditor1,Auditor2,ActionType,Applicable_To_Client,Response,Message
+"""0""","""Malviya Nagar New Delhi""","""Apprentices Act""","""Half Yearly (Form APP'-2 Details of new apprentics)""","""Half Yearly""","""27/10/2019""","""""","""10""","""1""","""""","""""","""""","""""","""""","""""","""""","""""","","Duplicate"
+"""0""","""Malviya Nagar New Delhi""","""Apprentices Act""","""Half Yearly (Form APP'-3 notice of completion of training)""","""Half Yearly""","""27/10/2019""","""""","""10""","""1""","""""","""""","""""","""""","""""","""""","""""","""""","","Duplicate"
+"""0""","""Malviya Nagar New Delhi""","""Apprentices Act""","""Return""","""Yearly""","""31/01/2020""","""""","""10""","""1""","""""","""""","""""","""""","""""","""""","""""","""""","","Duplicate"
+"""0""","""Malviya Nagar New Delhi""","""Apprentices Act""","""Test""","""Monthly""","""21/05/2019""","""""","""10""","""1""","""""","""""","""""","""""","""""","""""","""""","""""","","Duplicate"

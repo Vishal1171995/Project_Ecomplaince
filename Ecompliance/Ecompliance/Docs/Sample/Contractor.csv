@@ -1,0 +1,11 @@
+ContractorID,Name,Company,Address,Contact_Person,Contact_Number,Email,PF_Code,ESI_Code,Status
+Display Name,Mandatory Fields,Data Type,Remarks,,,,,,
+Name,Yes,Text,,,,,,,
+Company,Yes,Text,,,,,,,
+Address,No,Text,,,,,,,
+Contact_Person,No,Text,,,,,,,
+Contact_Number,No,Text,,,,,,,
+Email,No,Text,,,,,,,
+PF_Code,No,Text,,,,,,,
+ESI_Code,No,Text,,,,,,,
+Status,Yes,Boolean,Possible values - 0 or 1,,,,,,

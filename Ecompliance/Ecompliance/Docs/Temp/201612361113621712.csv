@@ -1,0 +1,4 @@
+CompanyID,Name,Address,Customer,Contact_Person,Phone_Number,Email,Maker,Checker,IsActive,Response,Message
+"0","Test Ajeet","","Micromax Informatics Ltd","Ajeet","","","maker","checker","1","Failed","Invalid Email Address"
+"0","Test Ajeet","","Micromax Informatics Ltd","Ajeet","","","maker","checker","2","Failed","Invalid Email Address"
+"0","Test Ajeet","","Micromax Informatics Ltd","Ajeet","","","maker","checker","3","Failed","Invalid Email Address"

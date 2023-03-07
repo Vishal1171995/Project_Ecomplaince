@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "View As Needed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="maincontainer">
+    <div class="top_strap">
+        <div class="pull-left">
+            <h3 class="page-title">
+               My As Needed
+                @*<span class="glyphicon glyphicon-question-sign notification"><div class="tooltip">I am a tooltip!</div></span>*@
+            </h3>
+        </div>
+        <div class="pull-right" style="margin:0px;">
+
+            @*<div id="myimport" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-import"></span> Import </div>
+                <div id="myexport" class="col-xs-12 col-sm-4 col-md-4 im"><span class="glyphicon glyphicon-export"></span> Export </div>
+                <div id="dialog-link" class="col-xs-12 col-sm-4 col-md-4 ad"><span class="glyphicon glyphicon-plus-sign"></span> ADD </div>*@
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div>
+        <div id="Kgrid"></div>
+    </div>
+</div>
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+<script type="text/javascript">
+    var GetGridDataUrl = '@Url.RouteUrl("GetGridData")';
+</script>
+@Scripts.Render("~/bundles/bndlViewAsNeeded")
+    }

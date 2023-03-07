@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = ViewBag.Type;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container maincontainer">
+    <!--------------Details-------------->
+    <div class="">
+        <div class="top_strap">
+            <div class="pull-left">
+                <h3 class="page-title">
+                    @{
+                        string Type = ViewBag.Type;
+                        if (Type == "Need To Act")
+                        {
+                            Type = "Monthly Pending";
+                        }
+                        else if(Type == "My Request")
+                        {
+                            Type = "Periodic Pending";
+                        }
+                        else if (Type == "History")
+                        {
+                            Type = "Completed";
+                        }
+                    }
+                    @Type
+                </h3>
+            </div>
+            <div class="clearfix"></div>
+            @*<div style="margin:0px 0px 10px;"></div>*@
+        </div>
+        <div id="dvpgrid" style="text-align:center;">
+            <div id="ldrdvGrid" class="loader"></div>
+            <div id="dvgrid"></div>
+        </div>
+    </div>
+</div>
+<style>
+    .k-grid-toolbar {
+        text-align: right;
+    }
+</style>
+@section commanscript {
+
+    @Scripts.Render("~/Content/CommanScript")
+    <script type="text/javascript">
+        var typepar = '@ViewBag.Type';
+        var GetMyTaskUrl = '@Url.RouteUrl("GetCLRAMyTask")';
+        var GetMonthlyScheudledDataUrl = '@Url.RouteUrl("GetMonthlyScheudledData")';
+    </script>
+    @Scripts.Render("~/bundles/bndlCLRAMyTask")
+}
+

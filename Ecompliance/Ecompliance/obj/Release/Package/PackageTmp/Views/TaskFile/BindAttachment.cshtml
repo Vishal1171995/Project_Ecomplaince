@@ -1,0 +1,49 @@
+﻿@using System.Data;
+@model DataTable
+@{
+    Layout = null;
+}
+@{
+    DataTable dt = Model;
+}
+@if (dt.Rows.Count > 0)
+{
+    <div class="maintable table table-bordered portlet-title">
+        <div class="titlehead">
+            Attachments
+            <span class="tools pull-right">
+                <a href="javascript:;" data-toggle="collapse" data-target="#attachment-detail"></a>
+            </span>
+        </div>
+        <div id="attachment-detail" class="col-xs-12 col-sm-12 col-md-12">
+            <div class="maintop-heading col-xs-12 col-sm-12 col-md-12">
+                <div class="Cell col-xs-12 col-sm-2 col-md-1">S.No</div>
+                <div class="Cell col-xs-12 col-sm-2 col-md-2">File Description</div>
+                <div class="Cell col-xs-12 col-sm-2 col-md-3">Uploaded By</div>
+                <div class="Cell col-xs-12 col-sm-2 col-md-3">Uploaded On</div>
+                <div class="Cell col-xs-12 col-sm-4 col-md-3">Download</div>
+            </div>
+            <div class="newbox col-xs-12 col-sm-12 col-md-12">
+                @for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    int rowno = i + 1;
+                    <div class="Cell col-xs-12 col-sm-2 col-md-1">@rowno</div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-2 wordWrap">@dt.Rows[i]["Desc"].ToString()</div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-3">@dt.Rows[i]["UserName"].ToString()</div>
+                    <div class="Cell col-xs-12 col-sm-2 col-md-3">@dt.Rows[i]["UploadedOn"].ToString()</div>
+                    if (@dt.Rows[i]["UploadedAction"].ToString() == "INTEGRATION")
+                    {
+                        string HashCode = dt.Rows[i]["Name"].ToString();
+                        string Integration_TID = dt.Rows[i]["Integration_TID"].ToString();
+                        <div class="Cell col-xs-12 col-sm-4 col-md-3"><input type="button" value="` Download" onclick="DownloadFile_Integration('@HashCode',@Integration_TID)" class="button download mg" /></div>
+                    }
+                    else
+                    {
+                    <div class="Cell col-xs-12 col-sm-4 col-md-3"><input type="button" value="` Download" onclick="DownloadFile(@dt.Rows[i]["FileID"].ToString(),@dt.Rows[i]["DOCID"].ToString())" class="button download mg" /></div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+@*,@dt.Rows[i]["UploadedAction"].ToString(),@dt.Rows[i]["Name"].ToString(),@dt.Rows[i]["Integration_TID"].ToString()*@
